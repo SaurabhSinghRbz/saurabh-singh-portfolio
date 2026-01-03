@@ -1,0 +1,590 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ *  Theme: "Pine & Coral"
+ *  Deep pine-green grounds (a nod to Pine Labs, and to money) with a
+ *  warm coral signal color. Both themes defined side by side; every
+ *  utility below resolves through these variables at runtime.
+ * ------------------------------------------------------------------ */
+
+:root,
+[data-theme="dark"] {
+  --t-bg: #0c1210;
+  --t-surface: #111917;
+  --t-surface-2: #16211e;
+  --t-ink: #e8efea;
+  --t-muted: #8fa39a;
+  --t-line: rgba(143, 163, 154, 0.16);
+  --t-line-2: rgba(143, 163, 154, 0.32);
+  --t-accent: #ff8a66;
+  --t-accent-hi: #ffa285;
+  --t-accent-contrast: #21130d;
+  --t-good: #7fc99b;
+  --t-bad: #e08b8b;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --t-bg: #f6f4ee;
+  --t-surface: #ffffff;
+  --t-surface-2: #edeae1;
+  --t-ink: #1c2a23;
+  --t-muted: #57685e;
+  --t-line: rgba(28, 42, 35, 0.13);
+  --t-line-2: rgba(28, 42, 35, 0.26);
+  --t-accent: #bc4a2b;
+  --t-accent-hi: #9e3c20;
+  --t-accent-contrast: #ffffff;
+  --t-good: #2e7d4f;
+  --t-bad: #b04b4b;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--t-bg);
+  --color-surface: var(--t-surface);
+  --color-surface-2: var(--t-surface-2);
+  --color-ink: var(--t-ink);
+  --color-muted: var(--t-muted);
+  --color-line: var(--t-line);
+  --color-line-2: var(--t-line-2);
+  --color-accent: var(--t-accent);
+  --color-accent-hi: var(--t-accent-hi);
+  --color-accent-contrast: var(--t-accent-contrast);
+  --color-good: var(--t-good);
+  --color-bad: var(--t-bad);
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-manrope), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), Consolas, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--t-bg);
+  color: var(--t-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--t-accent) 30%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--t-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- animation utilities ---------- */
+
+/* Infinite ticker for the proof strip (track holds two copies of the list). */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+/* Falling dash inside the hero "scroll" indicator. */
+@keyframes scrollhint {
+  0% {
+    transform: translateY(-12px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(32px);
+    opacity: 0;
+  }
+}
+
+.animate-scrollhint {
+  animation: scrollhint 1.8s ease-in-out infinite;
+}
+
+/* Nav links: accent underline grows from the left on hover. */
+.nav-link {
+  background-image: linear-gradient(var(--t-accent), var(--t-accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1.5px;
+  transition: background-size 220ms ease, color 150ms ease;
+  padding-bottom: 2px;
+}
+
+.nav-link:hover {
+  background-size: 100% 1.5px;
+}
+
+/* Orbital tech stack (TechOrbit). Hovering a ring pauses it. */
+@keyframes orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.orbit-spin {
+  animation: orbit linear infinite;
+}
+
+.orbit-reverse {
+  animation-direction: reverse;
+}
+
+.orbit-ring:hover .orbit-spin {
+  animation-play-state: paused;
+}
+
+.tech-node {
+  transition: transform 180ms ease, color 180ms ease, border-color 180ms ease,
+    box-shadow 180ms ease;
+  cursor: default;
+}
+
+.tech-node:hover {
+  transform: scale(1.25);
+  color: var(--t-accent);
+  border-color: var(--t-accent);
+  box-shadow: 0 0 24px -6px var(--t-accent);
+}
+
+/* Terminal boot cursor — blinking block while the boot sequence types. */
+@keyframes term-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.terminal-cursor {
+  animation: term-blink 1s step-end infinite;
+}
+
+/* Console status dots — soft radar ping behind each LIVE service. */
+@keyframes pulse-dot {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2.2s ease-out infinite;
+}
+
+/* Skill chips with icons */
+.skill-chip {
+  transition: transform 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.skill-chip:hover {
+  transform: translateY(-2px);
+  color: var(--t-ink);
+  border-color: var(--t-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .animate-scrollhint,
+  .orbit-spin,
+  .terminal-cursor,
+  .pulse-dot {
+    animation: none;
+  }
+
+  .tech-node:hover,
+  .skill-chip:hover {
+    transform: none;
+  }
+}
+
+/* ================================================================== *
+ * IMMERSIVE TERMINAL STYLES
+ * Scanline overlay, CRT glow, matrix rain, glassmorphism chips,
+ * typewriter cursor, and theme transitions.
+ * ================================================================== */
+
+/* ---------- Scanline overlay ---------- */
+.term-scanline {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  opacity: 0.4;
+}
+
+/* ---------- CRT inner glow ---------- */
+.term-root {
+  transition: box-shadow 400ms ease, background 400ms ease;
+}
+
+/* ---------- Terminal header glass ---------- */
+.term-header {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ---------- Command chips ---------- */
+.term-chips {
+  border-top: 1px solid var(--term-line, var(--t-line));
+}
+
+.term-chip {
+  will-change: transform, box-shadow;
+}
+
+.term-chip:hover {
+  transform: translateY(-1px);
+  border-color: var(--term-accent, var(--t-accent)) !important;
+  box-shadow: 0 4px 20px -6px var(--term-glow, rgba(255, 138, 102, 0.2));
+}
+
+.term-chip:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ---------- Input line ---------- */
+.term-input,
+.term-input:focus,
+.term-input:focus-visible,
+.term-input:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  ring: none;
+  -webkit-appearance: none;
+}
+
+.term-input::placeholder {
+  color: var(--term-muted);
+  opacity: 0.4;
+}
+
+/* Hide scrollbar but keep scrollability (floating dock on mobile). */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Scrollbar ---------- */
+.term-scrollback {
+  scrollbar-width: thin;
+  scrollbar-color: var(--term-line, rgba(143, 163, 154, 0.3)) transparent;
+}
+
+.term-scrollback::-webkit-scrollbar {
+  width: 6px;
+}
+
+.term-scrollback::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.term-scrollback::-webkit-scrollbar-thumb {
+  background: var(--term-line, rgba(143, 163, 154, 0.3));
+  border-radius: 3px;
+}
+
+.term-scrollback::-webkit-scrollbar-thumb:hover {
+  background: var(--term-muted, rgba(143, 163, 154, 0.5));
+}
+
+/* ---------- Fade in animation ---------- */
+@keyframes termFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Matrix rain ---------- */
+@keyframes matrixFall {
+  0% {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0.3;
+  }
+}
+
+.term-matrix-column {
+  animation: matrixFall 3s linear infinite;
+}
+
+/* ---------- Status bar ---------- */
+.term-statusbar {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ---------- Reduced motion for terminal ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .term-scanline {
+    display: none;
+  }
+
+  .term-root {
+    transition: none;
+  }
+
+  .term-chip {
+    transition: none;
+  }
+
+  .term-chip:hover {
+    transform: none;
+  }
+
+  .term-matrix-column {
+    animation: none;
+    display: none;
+  }
+}
+
+
+/* Scroll hint animation */
+@keyframes scrollhint {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(300%);
+    opacity: 0;
+  }
+}
+
+.animate-scrollhint {
+  animation: scrollhint 2s ease-in-out infinite;
+}
+
+/* ================================================================== *
+ * GLASSMORPHISM UTILITIES
+ * Reusable glass-panel styles for premium card effects.
+ * ================================================================== */
+
+.glass-panel {
+  background: color-mix(in srgb, var(--t-surface) 60%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--t-line);
+}
+
+.glass-panel-strong {
+  background: color-mix(in srgb, var(--t-surface) 75%, transparent);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--t-line-2);
+}
+
+/* ================================================================== *
+ * MICRO-INTERACTIONS
+ * Hover glow, animated borders, lift effects, ripple.
+ * ================================================================== */
+
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes borderGlow {
+  0%,
+  100% {
+    border-color: var(--t-line);
+  }
+  50% {
+    border-color: color-mix(in srgb, var(--t-accent) 50%, var(--t-line));
+  }
+}
+
+.glow-border {
+  animation: borderGlow 3s ease-in-out infinite;
+}
+
+@keyframes borderTrace {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-border {
+  position: relative;
+}
+
+.animated-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--t-line),
+    var(--t-accent),
+    var(--t-line),
+    var(--t-accent),
+    var(--t-line)
+  );
+  background-size: 300% 100%;
+  animation: borderTrace 6s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Accent glow on hover for cards */
+.hover-glow {
+  transition: box-shadow 0.35s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 40px -12px color-mix(in srgb, var(--t-accent) 25%, transparent),
+    0 0 80px -20px color-mix(in srgb, var(--t-accent) 10%, transparent);
+}
+
+/* Code stream columns */
+@keyframes codeStreamUp {
+  from {
+    transform: translateY(10%);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.code-stream-col {
+  animation: codeStreamUp linear infinite;
+}
+
+/* Signal transmission pulse */
+@keyframes signalPulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--t-accent) 40%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.signal-pulse {
+  animation: signalPulse 2s ease-out infinite;
+}
+
+/* Timeline data packet animation */
+@keyframes packetTravel {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+/* Reflective sweep for cards */
+@keyframes reflectiveSweep {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(200%) rotate(25deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift:hover {
+    transform: none;
+  }
+
+  .glow-border {
+    animation: none;
+  }
+
+  .animated-border::before {
+    animation: none;
+  }
+
+  .code-stream-col {
+    animation: none;
+    display: none;
+  }
+}
+
