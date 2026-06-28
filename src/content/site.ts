@@ -199,6 +199,13 @@ export const site = {
         href: "https://www.skills.google/public_profiles/24b81096-7a62-4cac-8371-8af3be96f9c6",
       },
       {
+        name: "Docker Mastery: with Kubernetes + Swarm from a Docker Captain",
+        issuer: "Udemy",
+        issued: "26 Jun 2024",
+        credentialId: "UC-fb86ddc2-54e0-4f22-8918-7377ac6c964e",
+        href: "https://www.udemy.com/certificate/UC-fb86ddc2-54e0-4f22-8918-7377ac6c964e/",
+      },
+      {
         name: "JavaScript (Intermediate)",
         issuer: "HackerRank",
         issued: "Sep 2022",
