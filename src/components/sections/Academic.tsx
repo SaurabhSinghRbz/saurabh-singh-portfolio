@@ -1,4 +1,4 @@
-import { FiGithub, FiExternalLink } from "react-icons/fi";
+import { FiAward, FiGithub, FiExternalLink } from "react-icons/fi";
 import { site } from "@/content/site";
 import Reveal from "@/components/motion/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -38,6 +38,34 @@ export default function Academic() {
                 </a>
               </div>
             </div>
+          </Reveal>
+        ))}
+      </div>
+
+      <h3 className="mt-14 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+        Certifications
+      </h3>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {site.academics.certifications.map((c, i) => (
+          <Reveal key={c.name} delay={i * 0.03}>
+            <a
+              href={c.href}
+              target="_blank"
+              rel="noreferrer"
+              className="group flex h-full items-start gap-3 rounded-lg border border-line bg-surface p-4 transition-colors duration-150 hover:border-accent"
+            >
+              <FiAward className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-ink">{c.name}</p>
+                <p className="mt-0.5 font-mono text-xs text-muted">{c.issuer}</p>
+                <p className="mt-1.5 font-mono text-[11px] text-muted/80">Issued {c.issued}</p>
+                <p className="font-mono text-[11px] text-muted/80">ID {c.credentialId}</p>
+              </div>
+              <FiExternalLink
+                className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted transition-colors duration-150 group-hover:text-accent"
+                aria-hidden
+              />
+            </a>
           </Reveal>
         ))}
       </div>

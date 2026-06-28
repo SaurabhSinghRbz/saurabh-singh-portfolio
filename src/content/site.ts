@@ -189,6 +189,72 @@ export const site = {
         demo: "https://current-weather.vercel.app/",
       },
     ],
+    // Newest first — reorder here (not alphabetically) whenever a new one is issued.
+    certifications: [
+      {
+        name: "Google Cloud Career Launchpad — Computing Foundations",
+        issuer: "Google Cloud Skills Boost",
+        issued: "Jan 2026",
+        credentialId: "6aJO9zLO",
+        href: "https://www.skills.google/public_profiles/24b81096-7a62-4cac-8371-8af3be96f9c6",
+      },
+      {
+        name: "JavaScript (Intermediate)",
+        issuer: "HackerRank",
+        issued: "Sep 2022",
+        credentialId: "fac38bf11f09",
+        href: "https://www.hackerrank.com/certificates/fac38bf11f09",
+      },
+      {
+        name: "Rest API (Intermediate)",
+        issuer: "HackerRank",
+        issued: "Sep 2022",
+        credentialId: "0c3fd917ca64",
+        href: "https://www.hackerrank.com/certificates/0c3fd917ca64",
+      },
+      {
+        name: "React (Basic)",
+        issuer: "HackerRank",
+        issued: "Sep 2022",
+        credentialId: "908cf3f3a1f3",
+        href: "https://www.hackerrank.com/certificates/908cf3f3a1f3",
+      },
+      {
+        name: "Problem Solving (Intermediate)",
+        issuer: "HackerRank",
+        issued: "Jul 2022",
+        credentialId: "7a90535d94b1",
+        href: "https://www.hackerrank.com/certificates/7a90535d94b1",
+      },
+      {
+        name: "Problem Solving (Basic)",
+        issuer: "HackerRank",
+        issued: "Jul 2022",
+        credentialId: "47be779d564d",
+        href: "https://www.hackerrank.com/certificates/47be779d564d",
+      },
+      {
+        name: "JavaScript (Basic)",
+        issuer: "HackerRank",
+        issued: "Jul 2022",
+        credentialId: "1385df6df40e",
+        href: "https://www.hackerrank.com/certificates/1385df6df40e",
+      },
+      {
+        name: "Internship on AutoCAD",
+        issuer: "Softpro India Computer Technologies (P) Ltd.",
+        issued: "Oct 2021",
+        credentialId: "Dp4Cz5",
+        href: "https://drive.google.com/file/d/193l22Tut4JgDHKVSpLbukTCRq__hL3Fk/view?usp=sharing",
+      },
+      {
+        name: "Course on Computer Concept (CCC)",
+        issuer: "NIELIT",
+        issued: "Aug 2016",
+        credentialId: "GOAB6061E3A44002",
+        href: "https://drive.google.com/file/d/1xQxnB_AbswpZEUuw3VOk21mO1l5BCw2_/view?usp=sharing",
+      },
+    ],
   },
 
   education: [
