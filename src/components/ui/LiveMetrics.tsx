@@ -24,30 +24,30 @@ const METRICS: MetricDef[] = [
   { label: "deploy", value: "v2.4.1" },
 ];
 
-export default function LiveMetrics({ className }: { className?: string }) {
-  const [values, setValues] = useState<string[]>(
-    METRICS.map((m) =>
-      m.isStatus
-        ? m.value!
-        : m.min
-          ? `${Math.round(m.min + Math.random() * (m.max! - m.min))}${m.suffix || ""}`
-          : m.value!,
-    ),
+/** Deterministic midpoint so server and client render the same markup on first paint. */
+const randomize = () =>
+  METRICS.map((m) =>
+    m.isStatus
+      ? m.value!
+      : m.min
+        ? `${Math.round(m.min + Math.random() * (m.max! - m.min))}${m.suffix || ""}`
+        : m.value!,
   );
+
+const initialValues = () =>
+  METRICS.map((m) =>
+    m.isStatus ? m.value! : m.min ? `${Math.round((m.min + m.max!) / 2)}${m.suffix || ""}` : m.value!,
+  );
+
+export default function LiveMetrics({ className }: { className?: string }) {
+  const [values, setValues] = useState<string[]>(initialValues);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    setValues(randomize());
     intervalRef.current = setInterval(() => {
-      setValues(
-        METRICS.map((m) =>
-          m.isStatus
-            ? m.value!
-            : m.min
-              ? `${Math.round(m.min + Math.random() * (m.max! - m.min))}${m.suffix || ""}`
-              : m.value!,
-        ),
-      );
+      setValues(randomize());
     }, 4000);
 
     return () => {

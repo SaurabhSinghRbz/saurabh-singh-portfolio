@@ -14,7 +14,10 @@ export default function Footer() {
         aria-hidden
       />
 
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-8">
+      <div
+        className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 pt-8"
+        style={{ paddingBottom: "calc(6.5rem + env(safe-area-inset-bottom))" }}
+      >
         <p className="font-display text-sm text-muted italic">
           &ldquo;{site.mission}&rdquo;
         </p>

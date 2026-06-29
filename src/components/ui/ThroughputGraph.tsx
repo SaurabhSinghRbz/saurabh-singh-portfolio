@@ -16,12 +16,11 @@ const H = 84;
 /** map a 0–100 sample to a req/s figure for the readout */
 const toReqs = (v: number) => Math.round(320 + (v / 100) * 380);
 
+/** Deterministic baseline so server and client render the same markup on first paint. */
 function seed(): number[] {
   const out: number[] = [];
-  let v = 60;
   for (let i = 0; i < POINTS; i++) {
-    v = Math.max(24, Math.min(96, v + (Math.random() - 0.5) * 22));
-    out.push(v);
+    out.push(60 + Math.sin(i / 2.4) * 18);
   }
   return out;
 }
