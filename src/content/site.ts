@@ -206,6 +206,13 @@ export const site = {
         href: "https://www.udemy.com/certificate/UC-fb86ddc2-54e0-4f22-8918-7377ac6c964e/",
       },
       {
+        name: "Full Stack Web Development",
+        issuer: "Masai",
+        issued: "Nov 2022",
+        credentialId: "MASAI-PW3-239",
+        href: "https://www.linkedin.com/in/saurabhsinghrbz/overlay/Education/844954276/treasury/?profileId=ACoAAD2R4HgB_In8A7kaqcOVDGkYRuGha9t5RnM",
+      },
+      {
         name: "JavaScript (Intermediate)",
         issuer: "HackerRank",
         issued: "Sep 2022",
