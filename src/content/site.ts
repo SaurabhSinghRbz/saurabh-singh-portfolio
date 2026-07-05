@@ -92,7 +92,7 @@ export const site = {
     },
     {
       role: "Full-Stack Engineer — client project",
-      org: "SmoothPay · UAE (freelance)",
+      org: "SmoothPay · UAE",
       period: "Recent · live",
       points: [
         "Designed and built the entire platform solo: NestJS + Prisma multi-tenant API, Socket.IO live order tracking, RBAC for admin & merchant, React customer QR-ordering app and merchant dashboard.",

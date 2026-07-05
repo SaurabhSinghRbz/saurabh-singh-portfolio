@@ -4,7 +4,7 @@
  * Structured proficiency data for each technology.
  * Derived from Saurabh's actual experience timeline:
  * - Pine Labs: Nov 2022 → present (2.5+ years)
- * - SmoothPay: Recent freelance project
+ * - SmoothPay: Recent project
  * - Masai School: 2021–2022 (training)
  *
  * Figures are conservative and honest.
