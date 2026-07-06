@@ -6,6 +6,7 @@ import ArchDiagram from "@/components/ArchDiagram";
 import QueueDeepDive from "@/components/queue/QueueDeepDive";
 import DeliveryDeepDive from "@/components/delivery/DeliveryDeepDive";
 import WoohooCardDeepDive from "@/components/woohoo/WoohooCardDeepDive";
+import SmoothPayDeepDive from "@/components/smoothpay/SmoothPayDeepDive";
 import Nav from "@/components/sections/Nav";
 import Footer from "@/components/sections/Footer";
 import Reveal from "@/components/motion/Reveal";
@@ -121,6 +122,7 @@ export default async function CaseStudyPage({ params }: Params) {
         {cs.slug === "b2b-queue-consumer" && <QueueDeepDive />}
         {cs.slug === "delivery" && <DeliveryDeepDive />}
         {cs.slug === "woohoo-card" && <WoohooCardDeepDive />}
+        {cs.slug === "smoothpay" && <SmoothPayDeepDive />}
 
         {cs.decisions.length > 0 && (
           <>
