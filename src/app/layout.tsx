@@ -4,6 +4,8 @@ import { site } from "@/content/site";
 import ScrollProgress from "@/components/motion/ScrollProgress";
 import CursorGlow from "@/components/motion/CursorGlow";
 import ParticleNetworkCanvas from "@/components/three/ParticleNetworkCanvas";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap" });
@@ -141,6 +143,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CursorGlow />
         <ParticleNetworkCanvas />
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
