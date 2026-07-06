@@ -297,6 +297,43 @@ export const site = {
     body: "The fastest way to reach me is email — I answer within a day.",
   },
 
+  /**
+   * Plain-language Q&A. Doubles as (a) a visible recruiter-facing section and
+   * (b) FAQPage structured data + entity signal for AI search (ChatGPT, Gemini,
+   * Perplexity, Google AI Overviews) answering "Who is Saurabh Singh?". Keep the
+   * answers factual and self-contained — LLMs quote them verbatim.
+   */
+  faqs: [
+    {
+      q: "Who is Saurabh Singh?",
+      a: "Saurabh Singh is a Senior Software Engineer at Pine Labs (Qwikcilver · Woohoo) in Bengaluru, India, with 4+ years building payments and distributed-systems infrastructure. He owns the gift-card lifecycle service behind brands like HDFC, Axis and Woohoo, and built SmoothPay — a full UAE payments platform — solo.",
+    },
+    {
+      q: "What does Saurabh Singh do at Pine Labs?",
+      a: "He designs and operates the backend systems behind gift cards and payments: a Go service that owns the full gift-card lifecycle (activation, shipping, wallet, PIN reset, cancel, reissue), a Node.js queue platform sustaining 500+ TPS and millions of messages a day, and the notification service that delivers every email, SMS and WhatsApp message.",
+    },
+    {
+      q: "What technologies does Saurabh Singh work with?",
+      a: "Go, Node.js, TypeScript, JavaScript and SQL day to day. Backend: Express, NestJS, chi/GORM, Prisma, Hasura GraphQL, Socket.IO. Data & messaging: PostgreSQL, MySQL, MongoDB, Redis, ActiveMQ. Frontend: React, Next.js, Vue, Tailwind. Payments: Stripe, Apple Pay, Google Pay. Ops: Docker, nginx, PM2, OpenTelemetry, AWS.",
+    },
+    {
+      q: "How many years of experience does Saurabh Singh have?",
+      a: "Over 4 years of professional software engineering experience, all in payments and distributed systems at Pine Labs since 2022, promoted to Senior Software Engineer in 2024.",
+    },
+    {
+      q: "What projects has Saurabh Singh built?",
+      a: "Four production systems: a B2B message-queue platform (500+ TPS, built and operated solo for 18 months), a multi-channel notification microservice, a Go gift-card lifecycle service, and SmoothPay — a multi-tenant QR-ordering and payments platform for the UAE that he built end-to-end alone (NestJS, Prisma, Stripe, Socket.IO).",
+    },
+    {
+      q: "Is Saurabh Singh available for hire?",
+      a: "Yes — he is open to senior full-stack, platform and fintech-infrastructure roles. The fastest way to reach him is email; he replies within a day.",
+    },
+    {
+      q: "Where is Saurabh Singh based?",
+      a: "Bengaluru, India (IST, UTC+5:30), originally from Sonbhadra, Uttar Pradesh. He works with teams across time zones and has shipped for clients in the UAE.",
+    },
+  ],
+
   mission: "Build infrastructure people never have to think about — because it never fails them.",
 
   /**

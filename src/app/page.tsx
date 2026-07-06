@@ -9,6 +9,7 @@ import Skills from "@/components/sections/Skills";
 import HowIWork from "@/components/sections/HowIWork";
 import Academic from "@/components/sections/Academic";
 import Journey from "@/components/sections/Journey";
+import FAQ from "@/components/sections/FAQ";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 import Console from "@/components/sections/Console";
@@ -30,6 +31,7 @@ export default function Home() {
         <HowIWork />
         <Academic />
         <Journey />
+        <FAQ />
         <Contact />
       </main>
       <FloatingDock />

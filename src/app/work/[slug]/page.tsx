@@ -11,6 +11,8 @@ import Nav from "@/components/sections/Nav";
 import Footer from "@/components/sections/Footer";
 import Reveal from "@/components/motion/Reveal";
 import TechIcon from "@/components/icons/TechIcon";
+import { site } from "@/content/site";
+import type { CaseStudy } from "@/content/case-studies";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -43,6 +45,39 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
+/** TechArticle + breadcrumb schema so search engines and LLMs read each case
+ *  study as an authored, attributed piece of work in a clear site hierarchy. */
+function caseStudyJsonLd(cs: CaseStudy) {
+  const url = `${site.domain}/work/${cs.slug}`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": `${url}#article`,
+        headline: cs.title,
+        description: cs.oneLiner,
+        url,
+        image: `${site.domain}/opengraph-image`,
+        inLanguage: "en",
+        author: { "@id": `${site.domain}/#person` },
+        publisher: { "@id": `${site.domain}/#person` },
+        about: cs.stack,
+        keywords: cs.stack.join(", "),
+        isPartOf: { "@id": `${site.domain}/#website` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: site.domain },
+          { "@type": "ListItem", position: 2, name: "Work", item: `${site.domain}/#work` },
+          { "@type": "ListItem", position: 3, name: cs.title, item: url },
+        ],
+      },
+    ],
+  };
+}
+
 function H({ children }: { children: React.ReactNode }) {
   return (
     <h2 className="mt-14 mb-4 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">
@@ -58,6 +93,10 @@ export default async function CaseStudyPage({ params }: Params) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudyJsonLd(cs)) }}
+      />
       <Nav />
       <main className="mx-auto max-w-3xl px-6 pt-32 pb-24">
         <Reveal>
