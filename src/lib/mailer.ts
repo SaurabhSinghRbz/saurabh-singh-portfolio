@@ -1,12 +1,16 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 /**
- * Single choke point for outbound email. Swap the transport here (e.g. to
- * Resend) without touching the route that calls sendMail — everything else
- * only depends on this function's signature.
+ * Single choke point for outbound email, backed by Resend.
  *
- * Needs GMAIL_USER + GMAIL_APP_PASSWORD (a Gmail "App Password", not your
- * account password — generate one at myaccount.google.com/apppasswords).
+ * Requires two env vars:
+ *   RESEND_API_KEY   — API key from https://resend.com/api-keys
+ *   MAIL_FROM        — verified sender, e.g. "Saurabh Singh <hello@iamsaurabh.in>"
+ *                      (the iamsaurabh.in domain must be verified in Resend:
+ *                       add the DKIM/SPF/DMARC records it gives you in Cloudflare)
+ *
+ * Everything else in the app depends only on this function's signature, so the
+ * transport can be swapped again without touching the route that calls it.
  */
 
 type MailInput = {
@@ -17,32 +21,36 @@ type MailInput = {
   replyTo?: string;
 };
 
-let transporter: nodemailer.Transporter | null = null;
+let client: Resend | null = null;
 
-function getTransporter() {
-  if (transporter) return transporter;
-
-  const user = process.env.GMAIL_USER;
-  const pass = process.env.GMAIL_APP_PASSWORD;
-  if (!user || !pass) {
-    throw new Error("Missing GMAIL_USER or GMAIL_APP_PASSWORD environment variables");
+function getClient() {
+  if (client) return client;
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    throw new Error("Missing RESEND_API_KEY environment variable");
   }
-
-  transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: { user, pass },
-  });
-  return transporter;
+  client = new Resend(apiKey);
+  return client;
 }
 
 export async function sendMail({ to, subject, html, text, replyTo }: MailInput) {
-  const user = process.env.GMAIL_USER!;
-  await getTransporter().sendMail({
-    from: `"Saurabh Singh — Portfolio" <${user}>`,
+  const from = process.env.MAIL_FROM;
+  if (!from) {
+    throw new Error("Missing MAIL_FROM environment variable");
+  }
+
+  const { error } = await getClient().emails.send({
+    from,
     to,
     subject,
     html,
     text,
     replyTo,
   });
+
+  // Resend returns errors in the payload rather than throwing — surface them so
+  // the caller's try/catch treats a rejected send as a failure.
+  if (error) {
+    throw new Error(`Resend send failed: ${error.name} — ${error.message}`);
+  }
 }

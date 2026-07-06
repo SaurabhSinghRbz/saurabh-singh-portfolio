@@ -8,7 +8,7 @@ export const site = {
   name: "Saurabh Singh",
   role: "Senior Software Engineer",
   domain: "https://iamsaurabh.in",
-  email: "singhsaurabh162000@gmail.com", // NOTE: résumé/LinkedIn use ...1622000@ — pick ONE and use it everywhere
+  email: "hello@iamsaurabh.in", // Domain inbox on iamsaurabh.in (Cloudflare Email Routing → personal Gmail). Single public address everywhere.
   location: "Bengaluru, India · IST (UTC+5:30)",
   availability: "Open to senior full-stack, platform & fintech-infrastructure roles",
   github: "https://github.com/SaurabhSinghRbz",
