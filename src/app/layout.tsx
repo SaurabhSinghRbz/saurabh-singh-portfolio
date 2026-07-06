@@ -14,40 +14,105 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
+const description =
+  "Saurabh Singh — Senior Software Engineer at Pine Labs (Qwikcilver · Woohoo), Bengaluru. Four years building the queue, notification and gift-card systems behind brands like Amazon, Flipkart, HDFC and Axis — plus SmoothPay, a full payments platform shipped solo. Go · Node.js · TypeScript · distributed systems.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.domain),
   title: {
     default: `${site.name} — Senior Software Engineer, payments infrastructure`,
     template: `%s · ${site.name}`,
   },
-  description:
-    "Senior Software Engineer at Pine Labs. Four years building the queue, notification and gift-card systems behind brands like Amazon, Flipkart, HDFC and Axis — plus a full payments platform shipped solo.",
+  description,
+  applicationName: `${site.name} · Portfolio`,
+  keywords: [...site.seo.keywords],
+  authors: [{ name: site.name, url: site.domain }],
+  creator: site.name,
+  publisher: site.name,
+  category: "technology",
+  alternates: { canonical: site.domain },
+  formatDetection: { email: false, telephone: false, address: false },
   openGraph: {
-    title: `${site.name} — Senior Software Engineer`,
-    description: site.hero.headline,
+    title: `${site.name} — Senior Software Engineer, payments infrastructure`,
+    description,
     url: site.domain,
     siteName: site.name,
-    type: "website",
+    locale: "en_US",
+    type: "profile",
+    firstName: "Saurabh",
+    lastName: "Singh",
+    username: "SaurabhSinghRbz",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.name} — Senior Software Engineer`,
+    description,
+    creator: "@SaurabhSinghRbz",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  // Fill these in from Google Search Console / Bing Webmaster Tools once verified.
+  // verification: { google: "…", other: { "msvalidate.01": "…" } },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": `${site.domain}/#person`,
   name: site.name,
-  jobTitle: "Senior Software Engineer",
-  worksFor: { "@type": "Organization", name: "Pine Labs" },
+  alternateName: [...site.seo.alternateNames],
+  jobTitle: site.role,
+  description,
   url: site.domain,
+  email: `mailto:${site.email}`,
+  image: `${site.domain}/opengraph-image`,
+  worksFor: { "@type": "Organization", name: "Pine Labs (Qwikcilver · Woohoo)" },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Bengaluru",
+    addressRegion: "Karnataka",
+    addressCountry: "IN",
+  },
+  homeLocation: { "@type": "Place", name: site.seo.hometown },
+  alumniOf: [
+    { "@type": "EducationalOrganization", name: "Amrita Vishwa Vidyapeetham" },
+    { "@type": "EducationalOrganization", name: "Masai School" },
+  ],
   sameAs: [site.github, site.linkedin],
   knowsAbout: [
     "Payments infrastructure",
     "Distributed systems",
     "Message queues",
+    "Gift card platforms",
     "Go",
     "Node.js",
     "TypeScript",
     "React",
+    "NestJS",
+    "PostgreSQL",
+    "MongoDB",
+    "Redis",
   ],
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${site.domain}/#website`,
+  url: site.domain,
+  name: `${site.name} — Portfolio`,
+  description,
+  inLanguage: "en",
+  author: { "@id": `${site.domain}/#person` },
 };
 
 /** Runs before paint: applies saved theme (or OS preference) to avoid a flash. */
@@ -67,6 +132,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         <ScrollProgress />
         <CursorGlow />

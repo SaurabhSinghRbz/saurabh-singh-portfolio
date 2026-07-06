@@ -298,4 +298,63 @@ export const site = {
   },
 
   mission: "Build infrastructure people never have to think about — because it never fails them.",
+
+  /**
+   * SEO surface. `keywords` feeds <meta name="keywords"> and JSON-LD; search
+   * engines weight content far more than this tag, but it costs nothing and
+   * catches long-tail name queries. `alternateNames` covers the ways people
+   * actually type his name into Google.
+   */
+  seo: {
+    alternateNames: [
+      "Saurabh Singh",
+      "Saurabh",
+      "Saurabh Singh Rbz",
+      "SaurabhSinghRbz",
+    ],
+    hometown: "Sonbhadra, Uttar Pradesh, India",
+    keywords: [
+      // Core name variants
+      "Saurabh Singh",
+      "Saurabh Singh developer",
+      "Saurabh Singh software engineer",
+      "Saurabh Singh senior software engineer",
+      "Saurabh Singh backend engineer",
+      "Saurabh Singh full stack developer",
+      "Saurabh Singh full-stack engineer",
+      "Saurabh Singh portfolio",
+      "SaurabhSinghRbz",
+      "Saurabh Singh Rbz",
+      // Employer / product
+      "Saurabh Singh Pine Labs",
+      "Saurabh Singh PineLabs",
+      "Saurabh Singh Qwikcilver",
+      "Saurabh Singh Woohoo",
+      "Saurabh Singh SmoothPay",
+      "Pine Labs software engineer",
+      "Qwikcilver engineer",
+      // Location
+      "Saurabh Singh Sonbhadra",
+      "Saurabh Singh Uttar Pradesh",
+      "Saurabh Singh Bengaluru",
+      "Saurabh Singh Bangalore",
+      "Saurabh Singh India",
+      "software engineer Bengaluru",
+      "payments engineer India",
+      // Skills / domain
+      "Saurabh Singh Go developer",
+      "Saurabh Singh Golang",
+      "Saurabh Singh Node.js",
+      "Saurabh Singh TypeScript",
+      "Saurabh Singh React",
+      "Saurabh Singh payments",
+      "Saurabh Singh distributed systems",
+      "Saurabh Singh Masai",
+      "payments infrastructure engineer",
+      "distributed systems engineer",
+      "message queue engineer",
+      "fintech backend engineer",
+      "gift card platform engineer",
+    ],
+  },
 } as const;

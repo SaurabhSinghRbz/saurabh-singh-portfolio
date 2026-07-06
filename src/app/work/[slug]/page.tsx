@@ -22,7 +22,25 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const cs = caseStudies.find((c) => c.slug === slug);
   if (!cs) return {};
-  return { title: cs.title, description: cs.oneLiner };
+  const url = `/work/${cs.slug}`;
+  return {
+    title: cs.title,
+    description: cs.oneLiner,
+    keywords: [
+      "Saurabh Singh",
+      `Saurabh Singh ${cs.title}`,
+      "Saurabh Singh case study",
+      ...cs.stack,
+    ],
+    alternates: { canonical: url },
+    openGraph: {
+      title: `${cs.title} · ${cs.eyebrow}`,
+      description: cs.oneLiner,
+      url,
+      type: "article",
+    },
+    twitter: { card: "summary_large_image", title: cs.title, description: cs.oneLiner },
+  };
 }
 
 function H({ children }: { children: React.ReactNode }) {
