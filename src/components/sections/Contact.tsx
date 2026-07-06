@@ -1,14 +1,22 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, type FormEvent } from "react";
 import { FiGithub, FiLinkedin, FiDownload } from "react-icons/fi";
 import { site } from "@/content/site";
 import Reveal from "@/components/motion/Reveal";
 import SignalTransmission from "@/components/motion/SignalTransmission";
 
+const FIELD_CLASS =
+  "w-full rounded-md border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted/70 outline-none transition-colors duration-150 focus:border-accent";
+
+type FormState = "idle" | "submitting" | "success" | "error";
+
 export default function Contact() {
   const [copied, setCopied] = useState(false);
   const [transmitting, setTransmitting] = useState(false);
+
+  const [formState, setFormState] = useState<FormState>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleCopy = useCallback(async () => {
     try {
@@ -23,6 +31,40 @@ export default function Contact() {
     setCopied(true);
     setTransmitting(false);
     setTimeout(() => setCopied(false), 3000);
+  }, []);
+
+  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    setFormState("submitting");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          email: data.get("email"),
+          subject: data.get("subject"),
+          message: data.get("message"),
+          company: data.get("company"), // honeypot
+        }),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error || "Something went wrong.");
+      }
+
+      form.reset();
+      setFormState("success");
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
+      setFormState("error");
+    }
   }, []);
 
   return (
@@ -47,7 +89,81 @@ export default function Contact() {
               onComplete={handleTransmitComplete}
             />
 
-            <div className="mt-9 flex flex-wrap items-center gap-4">
+            <form onSubmit={handleSubmit} className="mt-9 flex flex-col gap-4" noValidate>
+              {/* Honeypot — hidden from real visitors, catches simple bots */}
+              <input
+                type="text"
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden
+                className="hidden"
+              />
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  maxLength={100}
+                  placeholder="Your name"
+                  className={FIELD_CLASS}
+                  disabled={formState === "submitting"}
+                />
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  maxLength={200}
+                  placeholder="Your email"
+                  className={FIELD_CLASS}
+                  disabled={formState === "submitting"}
+                />
+              </div>
+              <input
+                type="text"
+                name="subject"
+                required
+                maxLength={150}
+                placeholder="Subject"
+                className={FIELD_CLASS}
+                disabled={formState === "submitting"}
+              />
+              <textarea
+                name="message"
+                required
+                maxLength={5000}
+                rows={5}
+                placeholder="What's the problem you're trying to solve?"
+                className={`${FIELD_CLASS} resize-y`}
+                disabled={formState === "submitting"}
+              />
+
+              <div className="flex flex-wrap items-center gap-4">
+                <button
+                  type="submit"
+                  disabled={formState === "submitting"}
+                  className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 font-mono text-sm text-accent-contrast transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {formState === "submitting" ? "Sending…" : "Send message"}
+                </button>
+                {formState === "success" && (
+                  <span className="font-mono text-sm text-good" role="status">
+                    Sent — check your inbox for a confirmation. I'll reply within a day.
+                  </span>
+                )}
+                {formState === "error" && (
+                  <span className="font-mono text-sm text-bad" role="alert">
+                    {errorMsg}
+                  </span>
+                )}
+              </div>
+            </form>
+
+            <p className="mt-9 font-mono text-xs uppercase tracking-[0.18em] text-muted">
+              or reach me directly
+            </p>
+            <div className="mt-4 flex flex-wrap items-center gap-4">
               {/* Email copy button with transmission */}
               <button
                 onClick={handleCopy}
