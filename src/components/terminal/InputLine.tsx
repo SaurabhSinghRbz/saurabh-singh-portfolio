@@ -24,10 +24,14 @@ const PROMPT = "saurabh@prod:~$";
 export default function InputLine({ value, suggestion, onChange, onKeyDown, visible }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-focus when visible
+  // Auto-focus when visible. `preventScroll` matters here: a plain .focus()
+  // scrolls the whole page to bring the element into view, which would yank
+  // the user to the terminal the instant boot finishes — even if they were
+  // reading a different section (boot starts as soon as the terminal is
+  // merely 5% on-screen, see HeroTerminal's IntersectionObserver).
   useEffect(() => {
     if (visible && inputRef.current) {
-      setTimeout(() => inputRef.current?.focus(), 100);
+      setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 100);
     }
   }, [visible]);
 
@@ -35,9 +39,8 @@ export default function InputLine({ value, suggestion, onChange, onKeyDown, visi
 
   return (
     <div
-      className="flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3"
-      style={{ borderTop: "1px solid var(--term-line)" }}
-      onClick={() => inputRef.current?.focus()}
+      className="flex items-center gap-2 pt-1 pb-2"
+      onClick={() => inputRef.current?.focus({ preventScroll: true })}
     >
       {/* Prompt */}
       <span

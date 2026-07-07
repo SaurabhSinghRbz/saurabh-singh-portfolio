@@ -58,7 +58,6 @@ import {
   getCatOutput,
   searchContent,
   getRandomError,
-  getRandomIdleTip,
   getUptimeOutput,
   getFunFactOutput,
   getQuoteOutput,
@@ -86,7 +85,6 @@ export type TerminalActions = {
   setInput: (value: string) => void;
   handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   startBoot: () => void;
-  clearIdleTip: () => void;
 };
 
 /* ================================================================== *
@@ -107,8 +105,6 @@ export function useTerminalEngine(): [TerminalState, TerminalActions] {
   // Theme
   const [currentTheme, setCurrentTheme] = useState<TerminalTheme>(TERMINAL_THEMES[0]);
 
-  // Idle timer
-  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const bootTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // Load theme from localStorage on mount
@@ -121,36 +117,6 @@ export function useTerminalEngine(): [TerminalState, TerminalActions] {
       }
     } catch {}
   }, []);
-
-  /* ------------------------------------------------------------------ *
-   * IDLE TIP SYSTEM
-   * ------------------------------------------------------------------ */
-
-  const resetIdleTimer = useCallback(() => {
-    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-    idleTimerRef.current = setTimeout(() => {
-      if (!booted) return;
-      const tip = getRandomIdleTip();
-      setLines((prev) => [
-        ...prev,
-        { text: "", tone: "muted" },
-        { text: `  ${tip}`, tone: "muted" },
-        { text: "", tone: "muted" },
-      ]);
-    }, 20000 + Math.random() * 10000); // 20-30 seconds
-  }, [booted]);
-
-  const clearIdleTip = useCallback(() => {
-    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-  }, []);
-
-  // Reset idle timer on any interaction
-  useEffect(() => {
-    if (booted) resetIdleTimer();
-    return () => {
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-    };
-  }, [booted, lines.length, resetIdleTimer]);
 
   /* ------------------------------------------------------------------ *
    * TAB COMPLETION
@@ -283,9 +249,6 @@ export function useTerminalEngine(): [TerminalState, TerminalActions] {
       const trimmed = raw.trim();
       const cmd = trimmed.toLowerCase();
       const echo: OutputLine = { text: `  saurabh@prod:~$ ${trimmed}`, tone: "cmd" };
-
-      // Reset idle timer
-      resetIdleTimer();
 
       // Add to history
       if (trimmed) {
@@ -491,7 +454,7 @@ export function useTerminalEngine(): [TerminalState, TerminalActions] {
       // UNKNOWN COMMAND — witty error
       setLines((prev) => [...prev, echo, ...getRandomError(trimmed)]);
     },
-    [resetIdleTimer, history, currentTheme.name, switchTheme, triggerMatrix, triggerHack],
+    [history, currentTheme.name, switchTheme, triggerMatrix, triggerHack],
   );
 
   /* ------------------------------------------------------------------ *
@@ -550,7 +513,6 @@ export function useTerminalEngine(): [TerminalState, TerminalActions] {
       setInput,
       handleKeyDown,
       startBoot,
-      clearIdleTip,
     },
   ];
 }

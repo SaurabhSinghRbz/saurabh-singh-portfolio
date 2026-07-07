@@ -113,16 +113,50 @@ export function getBootSequence(): OutputLine[] {
     });
   });
 
+  const tailBase = 400 + selected.length * 280;
+
   lines.push(
-    { text: "", tone: "muted", delay: 400 + selected.length * 280 + 200 },
-    { text: "  All systems nominal. Integrity: 100%", tone: "success", delay: 400 + selected.length * 280 + 400, animate: "type" },
-    { text: "", tone: "muted", delay: 400 + selected.length * 280 + 600 },
-    { text: "  Welcome to SaurabhOS v2.0", tone: "heading", delay: 400 + selected.length * 280 + 800, animate: "type" },
-    { text: "  Type 'help' to begin. Try commands like: about, skills, projects", tone: "muted", delay: 400 + selected.length * 280 + 1000, animate: "type" },
+    { text: "", tone: "muted", delay: tailBase + 200 },
+    { text: "  All systems nominal. Integrity: 100%", tone: "success", delay: tailBase + 400, animate: "type" },
+    { text: "", tone: "muted", delay: tailBase + 600 },
+    { text: "  Welcome to SaurabhOS v2.0", tone: "heading", delay: tailBase + 800, animate: "type" },
+    { text: "  Type 'help' to begin. Try commands like: about, skills, projects", tone: "muted", delay: tailBase + 1000, animate: "type" },
+    { text: "", tone: "muted", delay: tailBase + 1150 },
   );
+
+  // One-time command hints — printed once as part of the boot log, like a
+  // real terminal's MOTD. Not a persistent UI chrome; `clear` wipes them
+  // along with everything else, and they never reappear afterward.
+  HINT_GROUPS.forEach((group, i) => {
+    lines.push({
+      text: `  ${group.label.padEnd(12, " ")} ${group.commands.join(" · ")}`,
+      tone: "muted",
+      delay: tailBase + 1300 + i * 150,
+      animate: "type",
+    });
+  });
 
   return lines;
 }
+
+/* ================================================================== *
+ * COMMAND HINTS — printed once at boot, as plain scrollback text
+ * ================================================================== */
+
+export const HINT_GROUPS = [
+  {
+    label: "START HERE",
+    commands: ["help", "about", "skills", "experience", "projects"],
+  },
+  {
+    label: "GO DEEPER",
+    commands: ["architecture", "status", "show metrics", "recruiter", "project smoothpay"],
+  },
+  {
+    label: "FOR FUN",
+    commands: ["coffee", "fortune", "unlock", "neofetch"],
+  },
+] as const;
 
 /* ================================================================== *
  * COMMAND CHIPS — Clickable suggestions shown after boot
@@ -1460,6 +1494,8 @@ const WITTY_ERRORS: string[] = [
 
 let lastErrorIndex = -1;
 
+// Shares `lastFactIndex` with `getFunFactOutput` so an error's fun fact and
+// the `fun-fact` command's output don't repeat the same line back-to-back.
 export function getRandomError(cmd: string): OutputLine[] {
   let idx: number;
   do {
@@ -1467,76 +1503,21 @@ export function getRandomError(cmd: string): OutputLine[] {
   } while (idx === lastErrorIndex && WITTY_ERRORS.length > 1);
   lastErrorIndex = idx;
 
+  let factIdx: number;
+  do {
+    factIdx = Math.floor(Math.random() * FUN_FACTS.length);
+  } while (factIdx === lastFactIndex && FUN_FACTS.length > 1);
+  lastFactIndex = factIdx;
+
   return [
     { text: "", tone: "muted" },
     { text: `  ✗ command not found: ${cmd}`, tone: "error" },
     { text: `  ${WITTY_ERRORS[idx]}`, tone: "muted" },
+    { text: "", tone: "muted" },
+    { text: `  💡 Fun fact: ${FUN_FACTS[factIdx]}`, tone: "info" },
     { text: "  Type 'help' for available commands.", tone: "muted" },
     { text: "", tone: "muted" },
   ];
-}
-
-/* ================================================================== *
- * IDLE TIPS — shown after period of inactivity
- * ================================================================== */
-
-const IDLE_TIPS: string[] = [
-  // Command hints
-  "💡 Tip: Try 'architecture' to see system design diagrams.",
-  "💡 Tip: Type 'show metrics' to see production numbers.",
-  "💡 Tip: Run 'project smoothpay' for a deep-dive case study.",
-  "💡 Tip: Try 'recruiter' for a quick hiring manager summary.",
-  "💡 Tip: Type 'show tech-radar' for a proficiency breakdown.",
-  "💡 Tip: Run 'cto' for a technical leadership perspective.",
-  "💡 Tip: Try 'theme matrix' for a different visual experience.",
-  "💡 Tip: Type 'status' for a live system health check.",
-  "💡 Tip: Try 'unlock' to reveal hidden commands.",
-  "💡 Tip: Type 'show achievements' for career milestones.",
-  "💡 Tip: Try 'payments' for deep payment system expertise.",
-  "💡 Tip: Type 'backend' for a full backend deep-dive.",
-  "💡 Tip: Try 'neofetch' for system info.",
-  "💡 Tip: Type 'coffee' when you need a break.",
-  // Facts about Saurabh
-  "💡 About Saurabh: Started as a mechanical engineering student. Now builds systems that move money.",
-  "💡 About Saurabh: Completed 2,200+ hours of deliberate retraining to switch to software.",
-  "💡 About Saurabh: Won both 'Comeback Kid' and 'Rising Star' awards at Masai School.",
-  "💡 About Saurabh: Built SmoothPay entirely solo — 3 live apps, payments, the whole thing.",
-  "💡 About Saurabh: Pursuing BCA alongside full-time work at Pine Labs. No shortcuts.",
-  "💡 About Saurabh: His queue platform serves Amazon, Flipkart, HDFC, Axis and SBI gift cards.",
-  "💡 About Saurabh: Operates production systems processing millions of messages daily.",
-  "💡 About Saurabh: Based in Bengaluru, India. Works in IST (UTC+5:30).",
-  "💡 About Saurabh: Favorite stack: Go for services, TypeScript for APIs, React for frontends.",
-  // Fun facts about coding & tech
-  "💡 Fun fact: The first computer bug was an actual bug — a moth stuck in a relay at Harvard in 1947.",
-  "💡 Fun fact: Git was created by Linus Torvalds in just 2 weeks.",
-  "💡 Fun fact: The first version of JavaScript was written in 10 days.",
-  "💡 Fun fact: There are approximately 700+ programming languages in existence.",
-  "💡 Fun fact: The average developer writes about 50–100 lines of production code per day.",
-  "💡 Fun fact: Most bugs disappear when someone starts watching. Heisenbug.",
-  "💡 Fun fact: 'Rubber duck debugging' is a real method — explain code to a duck, find the bug.",
-  "💡 Fun fact: PostgreSQL has been in development since 1986. Older than most developers.",
-  "💡 Fun fact: Redis stands for REmote DIctionary Server.",
-  "💡 Fun fact: Go was designed at Google in 2007 because they were frustrated with C++ compile times.",
-  "💡 Fun fact: Node.js runs on V8, the same engine that powers Chrome.",
-  "💡 Fun fact: TypeScript was released by Microsoft in 2012 and is now used by 78% of JS devs.",
-  "💡 Fun fact: The term 'microservices' was first used at a software architecture workshop in 2011.",
-  "💡 Fun fact: Amazon processes roughly 1.6 million packages per day. Scale is real.",
-  "💡 Fun fact: Stripe was founded in 2010 by two Irish brothers. Now worth $50B+.",
-  "💡 Fun fact: The 'sudo' command stands for 'superuser do'.",
-  "💡 Fun fact: Stack Overflow gets approximately 100 million visitors per month.",
-  "💡 Fun fact: The Linux kernel has over 30 million lines of code.",
-  "💡 Fun fact: This terminal has 50+ commands. You've barely scratched the surface.",
-];
-
-let lastTipIndex = -1;
-
-export function getRandomIdleTip(): string {
-  let idx: number;
-  do {
-    idx = Math.floor(Math.random() * IDLE_TIPS.length);
-  } while (idx === lastTipIndex && IDLE_TIPS.length > 1);
-  lastTipIndex = idx;
-  return IDLE_TIPS[idx];
 }
 
 /* ================================================================== *

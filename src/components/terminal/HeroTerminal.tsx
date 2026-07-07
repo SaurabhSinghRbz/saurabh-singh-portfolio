@@ -15,7 +15,6 @@ import { useTerminalEngine } from "./useTerminalEngine";
 import { ALL_COMMANDS } from "./terminalData";
 import TerminalHeader from "./TerminalHeader";
 import OutputRenderer from "./OutputRenderer";
-import CommandChips from "./CommandChips";
 import InputLine from "./InputLine";
 import StatusBar from "./StatusBar";
 
@@ -72,9 +71,10 @@ export default function HeroTerminal() {
    * ------------------------------------------------------------------ */
 
   const handleClick = useCallback(() => {
-    // Find the input inside and focus it
+    // Find the input inside and focus it (preventScroll: clicking inside an
+    // already-visible terminal shouldn't cause the page to jump).
     const input = rootRef.current?.querySelector<HTMLInputElement>("input");
-    if (input) input.focus();
+    if (input) input.focus({ preventScroll: true });
   }, []);
 
   /* ------------------------------------------------------------------ *
@@ -169,33 +169,29 @@ export default function HeroTerminal() {
       {/* Header */}
       <TerminalHeader />
 
-      {/* Main body: output + chips */}
+      {/* Main body: a single continuous scrollback — output, boot cursor,
+          and the live input line all live in the same scrolling region,
+          like a real terminal, instead of a fixed input bar pinned below. */}
       <div className="relative flex flex-1 flex-col overflow-hidden">
-        {/* Output */}
-        <OutputRenderer lines={state.lines} />
-
-        {/* Boot cursor while booting */}
-        {state.booting && !state.booted && (
-          <div className="px-4 py-1 sm:px-6">
+        <OutputRenderer lines={state.lines}>
+          {/* Boot cursor while booting */}
+          {state.booting && !state.booted && (
             <span
               className="terminal-cursor inline-block h-4 w-2 align-middle"
               style={{ backgroundColor: "var(--term-accent, var(--t-accent))" }}
               aria-hidden
             />
-          </div>
-        )}
+          )}
 
-        {/* Command hints (text-only, not clickable) */}
-        <CommandChips visible={state.booted} />
-
-        {/* Input line */}
-        <InputLine
-          value={state.input}
-          suggestion={state.suggestion}
-          onChange={actions.setInput}
-          onKeyDown={actions.handleKeyDown}
-          visible={state.booted}
-        />
+          {/* Input line — last line in the scrollback, not a fixed footer */}
+          <InputLine
+            value={state.input}
+            suggestion={state.suggestion}
+            onChange={actions.setInput}
+            onKeyDown={actions.handleKeyDown}
+            visible={state.booted}
+          />
+        </OutputRenderer>
       </div>
 
       {/* Status bar */}

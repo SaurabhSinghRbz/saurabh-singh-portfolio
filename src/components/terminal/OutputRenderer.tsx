@@ -9,13 +9,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import type { ReactNode } from "react";
 import { type OutputLine, toneColor, toneExtra } from "./terminalData";
 
 type Props = {
   lines: OutputLine[];
+  children?: ReactNode;
 };
 
-export default function OutputRenderer({ lines }: Props) {
+export default function OutputRenderer({ lines, children }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom on new lines
@@ -56,6 +58,7 @@ export default function OutputRenderer({ lines }: Props) {
           </p>
         );
       })}
+      {children}
     </div>
   );
 }
