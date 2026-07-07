@@ -45,14 +45,14 @@ export const site = {
       value: "500+",
       unit: "TPS",
       label: "sustained throughput",
-      detail: "on a card-activation queue platform I built and own end-to-end",
+      detail: "Sustained on the B2B queue-consumer platform I built and ran end to end for 18 months — Node.js, MongoDB, Redis and ActiveMQ, with RBAC, bulk uploads, message tracking, webhooks and a Vue ops console.",
       href: "/work/b2b-queue-consumer",
     },
     {
       value: "Millions",
       unit: "/day",
       label: "messages processed",
-      detail: "card processing, activation and scheduled notifications in production",
+      detail: "Card processing, activation and scheduled notifications flow through the platform every day — each message queued, tracked, retried on failure and observable end to end in production.",
       href: "/work/b2b-queue-consumer",
     },
     {
@@ -66,7 +66,7 @@ export const site = {
       value: "4",
       unit: "projects",
       label: "delivered solo, end to end",
-      detail: "Queue platform, delivery service, gift-card core & SmoothPay — each owned start to finish",
+      detail: "The B2B queue platform, the delivery microservice, the Go gift-card core and SmoothPay — every one owned from the design doc through to the production deploy, and operated on-call once it shipped.",
       href: "/#work",
     },
   ],
@@ -74,7 +74,7 @@ export const site = {
   about: [
     "I'm a senior software engineer at Pine Labs in Bengaluru. For the last four years I've worked on the infrastructure behind gift cards and payments: a queue platform that processes millions of messages a day at 500+ TPS, the notification service that delivers every email, SMS and WhatsApp message, and the Go service that owns the full gift-card lifecycle — activation, shipping, wallet, PIN reset, block, cancel, reissue.",
     "Outside Pine Labs I built SmoothPay — a multi-tenant QR-ordering and payments platform for the UAE — owning it end to end: data modeling, the NestJS API, merchant dashboard, customer app, Stripe with Apple Pay and Google Pay, multicurrency payment links. Three apps, all live.",
-    "I came to software sideways — a mechanical-engineering diploma, then 2,200 hours of deliberate retraining. That route left me a habit I've kept: assume nothing is magic, read one layer deeper than the task requires.",
+    "What ties the work together is a habit I don't compromise on: treat nothing in the stack as magic, and read one layer deeper than the task strictly requires — the broker's pricing model, a query plan, a webhook retry. It's the difference between code that works and code that won't page me at 3 a.m.",
   ],
 
   experience: [

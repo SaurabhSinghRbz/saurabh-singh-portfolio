@@ -840,7 +840,7 @@ export function getShowAchievements(): OutputLine[] {
     { text: "  ✦ Migrated MQ broker cutting messaging costs dramatically", tone: "success" },
     { text: "  ✦ Own core gift-card lifecycle in Go — 2 years continuous production", tone: "success" },
     { text: "  ✦ Comeback Kid & Rising Star awards at Masai School", tone: "success" },
-    { text: "  ✦ 2,200 hours of deliberate retraining (mechanical → software)", tone: "success" },
+    { text: "  ✦ 2,200 hours of deliberate, self-directed retraining", tone: "success" },
     { text: "  ✦ BCA in progress alongside full-time work", tone: "success" },
     { text: "", tone: "muted" },
   ];
@@ -1007,7 +1007,7 @@ const FORTUNES: string[] = [
 ];
 
 const MOTIVATIONS: string[] = [
-  "You went from mechanical engineering to building systems that move money. That's not a career change — that's a proof of concept.",
+  "You taught yourself to build the systems that move money. That's not a career change — that's a proof of concept.",
   "2,200 hours of deliberate retraining. Most people quit at 200.",
   "You own an entire payments platform end to end — from data model to deploy. Three live apps.",
   "500+ TPS in production. That's not a portfolio project — that's infrastructure.",
@@ -1099,7 +1099,7 @@ export function getWhoamiSecretOutput(): OutputLine[] {
     { text: "", tone: "muted" },
     { text: "  ┌─ CLASSIFIED ─┐", tone: "warning" },
     { text: "  │               │", tone: "warning" },
-    { text: "  │  A mechanical │", tone: "info" },
+    { text: "  │  A relentless │", tone: "info" },
     { text: "  │  engineer who │", tone: "info" },
     { text: "  │  taught       │", tone: "info" },
     { text: "  │  himself to   │", tone: "info" },

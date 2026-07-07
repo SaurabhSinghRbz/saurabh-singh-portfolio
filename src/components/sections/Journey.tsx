@@ -9,7 +9,7 @@ export default function Journey() {
         <SectionHeading
           eyebrow="Education"
           title="Slope beats intercept"
-          lede="Mechanical engineering → 2,200 hours of retraining → production payments. The unusual route is the point."
+          lede="Where I started matters less than the rate I've compounded since. The credentials are here — the slope is the rest of this site."
         />
         <div className="grid gap-4 md:grid-cols-3">
           {site.education.map((e, i) => (
