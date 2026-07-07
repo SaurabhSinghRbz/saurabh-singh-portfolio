@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useCallback, type FormEvent } from "react";
-import { FiGithub, FiLinkedin, FiDownload } from "react-icons/fi";
+import { FiGithub, FiLinkedin, FiDownload, FiPhone } from "react-icons/fi";
+import { SiWhatsapp } from "react-icons/si";
 import { site } from "@/content/site";
 import Reveal from "@/components/motion/Reveal";
 import SignalTransmission from "@/components/motion/SignalTransmission";
+import ContactResultDialog from "@/components/ui/ContactResultDialog";
 
 const FIELD_CLASS =
   "w-full rounded-md border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted/70 outline-none transition-colors duration-150 focus:border-accent";
@@ -147,18 +149,16 @@ export default function Contact() {
                 >
                   {formState === "submitting" ? "Sending…" : "Send message"}
                 </button>
-                {formState === "success" && (
-                  <span className="font-mono text-sm text-good" role="status">
-                    Sent — check your inbox for a confirmation. I'll reply within a day.
-                  </span>
-                )}
-                {formState === "error" && (
-                  <span className="font-mono text-sm text-bad" role="alert">
-                    {errorMsg}
-                  </span>
-                )}
               </div>
             </form>
+
+            {(formState === "success" || formState === "error") && (
+              <ContactResultDialog
+                variant={formState}
+                message={errorMsg}
+                onClose={() => setFormState("idle")}
+              />
+            )}
 
             <p className="mt-9 font-mono text-xs uppercase tracking-[0.18em] text-muted">
               or reach me directly
@@ -215,6 +215,43 @@ export default function Contact() {
                 <FiDownload className="h-4 w-4" aria-hidden />
                 Résumé (PDF)
               </a>
+            </div>
+
+            {/* Priority escalation line — phone is already public elsewhere, so
+                surface it directly here (not just after a form submit). */}
+            <div className="mt-6 rounded-xl border border-line-2 bg-[color-mix(in_srgb,var(--t-surface)_50%,transparent)] p-4">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+                </span>
+                <p className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-accent">
+                  Priority line · Sev-1
+                </p>
+              </div>
+              <p className="mt-2 text-sm text-ink">
+                Can&apos;t wait for email? If it&apos;s genuinely urgent, page me directly.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2.5">
+                <a
+                  href={`tel:${site.phoneTel}`}
+                  className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 font-mono text-sm text-accent-contrast transition-opacity hover:opacity-90"
+                >
+                  <FiPhone className="h-4 w-4" aria-hidden />
+                  {site.phone}
+                </a>
+                <a
+                  href={`https://wa.me/${site.phoneWa}?text=${encodeURIComponent(
+                    "Hi Saurabh — reaching out from your site. It's urgent:",
+                  )}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-md border border-line-2 px-4 py-2.5 font-mono text-sm text-ink transition-colors hover:border-accent hover:text-accent"
+                >
+                  <SiWhatsapp className="h-4 w-4" aria-hidden />
+                  WhatsApp
+                </a>
+              </div>
             </div>
 
             <p className="mt-8 font-mono text-xs text-muted">

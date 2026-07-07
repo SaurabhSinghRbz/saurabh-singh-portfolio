@@ -9,6 +9,9 @@ export const site = {
   role: "Senior Software Engineer",
   domain: "https://iamsaurabh.in",
   email: "hello@iamsaurabh.in", // Domain inbox on iamsaurabh.in (Cloudflare Email Routing → personal Gmail). Single public address everywhere.
+  phone: "+91 85768 58692", // Display form. Direct/WhatsApp line — shown in the Contact section and the post-submit dialog (number is already public on other platforms).
+  phoneTel: "+918576858692", // tel: href (E.164, no spaces)
+  phoneWa: "918576858692", // wa.me path (no + or spaces)
   location: "Bengaluru, India · IST (UTC+5:30)",
   availability: "Open to senior full-stack, platform & fintech-infrastructure roles",
   github: "https://github.com/SaurabhSinghRbz",
