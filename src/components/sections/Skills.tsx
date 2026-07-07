@@ -1,22 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  skillProficiency,
-  skillTier,
-  TIER_LEGEND,
-  type SkillProficiency,
-} from "@/content/skill-proficiency";
+import { skillProficiency, type SkillProficiency } from "@/content/skill-proficiency";
 import Reveal from "@/components/motion/Reveal";
 import Counter from "@/components/motion/Counter";
 import SectionHeading from "@/components/ui/SectionHeading";
-import SkillRing from "@/components/ui/SkillRing";
+import TiltCard from "@/components/motion/TiltCard";
 import TechIcon from "@/components/icons/TechIcon";
-
-/* Curated core stack — reflects the brand (payments / distributed systems),
- * not just the highest numbers. */
-const SIGNATURE = ["Go", "Node.js", "TypeScript", "React", "PostgreSQL", "Redis"];
 
 const CATEGORY_ORDER = ["All", "Backend", "Frontend", "Data", "DevOps", "Cloud", "Payments"] as const;
 
@@ -31,59 +22,86 @@ const CATEGORY_LABEL: Record<string, string> = {
   Payments: "Payments",
 };
 
-/** Three discrete segments; `level` of them are lit. Level is always
- *  paired with the tier label text, so it never rides on colour alone. */
-function LevelSegments({ level }: { level: number }) {
-  return (
-    <div className="flex gap-1" aria-hidden>
-      {[1, 2, 3].map((n) => (
-        <span
-          key={n}
-          className="h-1.5 w-6 rounded-full transition-colors"
-          style={{ background: n <= level ? "var(--t-accent)" : "var(--t-line-2)" }}
-        />
-      ))}
-    </div>
-  );
-}
+/* Brand colours so each logo reads as itself. Sat/lightness nudged where a
+ * true brand colour would disappear on the dark medallion. Anything unmapped
+ * falls back to the site accent. */
+const BRAND: Record<string, string> = {
+  "Node.js": "#5FA04E",
+  Express: "#A7B2CC",
+  NestJS: "#E0234E",
+  Go: "#00ADD8",
+  TypeScript: "#3B82E0",
+  JavaScript: "#F7DF1E",
+  React: "#61DAFB",
+  "Next.js": "#E5E7EB",
+  Vue: "#42B883",
+  "Tailwind CSS": "#38BDF8",
+  PostgreSQL: "#5B9BE8",
+  MySQL: "#5C93C4",
+  MongoDB: "#4DB33D",
+  Redis: "#FF5C49",
+  ActiveMQ: "#E24329",
+  Docker: "#2496ED",
+  nginx: "#3DAE4B",
+  OpenTelemetry: "#F5A800",
+  AWS: "#FF9E33",
+  GCP: "#5A9BFF",
+  Stripe: "#7A73FF",
+  Prisma: "#B7C0D8",
+  "Socket.IO": "#CBD2E0",
+};
 
-function SkillCard({ skill }: { skill: SkillProficiency }) {
-  const tier = skillTier(skill.confidenceScore);
+const brandColor = (name: string) => BRAND[name] ?? "var(--t-accent)";
+
+function SkillTile({ skill, index }: { skill: SkillProficiency; index: number }) {
+  const brand = brandColor(skill.name);
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, scale: 0.94 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.94 }}
-      transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-      className="glass-panel group flex flex-col gap-3 rounded-xl p-4 transition-colors duration-200 hover:border-accent/50"
+      initial={{ opacity: 0, y: 14, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.92 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex min-w-0 items-center gap-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-line bg-surface-2">
-            <TechIcon name={skill.name} className="h-4 w-4" />
-          </span>
-          <div className="min-w-0">
-            <p className="truncate font-mono text-[13px] font-semibold text-ink">{skill.name}</p>
-            <p className="font-mono text-[10px] text-muted">{skill.category}</p>
+      <TiltCard className="group h-full">
+        <div
+          style={{ "--b": brand } as CSSProperties}
+          className="relative flex h-full flex-col items-center gap-2.5 rounded-xl border border-line bg-surface p-4 text-center transition-colors duration-200 [transform-style:preserve-3d] group-hover:border-[color:color-mix(in_srgb,var(--b)_55%,transparent)]"
+        >
+          {/* Logo layer — lifts toward the viewer as the card tilts */}
+          <div className="[transform:translateZ(24px)] transition-transform duration-300 group-hover:[transform:translateZ(52px)]">
+            <div
+              className="skill-float flex h-12 w-12 items-center justify-center rounded-xl"
+              style={{
+                color: brand,
+                animationDelay: `${(index % 6) * 0.35}s`,
+                background:
+                  "radial-gradient(circle at 30% 22%, color-mix(in srgb, var(--b) 26%, #0d1512), #0a0e0c)",
+                boxShadow:
+                  "inset 0 0 0 1px color-mix(in srgb, var(--b) 34%, transparent), 0 8px 20px -10px color-mix(in srgb, var(--b) 70%, transparent)",
+              }}
+            >
+              <TechIcon name={skill.name} className="h-6 w-6" />
+            </div>
           </div>
+
+          <p className="font-mono text-[12px] font-medium text-ink transition-colors duration-200 group-hover:text-[color:var(--b)]">
+            {skill.name}
+          </p>
+          <p className="flex items-center gap-1.5 font-mono text-[10px] text-muted">
+            <span>{skill.yearsExperience}y</span>
+            {skill.productionUsage && (
+              <>
+                <span className="text-line-2">·</span>
+                <span className="inline-flex items-center gap-1 text-good">
+                  <span className="h-1 w-1 rounded-full bg-good" />
+                  live
+                </span>
+              </>
+            )}
+          </p>
         </div>
-        {/* honest tier, not a percentage */}
-        <span className="shrink-0 font-mono text-[11px] font-medium text-accent">{tier.label}</span>
-      </div>
-
-      <LevelSegments level={tier.level} />
-
-      <div className="flex items-center justify-between font-mono text-[10px]">
-        <span className="text-muted">
-          {skill.yearsExperience}y · {skill.projectsDelivered} live {skill.projectsDelivered === 1 ? "system" : "systems"}
-        </span>
-        {skill.productionUsage && (
-          <span className="flex items-center gap-1 text-good">
-            <span className="h-1.5 w-1.5 rounded-full bg-good" /> production
-          </span>
-        )}
-      </div>
+      </TiltCard>
     </motion.div>
   );
 }
@@ -92,21 +110,10 @@ export default function Skills() {
   const [filter, setFilter] = useState<string>("All");
 
   const domains = useMemo(() => new Set(skillProficiency.map((s) => s.category)).size, []);
-  const coreCount = useMemo(
-    () => skillProficiency.filter((s) => skillTier(s.confidenceScore).level === 3).length,
-    [],
-  );
-
-  const signature = useMemo(
-    () =>
-      SIGNATURE.map((n) => skillProficiency.find((s) => s.name === n)).filter(
-        (s): s is SkillProficiency => Boolean(s),
-      ),
-    [],
-  );
 
   const filtered = useMemo(() => {
-    const list = filter === "All" ? skillProficiency : skillProficiency.filter((s) => s.category === filter);
+    const list =
+      filter === "All" ? skillProficiency : skillProficiency.filter((s) => s.category === filter);
     return [...list].sort((a, b) => b.confidenceScore - a.confidenceScore);
   }, [filter]);
 
@@ -114,7 +121,7 @@ export default function Skills() {
     { value: `${skillProficiency.length}`, label: "technologies" },
     { value: "4+", label: "years shipping" },
     { value: `${domains}`, label: "engineering domains" },
-    { value: `${coreCount}`, label: "at core level" },
+    { value: "100%", label: "run in production" },
   ];
 
   return (
@@ -123,65 +130,22 @@ export default function Skills() {
         <SectionHeading
           eyebrow="Skills"
           title="Earned in production, not listed from a tutorial"
-          lede="Every technology below runs in a system that is live today. No self-graded percentages — just an honest level, the years behind it, and the live systems that prove it."
+          lede="Every technology here runs in a system that is live today — grouped by where it sits in the stack. No self-graded bars; just the logo, the years behind it, and proof it ships."
         />
 
         {/* Stats strip */}
-        <div className="mb-16 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="mb-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.05}>
-              <div className="glass-panel rounded-xl px-4 py-5 text-center">
-                <Counter value={s.value} className="font-display text-3xl text-accent sm:text-4xl" />
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">{s.label}</p>
+              <div className="glass-panel rounded-xl px-4 py-4 text-center">
+                <Counter value={s.value} className="font-display text-2xl text-accent sm:text-3xl" />
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+                  {s.label}
+                </p>
               </div>
             </Reveal>
           ))}
         </div>
-
-        {/* Signature stack */}
-        <Reveal>
-          <div className="mb-4 flex items-center gap-3">
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">Signature stack</h3>
-            <span className="h-px flex-1 bg-line" />
-            <span className="font-mono text-[10px] text-muted">the six I reach for first</span>
-          </div>
-        </Reveal>
-        <div className="mb-20 grid grid-cols-3 gap-6 sm:grid-cols-6">
-          {signature.map((s, i) => (
-            <SkillRing key={s.name} name={s.name} score={s.confidenceScore} years={s.yearsExperience} delay={i * 0.08} />
-          ))}
-        </div>
-
-        {/* Filter + full grid */}
-        <Reveal>
-          <div className="mb-4 flex items-center gap-3">
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">Full arsenal</h3>
-            <span className="h-px flex-1 bg-line" />
-          </div>
-        </Reveal>
-
-        {/* Tier legend — what the levels actually mean */}
-        <Reveal>
-          <div className="mb-6 grid gap-2 rounded-xl border border-line bg-surface/50 p-4 sm:grid-cols-3">
-            {TIER_LEGEND.map((t) => (
-              <div key={t.key} className="flex items-start gap-3">
-                <span className="mt-1 flex shrink-0 gap-1" aria-hidden>
-                  {[1, 2, 3].map((n) => (
-                    <span
-                      key={n}
-                      className="h-1.5 w-4 rounded-full"
-                      style={{ background: n <= t.level ? "var(--t-accent)" : "var(--t-line-2)" }}
-                    />
-                  ))}
-                </span>
-                <div>
-                  <p className="font-mono text-[12px] font-medium text-ink">{t.label}</p>
-                  <p className="font-mono text-[10px] leading-snug text-muted">{t.blurb}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Reveal>
 
         {/* Category filter pills */}
         <div className="mb-6 flex flex-wrap gap-2">
@@ -210,11 +174,15 @@ export default function Skills() {
           })}
         </div>
 
-        {/* Animated grid */}
-        <motion.div layout className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Logo grid */}
+        <motion.div
+          layout
+          className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6"
+          style={{ perspective: 1000 }}
+        >
           <AnimatePresence mode="popLayout">
-            {filtered.map((s) => (
-              <SkillCard key={s.name} skill={s} />
+            {filtered.map((s, i) => (
+              <SkillTile key={s.name} skill={s} index={i} />
             ))}
           </AnimatePresence>
         </motion.div>

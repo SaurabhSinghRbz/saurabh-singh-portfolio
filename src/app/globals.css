@@ -175,6 +175,21 @@ button:disabled {
   animation-direction: reverse;
 }
 
+/* Gentle idle bob for the skill logos — staggered per-tile via inline delay. */
+@keyframes skillFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.skill-float {
+  animation: skillFloat 4.5s ease-in-out infinite;
+}
+
 .orbit-ring:hover .orbit-spin {
   animation-play-state: paused;
 }
@@ -244,7 +259,8 @@ button:disabled {
   .animate-scrollhint,
   .orbit-spin,
   .terminal-cursor,
-  .pulse-dot {
+  .pulse-dot,
+  .skill-float {
     animation: none;
   }
 

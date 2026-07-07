@@ -20,7 +20,7 @@ export default function Console() {
         />
 
         {/* Terminal + sidebar layout — stacks on mobile, sidebar on desktop */}
-        <div className="flex w-full flex-col items-stretch gap-5 xl:flex-row xl:items-start">
+        <div className="flex w-full flex-col items-stretch gap-5 xl:flex-row xl:items-stretch">
           {/* Terminal — takes up most space */}
           <div className="min-w-0 flex-1">
             <HeroTerminal />

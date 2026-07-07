@@ -136,8 +136,11 @@ export default function HeroTerminal() {
       ref={rootRef}
       className="term-root relative flex w-full flex-col overflow-hidden rounded-xl border sm:rounded-2xl"
       style={{
+        // minHeight keeps a sensible floor when the terminal is the taller column
+        // (mobile / narrow desktop); on xl the row stretches it to match the
+        // status + throughput sidebar so their bottom edges line up. No maxHeight
+        // cap here, or that stretch would clip before reaching the sidebar's base.
         minHeight: "clamp(400px, 62vh, 760px)",
-        maxHeight: "78vh",
         borderColor: "var(--term-line, var(--t-line))",
         background: "var(--term-bg, var(--t-surface))",
         boxShadow: `
