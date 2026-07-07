@@ -1,17 +1,36 @@
 "use client";
 
 import { useState, useCallback, type FormEvent } from "react";
-import { FiGithub, FiLinkedin, FiDownload, FiPhone } from "react-icons/fi";
+import { FiGithub, FiLinkedin, FiDownload, FiPhone, FiAlertCircle } from "react-icons/fi";
 import { SiWhatsapp } from "react-icons/si";
 import { site } from "@/content/site";
 import Reveal from "@/components/motion/Reveal";
 import SignalTransmission from "@/components/motion/SignalTransmission";
 import ContactResultDialog from "@/components/ui/ContactResultDialog";
 
+// Single accent focus border, no native outline (kills the doubled outline),
+// and a coral border whenever aria-invalid is set by our own validation.
 const FIELD_CLASS =
-  "w-full rounded-md border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted/70 outline-none transition-colors duration-150 focus:border-accent";
+  "w-full rounded-md border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted/70 outline-none transition-colors duration-150 focus:border-accent focus:outline-none aria-[invalid=true]:border-bad";
 
 type FormState = "idle" | "submitting" | "success" | "error";
+type FieldName = "name" | "email" | "subject" | "message";
+type Errors = Partial<Record<FieldName, string>>;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** On-brand validation, replaces the browser's native "Please fill out…" bubble. */
+function validate(data: FormData): Errors {
+  const get = (k: FieldName) => String(data.get(k) ?? "").trim();
+  const e: Errors = {};
+  if (!get("name")) e.name = "Tell me who I'm replying to.";
+  const email = get("email");
+  if (!email) e.email = "I'll need an email to reach you back.";
+  else if (!EMAIL_RE.test(email)) e.email = "That email doesn't look right.";
+  if (!get("subject")) e.subject = "A one-line subject helps me triage.";
+  if (!get("message")) e.message = "Give me a sentence on the problem.";
+  return e;
+}
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
@@ -19,6 +38,16 @@ export default function Contact() {
 
   const [formState, setFormState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [errors, setErrors] = useState<Errors>({});
+
+  const clearError = useCallback((name: FieldName) => {
+    setErrors((prev) => {
+      if (!prev[name]) return prev;
+      const next = { ...prev };
+      delete next[name];
+      return next;
+    });
+  }, []);
 
   const handleCopy = useCallback(async () => {
     try {
@@ -39,6 +68,15 @@ export default function Contact() {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
+
+    const found = validate(data);
+    if (Object.keys(found).length > 0) {
+      setErrors(found);
+      const first = Object.keys(found)[0] as FieldName;
+      form.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
+      return;
+    }
+    setErrors({});
 
     setFormState("submitting");
     setErrorMsg("");
@@ -103,43 +141,63 @@ export default function Contact() {
               />
 
               <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <input
+                    type="text"
+                    name="name"
+                    maxLength={100}
+                    placeholder="Your name"
+                    className={FIELD_CLASS}
+                    disabled={formState === "submitting"}
+                    aria-invalid={!!errors.name}
+                    aria-describedby={errors.name ? "err-name" : undefined}
+                    onInput={() => clearError("name")}
+                  />
+                  <FieldError id="err-name" message={errors.name} />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    name="email"
+                    maxLength={200}
+                    placeholder="Your email"
+                    className={FIELD_CLASS}
+                    disabled={formState === "submitting"}
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? "err-email" : undefined}
+                    onInput={() => clearError("email")}
+                  />
+                  <FieldError id="err-email" message={errors.email} />
+                </div>
+              </div>
+              <div>
                 <input
                   type="text"
-                  name="name"
-                  required
-                  maxLength={100}
-                  placeholder="Your name"
+                  name="subject"
+                  maxLength={150}
+                  placeholder="Subject"
                   className={FIELD_CLASS}
                   disabled={formState === "submitting"}
+                  aria-invalid={!!errors.subject}
+                  aria-describedby={errors.subject ? "err-subject" : undefined}
+                  onInput={() => clearError("subject")}
                 />
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  maxLength={200}
-                  placeholder="Your email"
-                  className={FIELD_CLASS}
-                  disabled={formState === "submitting"}
-                />
+                <FieldError id="err-subject" message={errors.subject} />
               </div>
-              <input
-                type="text"
-                name="subject"
-                required
-                maxLength={150}
-                placeholder="Subject"
-                className={FIELD_CLASS}
-                disabled={formState === "submitting"}
-              />
-              <textarea
-                name="message"
-                required
-                maxLength={5000}
-                rows={5}
-                placeholder="What's the problem you're trying to solve?"
-                className={`${FIELD_CLASS} resize-y`}
-                disabled={formState === "submitting"}
-              />
+              <div>
+                <textarea
+                  name="message"
+                  maxLength={5000}
+                  rows={5}
+                  placeholder="What's the problem you're trying to solve?"
+                  className={`${FIELD_CLASS} resize-y`}
+                  disabled={formState === "submitting"}
+                  aria-invalid={!!errors.message}
+                  aria-describedby={errors.message ? "err-message" : undefined}
+                  onInput={() => clearError("message")}
+                />
+                <FieldError id="err-message" message={errors.message} />
+              </div>
 
               <div className="flex flex-wrap items-center gap-4">
                 <button
@@ -147,7 +205,7 @@ export default function Contact() {
                   disabled={formState === "submitting"}
                   className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 font-mono text-sm text-accent-contrast transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {formState === "submitting" ? "Sending…" : "Send message"}
+                  {formState === "submitting" ? "Sending…" : "Send Email"}
                 </button>
               </div>
             </form>
@@ -261,5 +319,20 @@ export default function Contact() {
         </Reveal>
       </div>
     </section>
+  );
+}
+
+/** Inline, on-brand field error — replaces the native validation bubble. */
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+  return (
+    <p
+      id={id}
+      role="alert"
+      className="mt-1.5 flex items-center gap-1.5 font-mono text-xs text-bad animate-[dialogFade_180ms_ease-out]"
+    >
+      <FiAlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden />
+      {message}
+    </p>
   );
 }

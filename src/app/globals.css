@@ -81,7 +81,10 @@ body {
   background: color-mix(in srgb, var(--t-accent) 30%, transparent);
 }
 
-:focus-visible {
+/* Accessible focus ring for buttons, links, and other controls. Text fields
+ * are excluded — they carry their own designed focus (an accent border), and
+ * stacking this offset outline on top produced a doubled outline. */
+:focus-visible:not(input):not(textarea):not(select) {
   outline: 2px solid var(--t-accent);
   outline-offset: 3px;
   border-radius: 2px;
