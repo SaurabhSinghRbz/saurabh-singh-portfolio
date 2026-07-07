@@ -45,7 +45,7 @@ export default function CaseStudies() {
         <SectionHeading
           eyebrow="Case studies · production systems"
           title="Systems, told as decisions"
-          lede="Four systems from four years of production work — queue platform, notification backbone, gift-card core, and a payments platform built solo. Problem → constraints → architecture → trade-offs → outcome."
+          lede="Four systems from four years of production work — queue platform, notification backbone, gift-card core, and a payments platform owned end to end. Problem → constraints → architecture → trade-offs → outcome."
         />
         <div className="flex flex-col gap-6">
           {caseStudies.map((cs, i) => (

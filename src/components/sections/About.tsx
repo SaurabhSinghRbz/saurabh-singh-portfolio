@@ -13,7 +13,7 @@ const FACTS: { label: string; value: string }[] = [
 const CARD_STATS: { value: string; label: string }[] = [
   { value: "4 yrs", label: "in production" },
   { value: "4", label: "systems owned" },
-  { value: "3", label: "apps solo" },
+  { value: "4", label: "solo projects" },
 ];
 
 export default function About() {

@@ -3,7 +3,7 @@ import OrderFlowDiagram from "@/components/smoothpay/OrderFlowDiagram";
 import PaymentLinkDiagram from "@/components/smoothpay/PaymentLinkDiagram";
 
 /* ------------------------------------------------------------------ *
- * SmoothPayDeepDive — SmoothPay only. Built entirely solo (NestJS +
+ * SmoothPayDeepDive — SmoothPay only. Owned end to end (NestJS +
  * Prisma API, React customer app + merchant dashboard). Every claim is
  * read from the source: payments.service (createCustomerPayment,
  * Stripe/AFS/Telr), afs.service, payment-links.service, currency-rates
@@ -57,7 +57,7 @@ const FEATURES: { title: string; body: string }[] = [
   },
   {
     title: "Multi-tenant by construction",
-    body: "Merchants, branches, tables, members and roles are isolated end to end — RBAC guards, branch-access guards, and Google OAuth login, all on a NestJS + Prisma + PostgreSQL core I built and operate solo.",
+    body: "Merchants, branches, tables, members and roles are isolated end to end — RBAC guards, branch-access guards, and Google OAuth login, all on a NestJS + Prisma + PostgreSQL core I own end to end.",
   },
 ];
 
@@ -196,15 +196,15 @@ export default function SmoothPayDeepDive() {
 
       {/* ---------- closing ---------- */}
       <h2 className="mt-16 mb-4 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-        Built and operated solo
+        Owned end to end
       </h2>
       <P>
         Everything above — the NestJS + Prisma + PostgreSQL API, three payment integrations,
         the multi-currency engine, the loyalty ledger, the real-time layer, the React
-        customer app and the merchant dashboard — I designed, built and run alone. It&apos;s
-        the clearest proof I have that I own the full stack from a Stripe webhook to the CSS,
-        and that I hold payment code to the standard it demands: locked, idempotent, and
-        correct to the cent.
+        customer app and the merchant dashboard — I own from data modeling to the
+        end-to-end flow. It&apos;s the clearest proof I have that I own the full stack from a
+        Stripe webhook to the CSS, and that I hold payment code to the standard it demands:
+        locked, idempotent, and correct to the cent.
       </P>
     </section>
   );

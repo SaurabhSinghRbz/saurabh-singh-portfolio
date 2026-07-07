@@ -205,15 +205,15 @@ export const caseStudies: CaseStudy[] = [
     footnote: nda,
   },
   {
-    slug: "smoothpay",
+    slug: "smooth",
     eyebrow: "Client project · UAE",
-    title: "SmoothPay — QR ordering and payments",
+    title: "Smooth – Payments, POS & Loyalty in One Platform",
     oneLiner:
-      "A multi-tenant payments and ordering platform for UAE restaurants: scan, order, track live, pay with Apple Pay / Google Pay — plus multicurrency payment links payable from anywhere. Three live apps, one engineer.",
+      "A multi-tenant payments and ordering platform for UAE restaurants: scan, order, track live, pay with Apple Pay / Google Pay — plus multicurrency payment links payable from anywhere. Owned end to end, from data model to checkout flow.",
     metaDescription:
-      "SmoothPay: multi-tenant QR ordering and payments platform for UAE restaurants, built solo with Stripe, Apple Pay and Google Pay.",
+      "Smooth: multi-tenant QR ordering, POS & Loyalty and payments platform for UAE restaurants, owned end-to-end — Stripe, AFS, Apple Pay, Google Pay.",
     duration: "3 Months · live in production",
-    role: "Everything — product, API, two frontends, payments, deploy",
+    role: "Owned end-to-end — product, data model, API, two frontends, payments, deploy",
     liveLinks: [
       { label: "smoothpay.ai", href: "https://www.smoothpay.ai/" },
       { label: "merchant.smoothpay.ai", href: "https://merchant.smoothpay.ai/" },
@@ -234,7 +234,7 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "UAE restaurants needed app-free ordering and payment: customers scan a QR, browse the menu, order, and pay — no download, no cash handoff. Merchants needed live order boards, menu control, staff roles and a way to get paid by anyone, anywhere, in any currency.",
     constraints: [
-      "One engineer for the whole platform: API, customer app, merchant dashboard, payments, infrastructure.",
+      "Full ownership of the whole platform: data model, API, customer app, merchant dashboard, payments, infrastructure.",
       "Payment must work without an app — Apple Pay / Google Pay / card, straight from a link.",
       "Multi-tenant with RBAC from day one: admins, merchants, staff — each seeing only their own world.",
       "Trust is the product: feedback flows to Google reviews to build merchant visibility.",
@@ -253,9 +253,9 @@ export const caseStudies: CaseStudy[] = [
           "Socket.IO rooms per merchant and per order: the kitchen's board and the customer's status page subscribe to the same event stream, so state changes propagate to both in real time — with polling fallback where sockets can't connect.",
       },
       {
-        question: "What did building it alone teach you?",
+        question: "What did owning this end-to-end teach you?",
         answer:
-          "Scope discipline. Every feature had to justify its operational cost to a team of one — which is why the platform leans on managed services (Stripe, Firebase, S3) for undifferentiated heavy lifting and spends its complexity budget on the two things merchants actually feel: order flow and getting paid.",
+          "Scope discipline. Every feature had to justify its own operational cost — which is why the platform leans on managed services (Stripe, Firebase, S3) for undifferentiated heavy lifting, and spends its complexity budget on the two things merchants actually feel: order flow and getting paid.",
       },
     ],
     outcome: [

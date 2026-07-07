@@ -17,7 +17,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 const description =
-  "Saurabh Singh — Senior Software Engineer at Pine Labs (Qwikcilver · Woohoo), Bengaluru. Four years building the queue, notification and gift-card systems behind brands like Amazon, Flipkart, HDFC and Axis — plus SmoothPay, a full payments platform shipped solo. Go · Node.js · TypeScript · distributed systems.";
+  "Saurabh Singh — Senior Software Engineer at Pine Labs (Qwikcilver · Woohoo), Bengaluru. Four years building the queue, notification and gift-card systems behind brands like Amazon, Flipkart, HDFC and Axis — plus SmoothPay, a full payments platform owned end to end. Go · Node.js · TypeScript · distributed systems.";
 
 // Kept <=160 chars for the <meta name="description"> tag — Bing/Google truncate or flag longer
 // ones. The full `description` above is still used for OG/Twitter cards and JSON-LD.

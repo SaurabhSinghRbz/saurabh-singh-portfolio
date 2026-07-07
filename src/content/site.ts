@@ -23,7 +23,7 @@ export const site = {
       { text: "move money.", accent: true },
     ],
     subheadline:
-      "Senior Software Engineer at Pine Labs. I design and run the queue, notification and gift-card systems behind brands like Amazon, Flipkart, HDFC and Axis — and I've shipped a full payments platform solo, end to end.",
+      "Senior Software Engineer at Pine Labs. I design and run the queue, notification and gift-card systems behind brands like Amazon, Flipkart, HDFC and Axis — and I've shipped a full payments platform end to end, from data model to deploy.",
   },
 
   proofStrip: [
@@ -31,7 +31,7 @@ export const site = {
     "500+ TPS queue platform",
     "Millions of messages daily",
     "Go · Node.js · TypeScript",
-    "3 live apps shipped solo",
+    "4 solo production projects",
   ],
 
   impact: [
@@ -57,17 +57,17 @@ export const site = {
       href: "/work/woohoo-card",
     },
     {
-      value: "3",
-      unit: "apps",
-      label: "live, built solo",
-      detail: "SmoothPay: payments API, merchant dashboard and customer QR-ordering app",
-      href: "/work/smoothpay",
+      value: "4",
+      unit: "projects",
+      label: "delivered solo, end to end",
+      detail: "Queue platform, delivery service, gift-card core & SmoothPay — each owned start to finish",
+      href: "/#work",
     },
   ],
 
   about: [
     "I'm a senior software engineer at Pine Labs in Bengaluru. For the last four years I've worked on the infrastructure behind gift cards and payments: a queue platform that processes millions of messages a day at 500+ TPS, the notification service that delivers every email, SMS and WhatsApp message, and the Go service that owns the full gift-card lifecycle — activation, shipping, wallet, PIN reset, block, cancel, reissue.",
-    "Outside Pine Labs I built SmoothPay — a multi-tenant QR-ordering and payments platform for the UAE — alone: NestJS API, merchant dashboard, customer app, Stripe with Apple Pay and Google Pay, multicurrency payment links. Three apps, all live.",
+    "Outside Pine Labs I built SmoothPay — a multi-tenant QR-ordering and payments platform for the UAE — owning it end to end: data modeling, the NestJS API, merchant dashboard, customer app, Stripe with Apple Pay and Google Pay, multicurrency payment links. Three apps, all live.",
     "I came to software sideways — a mechanical-engineering diploma, then 2,200 hours of deliberate retraining. That route left me a habit I've kept: assume nothing is magic, read one layer deeper than the task requires.",
   ],
 
@@ -95,7 +95,7 @@ export const site = {
       org: "SmoothPay · UAE",
       period: "Recent · live",
       points: [
-        "Designed and built the entire platform solo: NestJS + Prisma multi-tenant API, Socket.IO live order tracking, RBAC for admin & merchant, React customer QR-ordering app and merchant dashboard.",
+        "Owned the entire platform end to end — from data modeling to the checkout flow: NestJS + Prisma multi-tenant API, Socket.IO live order tracking, RBAC for admin & merchant, React customer QR-ordering app and merchant dashboard.",
         "Payments with Stripe — Apple Pay, Google Pay, cards — plus multicurrency payment links payable from any country, Firebase push, and a Google-reviews feedback loop for merchant trust.",
       ],
     },
@@ -306,7 +306,7 @@ export const site = {
   faqs: [
     {
       q: "Who is Saurabh Singh?",
-      a: "Saurabh Singh is a Senior Software Engineer at Pine Labs (Qwikcilver · Woohoo) in Bengaluru, India, with 4+ years building payments and distributed-systems infrastructure. He owns the gift-card lifecycle service behind brands like HDFC, Axis and Woohoo, and built SmoothPay — a full UAE payments platform — solo.",
+      a: "Saurabh Singh is a Senior Software Engineer at Pine Labs (Qwikcilver · Woohoo) in Bengaluru, India, with 4+ years building payments and distributed-systems infrastructure. He owns the gift-card lifecycle service behind brands like HDFC, Axis and Woohoo, and built SmoothPay — a full UAE payments platform, owned end to end from data modeling to the order flow.",
     },
     {
       q: "What does Saurabh Singh do at Pine Labs?",
@@ -322,7 +322,7 @@ export const site = {
     },
     {
       q: "What projects has Saurabh Singh built?",
-      a: "Four production systems: a B2B message-queue platform (500+ TPS, built and operated solo for 18 months), a multi-channel notification microservice, a Go gift-card lifecycle service, and SmoothPay — a multi-tenant QR-ordering and payments platform for the UAE that he built end-to-end alone (NestJS, Prisma, Stripe, Socket.IO).",
+      a: "Four production systems: a B2B message-queue platform (500+ TPS, built and operated solo for 18 months), a multi-channel notification microservice, a Go gift-card lifecycle service, and SmoothPay — a multi-tenant QR-ordering and payments platform for the UAE that he owns end to end, from data modeling to the order flow (NestJS, Prisma, Stripe, Socket.IO).",
     },
     {
       q: "Is Saurabh Singh available for hire?",
