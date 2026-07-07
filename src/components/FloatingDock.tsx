@@ -94,7 +94,7 @@ export default function FloatingDock() {
           animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
           exit={reduced ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.96 }}
           transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-2 sm:bottom-8 sm:px-4"
+          className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-2 sm:bottom-8 sm:px-4 md:hidden"
           aria-label="Section shortcuts"
         >
           <ul className="no-scrollbar flex max-w-[calc(100vw-0.75rem)] items-center gap-0.5 overflow-x-auto rounded-full border border-line bg-surface/85 px-1.5 py-1.5 shadow-[0_16px_48px_-16px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:gap-1 sm:px-2.5 sm:py-2">
