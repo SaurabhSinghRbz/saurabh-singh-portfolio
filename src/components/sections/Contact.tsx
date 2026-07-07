@@ -167,7 +167,7 @@ export default function Contact() {
               {/* Email copy button with transmission */}
               <button
                 onClick={handleCopy}
-                className="group inline-flex items-center gap-3 rounded-md border border-line-2 px-5 py-3 font-mono text-sm text-ink transition-all duration-200 hover:border-accent hover:shadow-[0_0_24px_-8px_var(--t-accent)] cursor-pointer"
+                className="group inline-flex items-center gap-3 rounded-md border border-line-2 px-5 py-3 font-mono text-sm text-ink transition-all duration-200 hover:border-accent hover:shadow-[0_0_24px_-8px_var(--t-accent)]"
                 aria-live="polite"
               >
                 {site.email}

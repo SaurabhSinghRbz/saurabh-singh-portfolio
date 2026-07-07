@@ -150,6 +150,20 @@ body {
   }
 }
 
+/* Tailwind's Preflight resets <button> to cursor:default. Restore the pointer
+ * on every genuinely clickable control so hover feedback is consistent with
+ * links across the whole site. Disabled buttons stay as not-allowed. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+label[for],
+summary {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
 .orbit-spin {
   animation: orbit linear infinite;
 }
