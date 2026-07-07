@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { site } from "@/content/site";
 import Reveal from "@/components/motion/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -54,15 +55,36 @@ export default function About() {
           <aside>
             <Reveal delay={0.08}>
               <div className="glass-panel-strong rounded-2xl p-6 lg:sticky lg:top-28">
-                {/* Identity */}
-                <div className="flex items-center gap-4">
-                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-line-2 bg-surface-2 font-display text-2xl text-accent">
-                    S.
-                  </span>
-                  <div>
-                    <p className="font-display text-lg text-ink">{site.name}</p>
-                    <p className="font-mono text-[11px] text-muted">{site.role} · Pine Labs</p>
+                {/* Identity — centered hero */}
+                <div className="flex flex-col items-center text-center">
+                  <div className="relative">
+                    {/* Soft accent glow behind the portrait */}
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute -inset-5 rounded-full bg-[radial-gradient(closest-side,color-mix(in_srgb,var(--t-accent)_22%,transparent),transparent)]"
+                    />
+                    <div className="relative h-24 w-24 overflow-hidden rounded-full border border-line-2 bg-surface-2 ring-2 ring-accent/30 shadow-[0_0_40px_-12px_var(--t-accent)]">
+                      <Image
+                        src="/profile.jpg"
+                        alt={`Portrait of ${site.name}`}
+                        fill
+                        sizes="96px"
+                        className="object-cover"
+                      />
+                    </div>
+                    {/* Available-for-work status dot */}
+                    <span
+                      className="absolute bottom-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-bg"
+                      title="Open to opportunities"
+                    >
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-good opacity-70" />
+                        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-good" />
+                      </span>
+                    </span>
                   </div>
+                  <p className="mt-4 font-display text-xl text-ink">{site.name}</p>
+                  <p className="mt-1 font-mono text-[11px] text-muted">{site.role} · Pine Labs</p>
                 </div>
 
                 {/* Facts */}
