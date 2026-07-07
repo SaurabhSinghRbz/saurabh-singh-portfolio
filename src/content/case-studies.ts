@@ -3,6 +3,8 @@ export type CaseStudy = {
   eyebrow: string;
   title: string;
   oneLiner: string;
+  /** <=160 chars, for <meta name="description"> — oneLiner is used for OG/on-page copy. */
+  metaDescription: string;
   duration: string;
   role: string;
   clients?: string;
@@ -28,6 +30,8 @@ export const caseStudies: CaseStudy[] = [
     title: "The queue platform that activates millions of gift cards",
     oneLiner:
       "A B2B message-queue platform built and operated end-to-end for 18 months — 500+ TPS sustained, millions of messages a day, powering card processing, activation and scheduled notifications.",
+    metaDescription:
+      "B2B message-queue platform built solo: 500+ TPS, millions of messages a day, powering card activation for Amazon, Flipkart, HDFC & Axis.",
     duration: "18 months · ongoing in production",
     role: "Sole owner — design, build, operate",
     clients: "Amazon, Flipkart, HDFC, Axis & SBI gift journeys via the Woohoo platform",
@@ -94,6 +98,8 @@ export const caseStudies: CaseStudy[] = [
     title: "One service, every message a customer ever receives",
     oneLiner:
       "The delivery microservice behind every email, SMS, WhatsApp and push notification on the Woohoo platform — OTP flows, template management, and the query optimization that keeps it fast.",
+    metaDescription:
+      "Delivery microservice behind every email, SMS, WhatsApp and push on Woohoo — OTP flows, templates, and query optimization.",
     duration: "~7 months",
     role: "Core contributor — templates, OTP, tracking, query optimization",
     clients: "All customer communications for woohoo.in and partner storefronts",
@@ -143,6 +149,8 @@ export const caseStudies: CaseStudy[] = [
     title: "The Go service that owns a gift card's whole life",
     oneLiner:
       "The core of the gift-card management system: order processing, activation, shipping, wallet, PIN reset, block, cancel, reissue — in Go, behind HDFC, Axis, FairPrice and Woohoo storefronts.",
+    metaDescription:
+      "Go service owning the gift-card lifecycle: activation, shipping, wallet, PIN reset, reissue — behind HDFC, Axis, FairPrice & Woohoo.",
     duration: "2 years · ongoing",
     role: "Backend owner — order lifecycle & critical card operations",
     clients: "HDFC and Axis gift sites, FairPrice, woohoo.in",
@@ -202,6 +210,8 @@ export const caseStudies: CaseStudy[] = [
     title: "SmoothPay — QR ordering and payments, end to end, alone",
     oneLiner:
       "A multi-tenant payments and ordering platform for UAE restaurants: scan, order, track live, pay with Apple Pay / Google Pay — plus multicurrency payment links payable from anywhere. Three live apps, one engineer.",
+    metaDescription:
+      "SmoothPay: multi-tenant QR ordering and payments platform for UAE restaurants, built solo with Stripe, Apple Pay and Google Pay.",
     duration: "Solo build · live in production",
     role: "Everything — product, API, two frontends, payments, deploy",
     liveLinks: [

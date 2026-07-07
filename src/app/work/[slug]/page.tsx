@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const url = `/work/${cs.slug}`;
   return {
     title: cs.title,
-    description: cs.oneLiner,
+    description: cs.metaDescription,
     keywords: [
       "Saurabh Singh",
       `Saurabh Singh ${cs.title}`,
