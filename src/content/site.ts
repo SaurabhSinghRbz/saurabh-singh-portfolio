@@ -1,7 +1,10 @@
 /**
  * Single source of truth for all copy, links, and metrics.
- * Figures (500+ TPS, millions of messages/day, client brands) are from
- * Saurabh's production work — keep them current, never inflate them.
+ * Figures (500+ TPS, millions of messages/day) are from Saurabh's
+ * production work — keep them current, never inflate them. Platform-scale
+ * numbers (300+ brands, ~9 of 10 gift cards issued in India) describe the
+ * Woohoo / Qwikcilver platform his services run on; always frame them as
+ * the platform's reach, never as brands he personally onboarded.
  */
 
 export const site = {
@@ -26,7 +29,7 @@ export const site = {
       { text: "move money.", accent: true },
     ],
     subheadline:
-      "Senior Software Engineer at Pine Labs. I design and run the queue, notification and gift-card systems behind brands like Amazon, Flipkart, HDFC and Axis — and I've shipped a full payments platform end to end, from data model to deploy.",
+      "Senior Software Engineer at Pine Labs. I design and run the queue, notification and gift-card systems behind Woohoo — the platform that issues roughly 9 of every 10 gift cards in India, for brands from Amazon and Flipkart to SBI, HDFC and Axis — and I've shipped a full payments platform end to end, from data model to deploy.",
   },
 
   proofStrip: [
@@ -53,10 +56,10 @@ export const site = {
       href: "/work/b2b-queue-consumer",
     },
     {
-      value: "6",
+      value: "300+",
       unit: "brands",
-      label: "served in production",
-      detail: "Amazon, Flipkart, HDFC, Axis, SBI & FairPrice gift journeys via the Woohoo platform",
+      label: "issue through the platform I build for",
+      detail: "Amazon, Flipkart, SBI, HDFC, Axis, Zomato, Blinkit, PhonePe, Croma, Tanishq & hundreds more — activation, delivery and notifications run on the Woohoo / Qwikcilver platform I build, which issues ~9 of every 10 gift cards in India.",
       href: "/work/woohoo-card",
     },
     {
@@ -309,7 +312,7 @@ export const site = {
   faqs: [
     {
       q: "Who is Saurabh Singh?",
-      a: "Saurabh Singh is a Senior Software Engineer at Pine Labs (Qwikcilver · Woohoo) in Bengaluru, India, with 4+ years building payments and distributed-systems infrastructure. He owns the gift-card lifecycle service behind brands like HDFC, Axis and Woohoo, and built SmoothPay — a full UAE payments platform, owned end to end from data modeling to the order flow.",
+      a: "Saurabh Singh is a Senior Software Engineer at Pine Labs (Qwikcilver · Woohoo) in Bengaluru, India, with 4+ years building payments and distributed-systems infrastructure. He owns the gift-card lifecycle service behind the Woohoo / Qwikcilver platform — which issues roughly 9 of every 10 gift cards in India across 300+ brands including Amazon, Flipkart, SBI, HDFC and Axis — and built SmoothPay, a full UAE payments platform owned end to end, from data modeling to the order flow.",
     },
     {
       q: "What does Saurabh Singh do at Pine Labs?",

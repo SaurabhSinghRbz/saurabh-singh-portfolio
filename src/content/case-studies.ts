@@ -31,10 +31,10 @@ export const caseStudies: CaseStudy[] = [
     oneLiner:
       "A B2B message-queue platform built and operated end-to-end for 18 months — 500+ TPS sustained, millions of messages a day, powering card processing, activation and scheduled notifications.",
     metaDescription:
-      "B2B message-queue platform built solo: 500+ TPS, millions of messages a day, powering card activation for Amazon, Flipkart, HDFC & Axis.",
+      "B2B message-queue platform built solo: 500+ TPS, millions of messages a day, powering gift-card activation across 300+ brands on the Woohoo platform.",
     duration: "18 months · ongoing in production",
     role: "Sole owner — design, build, operate",
-    clients: "Amazon, Flipkart, HDFC, Axis & SBI gift journeys via the Woohoo platform",
+    clients: "300+ brands on the Woohoo / Qwikcilver platform — Amazon, Flipkart, SBI, HDFC, Axis, Zomato, Blinkit & more",
     liveLinks: [{ label: "woohoo.in", href: "https://www.woohoo.in/" }],
     stack: [
       "Node.js",
@@ -84,7 +84,7 @@ export const caseStudies: CaseStudy[] = [
     outcome: [
       "500+ TPS sustained throughput in production",
       "Millions of messages processed daily — card processing, activation, scheduled notifications",
-      "Serving Amazon, Flipkart, HDFC, Axis and SBI gift journeys via Woohoo",
+      "Powers card activation across the Woohoo / Qwikcilver platform — 300+ brands, ~9 of every 10 gift cards issued in India",
       "Broker migration cut messaging spend from per-call pricing to flat infrastructure cost",
       "Still the backbone of B2B order processing today",
     ],
@@ -102,7 +102,7 @@ export const caseStudies: CaseStudy[] = [
       "Delivery microservice behind every email, SMS, WhatsApp and push on Woohoo — OTP flows, templates, and query optimization.",
     duration: "~7 months",
     role: "Core contributor — templates, OTP, tracking, query optimization",
-    clients: "All customer communications for woohoo.in and partner storefronts",
+    clients: "Every customer message across the Woohoo platform — 300+ brands' orders, activations & OTPs on woohoo.in and partner storefronts",
     liveLinks: [{ label: "woohoo.in", href: "https://www.woohoo.in/" }],
     stack: [
       "Node.js",
@@ -153,7 +153,7 @@ export const caseStudies: CaseStudy[] = [
       "Go service owning the gift-card lifecycle: activation, shipping, wallet, PIN reset, reissue — behind HDFC, Axis, FairPrice & Woohoo.",
     duration: "2 years · ongoing",
     role: "Backend owner — order lifecycle & critical card operations",
-    clients: "HDFC and Axis gift sites, FairPrice, woohoo.in",
+    clients: "HDFC & Axis gift sites, FairPrice, and woohoo.in — a 300+ brand catalog",
     liveLinks: [{ label: "woohoo.in", href: "https://www.woohoo.in/" }],
     stack: [
       "Go 1.24",
