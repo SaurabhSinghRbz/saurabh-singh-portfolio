@@ -27,7 +27,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "b2b-queue-consumer",
     eyebrow: "Pine Labs · first major ownership",
-    title: "The queue platform that activates millions of gift cards",
+    title: "Queue platform that activates millions of gift cards",
     oneLiner:
       "A B2B message-queue platform built and operated end-to-end for 18 months — 500+ TPS sustained, millions of messages a day, powering card processing, activation and scheduled notifications.",
     metaDescription:
@@ -206,13 +206,13 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "smoothpay",
-    eyebrow: "Client project · UAE · built solo",
-    title: "SmoothPay — QR ordering and payments, end to end, alone",
+    eyebrow: "Client project · UAE",
+    title: "SmoothPay — QR ordering and payments",
     oneLiner:
       "A multi-tenant payments and ordering platform for UAE restaurants: scan, order, track live, pay with Apple Pay / Google Pay — plus multicurrency payment links payable from anywhere. Three live apps, one engineer.",
     metaDescription:
       "SmoothPay: multi-tenant QR ordering and payments platform for UAE restaurants, built solo with Stripe, Apple Pay and Google Pay.",
-    duration: "Solo build · live in production",
+    duration: "3 Months · live in production",
     role: "Everything — product, API, two frontends, payments, deploy",
     liveLinks: [
       { label: "smoothpay.ai", href: "https://www.smoothpay.ai/" },
