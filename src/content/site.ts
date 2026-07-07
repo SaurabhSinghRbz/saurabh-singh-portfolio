@@ -19,7 +19,7 @@ export const site = {
   availability: "Open to senior full-stack, platform & fintech-infrastructure roles",
   github: "https://github.com/SaurabhSinghRbz",
   linkedin: "https://www.linkedin.com/in/saurabhsinghrbz",
-  resume: "/resume.pdf",
+  resume: "/saurabh_resume.pdf",
 
   hero: {
     headline: "I build the systems that move money.",

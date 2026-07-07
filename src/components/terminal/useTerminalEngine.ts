@@ -281,7 +281,7 @@ export function useTerminalEngine(): [TerminalState, TerminalActions] {
           { text: "  Options:", tone: "heading" },
           { text: "  ──────────────────────────", tone: "muted" },
           { text: "  [VIEW]      Opens resume in new tab", tone: "info" },
-          { text: "  [DOWNLOAD]  Download resume.pdf", tone: "info" },
+          { text: "  [DOWNLOAD]  Download saurabh_resume.pdf", tone: "info" },
           { text: "  [LINKEDIN]  Open LinkedIn profile", tone: "info" },
           { text: "", tone: "muted" },
         ]);

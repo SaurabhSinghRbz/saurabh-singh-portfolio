@@ -30,7 +30,7 @@ work — keep them current, never inflate them.
 
 1. **Pick one email.** `site.ts` uses `singhsaurabh162000@gmail.com`; the résumé/LinkedIn
    use `singhsaurabh1622000@gmail.com`. Standardize everywhere.
-2. **Replace `public/resume.pdf`** with a résumé matching this positioning.
+2. **Replace `public/saurabh_resume.pdf`** with a résumé matching this positioning.
 3. **Set the domain** in `site.ts` (used by metadata, sitemap, JSON-LD).
 4. **Update LinkedIn** headline/summary to match.
 
