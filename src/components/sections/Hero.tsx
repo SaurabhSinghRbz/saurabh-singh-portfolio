@@ -70,7 +70,7 @@ export default function Hero() {
 
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
-        className="relative mx-auto w-full max-w-5xl px-6 pt-24 pb-16"
+        className="relative mx-auto w-full max-w-5xl px-6 pt-24 pb-40 md:pb-16"
       >
         <div>
           <motion.p

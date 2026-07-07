@@ -9,6 +9,7 @@ import WoohooCardDeepDive from "@/components/woohoo/WoohooCardDeepDive";
 import SmoothPayDeepDive from "@/components/smoothpay/SmoothPayDeepDive";
 import Nav from "@/components/sections/Nav";
 import Footer from "@/components/sections/Footer";
+import FloatingDock from "@/components/FloatingDock";
 import Reveal from "@/components/motion/Reveal";
 import TechIcon from "@/components/icons/TechIcon";
 import { site } from "@/content/site";
@@ -216,6 +217,7 @@ export default async function CaseStudyPage({ params }: Params) {
           <p className="mt-14 border-l-2 border-accent pl-4 text-sm text-muted">{cs.footnote}</p>
         )}
       </main>
+      <FloatingDock />
       <Footer />
     </>
   );

@@ -19,15 +19,15 @@ export default function Console() {
           lede="A live session into my engineering world. 50+ commands, 6 themes, real system data. Type 'help' to begin."
         />
 
-        {/* Terminal + sidebar layout */}
-        <div className="flex w-full items-start gap-5">
+        {/* Terminal + sidebar layout — stacks on mobile, sidebar on desktop */}
+        <div className="flex w-full flex-col items-stretch gap-5 xl:flex-row xl:items-start">
           {/* Terminal — takes up most space */}
           <div className="min-w-0 flex-1">
             <HeroTerminal />
           </div>
 
-          {/* Sidebar widgets — desktop only */}
-          <div className="hidden shrink-0 flex-col gap-4 xl:flex" style={{ width: 220 }}>
+          {/* System widgets — side by side on mobile, stacked sidebar on desktop */}
+          <div className="grid shrink-0 grid-cols-1 gap-4 sm:grid-cols-2 xl:flex xl:w-55 xl:flex-col">
             <Reveal delay={0.2} mode="fade-up">
               <SystemStatus />
             </Reveal>

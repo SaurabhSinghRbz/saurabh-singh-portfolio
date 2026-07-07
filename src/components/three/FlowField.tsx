@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 const COUNT_DESKTOP = 3800;
@@ -139,8 +139,17 @@ function Particles({ count, color }: { count: number; color: string }) {
  * ------------------------------------------------------------------ */
 const CARD_W = 1024;
 const CARD_H = 640;
+// Desktop: card sits to the right of the left-aligned hero text.
 const CARD_POS = new THREE.Vector3(4.15, 0.4, 1);
 const CARD_SIZE = { w: 3.65, h: 2.28 };
+// Mobile: text spans full width, so drop the card into the clear strip at the
+// bottom of the hero (below the CTAs / availability line) and scale it down to
+// fit a narrow viewport without overlapping the copy above it. Values below
+// are derived from measured DOM/camera geometry at a 390x844 viewport with
+// the hero's extra mobile-only bottom padding (see Hero.tsx `pb-40 md:pb-16`),
+// not eyeballed — see conversation for the derivation.
+const CARD_POS_MOBILE = new THREE.Vector3(0, -3.54, 1);
+const CARD_SIZE_MOBILE = { w: 1.84, h: 1.15 };
 
 function cardBase(accent: string) {
   const c = document.createElement("canvas");
@@ -365,11 +374,66 @@ function makeBackTexture(accent: string) {
   return tex;
 }
 
-function GiftCard({ accent }: { accent: string }) {
+/* Measures the live gap between the bottom of the hero's CTA row and the
+ * bottom of the hero section (in canvas pixels), so the mobile card can be
+ * placed underneath the text regardless of viewport height — the hero's
+ * `items-center` + variable min-height means the text block's position
+ * shifts with viewport height, so a hardcoded world-space Y overlaps the
+ * copy on some screens and floats in empty space on others. */
+function useMobileCardTopPx() {
+  const [ctaBottomPx, setCtaBottomPx] = useState<number | null>(null);
+
+  useEffect(() => {
+    const measure = () => {
+      const section = document.getElementById("top");
+      const cta = section?.querySelector(".mt-10");
+      if (!section || !cta) return;
+      const sectionRect = section.getBoundingClientRect();
+      const ctaRect = cta.getBoundingClientRect();
+      setCtaBottomPx(ctaRect.bottom - sectionRect.top);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    window.addEventListener("orientationchange", measure);
+    return () => {
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("orientationchange", measure);
+    };
+  }, []);
+
+  return ctaBottomPx;
+}
+
+function GiftCard({
+  accent,
+  pos,
+  size,
+  mobile,
+}: {
+  accent: string;
+  pos: THREE.Vector3;
+  size: { w: number; h: number };
+  mobile?: boolean;
+}) {
   const group = useRef<THREE.Group>(null);
   const flip = useRef(0); // eased 0 (front) → PI (back)
   const pointer = usePointer();
-  const { camera } = useThree();
+  const { camera, size: canvasSize } = useThree();
+  const ctaBottomPx = useMobileCardTopPx();
+
+  // On mobile, override the static Y with one derived from the live DOM gap
+  // below the CTA row, converted into this camera's world units.
+  const cardTargetY = useMemo(() => {
+    if (!mobile || ctaBottomPx == null) return pos.y;
+    const persp = camera as THREE.PerspectiveCamera;
+    const distance = camera.position.z - pos.z;
+    const halfHeightWorld = distance * Math.tan((persp.fov / 2) * (Math.PI / 180));
+    const margin = 20; // px of breathing room below the CTA row
+    const topPx = ctaBottomPx + margin;
+    const ndcY = 1 - (2 * topPx) / canvasSize.height;
+    const topEdgeWorldY = ndcY * halfHeightWorld;
+    return topEdgeWorldY - size.h / 2;
+  }, [mobile, ctaBottomPx, camera, pos.y, pos.z, canvasSize.height, size.h]);
 
   const front = useMemo(() => makeFrontTexture(accent), [accent]);
   const back = useMemo(() => makeBackTexture(accent), [accent]);
@@ -388,7 +452,7 @@ function GiftCard({ accent }: { accent: string }) {
     if (!group.current) return;
 
     // Idle float + drift.
-    group.current.position.y = CARD_POS.y + Math.sin(t * 0.8) * 0.18;
+    group.current.position.y = cardTargetY + Math.sin(t * 0.8) * 0.18;
 
     // Is the cursor over the card? Compare in screen space (the canvas is
     // pointer-events: none, so raycasting isn't available).
@@ -409,13 +473,13 @@ function GiftCard({ accent }: { accent: string }) {
   });
 
   return (
-    <group ref={group} position={CARD_POS}>
+    <group ref={group} position={pos}>
       <mesh>
-        <planeGeometry args={[CARD_SIZE.w, CARD_SIZE.h]} />
+        <planeGeometry args={[size.w, size.h]} />
         <meshBasicMaterial map={front} transparent side={THREE.FrontSide} />
       </mesh>
       <mesh rotation={[0, Math.PI, 0]} position={[0, 0, -0.002]}>
-        <planeGeometry args={[CARD_SIZE.w, CARD_SIZE.h]} />
+        <planeGeometry args={[size.w, size.h]} />
         <meshBasicMaterial map={back} transparent side={THREE.FrontSide} />
       </mesh>
     </group>
@@ -426,7 +490,9 @@ function GiftCard({ accent }: { accent: string }) {
 
 export default function FlowField({ color }: { color: string }) {
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-  const showCard = typeof window !== "undefined" && window.innerWidth >= 1024;
+  // Below 1024px the hero text is full-width, so use the lower-center card
+  // placement instead of the right-hand desktop position.
+  const cardMobile = typeof window !== "undefined" && window.innerWidth < 1024;
 
   return (
     <Canvas
@@ -437,7 +503,12 @@ export default function FlowField({ color }: { color: string }) {
       aria-hidden
     >
       <Particles count={isMobile ? COUNT_MOBILE : COUNT_DESKTOP} color={color} />
-      {showCard && <GiftCard accent={color} />}
+      <GiftCard
+        accent={color}
+        pos={cardMobile ? CARD_POS_MOBILE : CARD_POS}
+        size={cardMobile ? CARD_SIZE_MOBILE : CARD_SIZE}
+        mobile={cardMobile}
+      />
     </Canvas>
   );
 }
