@@ -1,44 +1,289 @@
-# Saurabh Singh — Portfolio v2
+# 🚀 Saurabh Singh — Portfolio
 
-Repositioned portfolio: **Senior Software Engineer, payments infrastructure**.
-Next.js 15 · TypeScript strict · Tailwind CSS 4 · Framer Motion · React Three Fiber.
-Light + dark themes ("Pine & Coral" palette), toggle in the nav, OS preference respected.
+<div align="center">
 
-## Run
+### Senior Full Stack Engineer • Backend Specialist • Distributed Systems Enthusiast
+
+Building scalable products, payment systems, developer platforms, and high-performance web applications.
+
+🌐 **Live Website:** https://iamsaurabh.in
+
+</div>
+
+---
+
+## Overview
+
+This repository contains the source code for my personal portfolio website.
+
+The goal of this portfolio is not simply to showcase projects, but to demonstrate how I approach software engineering, system design, scalability, reliability, product thinking, and production-grade development.
+
+The portfolio highlights:
+
+* Real-world engineering experience
+* Production systems and architecture
+* Full-stack development expertise
+* Backend and distributed systems engineering
+* Payment and fintech solutions
+* Technical leadership and ownership
+* Performance optimization and scalability
+
+---
+
+## About Me
+
+I'm **Saurabh Singh**, a Full Stack Engineer with 4+ years of experience building and scaling production applications.
+
+My work spans:
+
+* Backend Engineering
+* Full Stack Development
+* Distributed Systems
+* Event-Driven Architecture
+* Payment Systems
+* API Design
+* Cloud Infrastructure
+* Performance Optimization
+* Developer Experience
+
+I enjoy solving complex engineering challenges and building systems that remain reliable under scale.
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* Framer Motion
+* GSAP
+* Three.js
+
+### Backend
+
+* Node.js
+* Express.js
+* Golang
+* REST APIs
+* Microservices
+
+### Database
+
+* PostgreSQL
+* MySQL
+* Redis
+
+### Cloud & DevOps
+
+* AWS
+* Google Cloud Platform
+* Docker
+* CI/CD Pipelines
+* GitHub Actions
+
+### Architecture
+
+* Event-Driven Systems
+* Message Queues
+* Distributed Services
+* API Gateways
+* Caching Strategies
+* Scalable Backend Design
+
+---
+
+## Featured Projects
+
+### SmoothPay
+
+A modern payment platform focused on merchant payments, QR-based transactions, payment orchestration, loyalty programs, cashback engines, reporting systems, and multi-tenant merchant management.
+
+Key Areas:
+
+* Payment Processing
+* Merchant Management
+* Loyalty Engine
+* Event-Driven Workflows
+* Multi-Environment Deployment
+* Secure Payment Integrations
+
+---
+
+### Notification Platform
+
+A scalable notification delivery system designed for reliability and high throughput.
+
+Features:
+
+* Queue-Based Processing
+* Retry Mechanisms
+* Failure Recovery
+* Delivery Tracking
+* Scalable Architecture
+
+---
+
+### Queue Platform
+
+A distributed processing platform designed to handle asynchronous workloads efficiently.
+
+Features:
+
+* Event Processing
+* Queue Management
+* Horizontal Scalability
+* Monitoring & Observability
+
+---
+
+## Engineering Principles
+
+### Ownership
+
+I believe engineers should own problems end-to-end, from architecture discussions to production monitoring.
+
+### Scalability
+
+Systems should be designed for future growth without requiring major rewrites.
+
+### Reliability
+
+Every feature should be built with failure scenarios in mind.
+
+### Simplicity
+
+The best solutions are often the simplest solutions that can scale.
+
+### Continuous Learning
+
+Technology evolves rapidly, and continuous improvement is essential.
+
+---
+
+## Portfolio Features
+
+### Interactive Command Center
+
+A terminal-inspired interface allowing visitors to explore:
+
+* Projects
+* Skills
+* Experience
+* Architecture
+* Contact Information
+* Fun Commands
+
+### Modern UI/UX
+
+* Responsive Design
+* Smooth Animations
+* Accessibility Focused
+* Performance Optimized
+* Mobile Friendly
+
+### SEO Optimized
+
+* Structured Metadata
+* Open Graph Tags
+* Sitemap
+* Semantic HTML
+* Search Engine Friendly Architecture
+
+---
+
+## Local Development
+
+### Prerequisites
+
+* Node.js 20+
+* npm / pnpm
+
+### Installation
 
 ```bash
+git clone <repository-url>
+
+cd portfolio
+
 npm install
-npm run dev     # http://localhost:3000
-npm run build   # production build
 ```
 
-## Content
+### Start Development Server
 
-Everything editable lives in two files:
+```bash
+npm run dev
+```
 
-- `src/content/site.ts` — hero, about, experience, skills, impact metrics, academic projects, education, contact
-- `src/content/case-studies.ts` — the four production case studies:
-  1. **b2b-queue-consumer** — 500+ TPS queue platform (Node.js, ActiveMQ/Iron.io, MongoDB, Redis, Vue ops console)
-  2. **delivery** — email/SMS/WhatsApp/push notification backbone (PostgreSQL, Hasura, Handlebars templates)
-  3. **woohoo-card** — Go gift-card lifecycle service (chi, GORM, MySQL r/w split, goroutine pools)
-  4. **smoothpay** — solo-built UAE QR-ordering & payments platform (NestJS, Prisma, Stripe, Socket.IO) — live at smoothpay.ai
+### Build Production Version
 
-Figures (500+ TPS, millions of messages/day, client brands) come from real production
-work — keep them current, never inflate them.
+```bash
+npm run build
+```
 
-## Before deploying
+### Preview Production Build
 
-1. **Pick one email.** `site.ts` uses `singhsaurabh162000@gmail.com`; the résumé/LinkedIn
-   use `singhsaurabh1622000@gmail.com`. Standardize everywhere.
-2. **Replace `public/saurabh_resume.pdf`** with a résumé matching this positioning.
-3. **Set the domain** in `site.ts` (used by metadata, sitemap, JSON-LD).
-4. **Update LinkedIn** headline/summary to match.
+```bash
+npm run preview
+```
 
-## Design system
+---
 
-- Tokens in `src/app/globals.css`: both themes defined as CSS variables under
-  `[data-theme="dark"]` / `[data-theme="light"]`, mapped to Tailwind via `@theme inline`.
-- Type: Fraunces (display) · Manrope (body) · JetBrains Mono (data/labels).
-- Theme init runs before paint in `layout.tsx` (no flash); toggle persists to localStorage.
-- WebGL hero (`src/components/three/`) is lazy-loaded, theme-aware, and disabled
-  under `prefers-reduced-motion`.
+## Performance Goals
+
+This portfolio is designed with a strong focus on performance:
+
+* Fast Initial Load
+* Optimized Assets
+* Responsive Interactions
+* SEO Best Practices
+* Accessibility Standards
+
+Target Metrics:
+
+* Lighthouse Score 95+
+* Fast Core Web Vitals
+* Minimal Layout Shift
+* Excellent Mobile Experience
+
+---
+
+## Future Roadmap
+
+* Architecture Visualization Library
+* Engineering Blog
+* System Design Vault
+* Interactive Architecture Playground
+* Project Deep-Dive Articles
+* Technical Writing Section
+* Open Source Showcase
+
+---
+
+## Connect With Me
+
+🌐 Website: https://iamsaurabh.in
+
+💼 LinkedIn: https://linkedin.com/in/singhsaurabh
+
+🐙 GitHub: https://github.com/singhsaurabh
+
+📧 Email: [hello@iamsaurabh.in](mailto:hello@iamsaurabh.in)
+
+---
+
+## Philosophy
+
+> Great software is not just about writing code.
+>
+> It is about building reliable systems, solving meaningful problems, creating business value, and continuously improving the engineering experience.
+
+---
+
+<div align="center">
+
+Built with ❤️ by Saurabh Singh
+
+</div>
