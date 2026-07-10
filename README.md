@@ -52,46 +52,41 @@ I enjoy solving complex engineering challenges and building systems that remain 
 
 ## Tech Stack
 
-### Frontend
+This portfolio is built with:
 
-* React
-* TypeScript
-* Vite
-* Tailwind CSS
+### Framework & Language
+
+* Next.js 15 (App Router)
+* React 19
+* TypeScript 5
+
+### Styling & Motion
+
+* Tailwind CSS 4
 * Framer Motion
-* GSAP
+* React Icons
+
+### 3D & Graphics
+
 * Three.js
+* React Three Fiber (`@react-three/fiber`)
+* Drei (`@react-three/drei`)
 
-### Backend
+### Backend (within Next.js)
 
-* Node.js
-* Express.js
-* Golang
-* REST APIs
-* Microservices
+* Next.js Route Handlers (serverless API)
+* Resend (transactional email for the contact form)
+* In-memory rate limiting + origin allowlist on the contact endpoint
 
-### Database
+### Infrastructure & Analytics
 
-* PostgreSQL
-* MySQL
-* Redis
+* Vercel (hosting & serverless functions)
+* Vercel Analytics & Speed Insights
 
-### Cloud & DevOps
-
-* AWS
-* Google Cloud Platform
-* Docker
-* CI/CD Pipelines
-* GitHub Actions
-
-### Architecture
-
-* Event-Driven Systems
-* Message Queues
-* Distributed Services
-* API Gateways
-* Caching Strategies
-* Scalable Backend Design
+> For my broader engineering expertise — Go, Node.js, distributed systems,
+> payments, message queues, PostgreSQL/Redis, AWS/GCP — see the **About Me**
+> section above. Those describe my professional work; this list describes what
+> this website itself is built on.
 
 ---
 
@@ -192,6 +187,13 @@ A terminal-inspired interface allowing visitors to explore:
 * Semantic HTML
 * Search Engine Friendly Architecture
 
+### Secure Contact Form
+
+* Server-side email delivery via Resend (API key never reaches the browser)
+* Origin allowlist — only accepts submissions from the site's own domain
+* Rate limiting — 5 submissions per 10 minutes per IP, then a cooldown
+* Honeypot field and server-side validation to filter bots
+
 ---
 
 ## Local Development
@@ -199,17 +201,35 @@ A terminal-inspired interface allowing visitors to explore:
 ### Prerequisites
 
 * Node.js 20+
-* npm / pnpm
+* npm
 
 ### Installation
 
 ```bash
 git clone <repository-url>
 
-cd portfolio
+cd saurabh-singh-portfolio
 
 npm install
 ```
+
+### Environment Variables
+
+The contact form sends email through [Resend](https://resend.com). Copy the
+example file and fill in your own values:
+
+```bash
+cp .env.example .env.local   # PowerShell: Copy-Item .env.example .env.local
+```
+
+| Variable          | Required | Purpose                                                        |
+| ----------------- | -------- | -------------------------------------------------------------- |
+| `RESEND_API_KEY`  | Yes      | API key from resend.com — used server-side only, never exposed |
+| `MAIL_FROM`       | Yes      | Verified sender, e.g. `Saurabh Singh <hello@iamsaurabh.in>`    |
+| `CONTACT_TO`      | No       | Where owner notifications land (defaults to the site email)    |
+| `ALLOWED_ORIGINS` | No       | Extra origins allowed to call the contact API (e.g. a preview) |
+
+`.env.local` is gitignored, so your keys never land in the repo.
 
 ### Start Development Server
 
@@ -217,16 +237,16 @@ npm install
 npm run dev
 ```
 
-### Build Production Version
+### Build for Production
 
 ```bash
 npm run build
 ```
 
-### Preview Production Build
+### Run the Production Build
 
 ```bash
-npm run preview
+npm run start
 ```
 
 ---
@@ -279,6 +299,18 @@ Target Metrics:
 > Great software is not just about writing code.
 >
 > It is about building reliable systems, solving meaningful problems, creating business value, and continuously improving the engineering experience.
+
+---
+
+## License
+
+© 2026 Saurabh Singh. All Rights Reserved.
+
+This repository is public for reference and portfolio evaluation only. You may
+view and learn from the code, but copying, redistributing, deploying, or reusing
+the code, design, or content — in whole or in substantial part — is not
+permitted without prior written permission. See [LICENSE](LICENSE) for the full
+terms. For permission requests: hello@iamsaurabh.in
 
 ---
 
