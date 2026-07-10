@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { sendMail } from "@/lib/mailer";
 import { autoReplyEmail, ownerNotificationEmail } from "@/lib/email-templates";
 import { site } from "@/content/site";
+import { isAllowedOrigin, clientIp, checkRateLimit } from "@/lib/security";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -10,6 +11,21 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const OWNER_TO = process.env.CONTACT_TO || site.email;
 
 export async function POST(req: Request) {
+  // Gate 1: the request must come from our own site. Stops the "anyone can hit
+  // this from Postman/curl" case for callers that don't forge an Origin header.
+  if (!isAllowedOrigin(req)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  // Gate 2: rate limit per IP — 5 sends / 10 min, then a 3-hour ban on abuse.
+  const limit = checkRateLimit(clientIp(req));
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } },
+    );
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await req.json();
