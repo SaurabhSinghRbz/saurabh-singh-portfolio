@@ -42,7 +42,7 @@ type Step = {
 
 const SCRIPT: Step[] = [
   { move: { from: "customer", to: "cart" }, log: "customer scans the table QR, opens the branch menu, and builds a cart held server-side", tone: "info", track: "PAYMENT_PENDING", dur: 1900 },
-  { move: { from: "cart", to: "order" }, log: "placeOrder(instantPayment) → tax + service charge computed from branch config → Order created, held at PAYMENT_PENDING (kitchen not yet notified)", tone: "accent", track: "PAYMENT_PENDING", dur: 2200 },
+  { move: { from: "cart", to: "order" }, log: "placeOrder(instantPayment) → tax + service charge computed from branch config → Order created, held at PAYMENT_PENDING (kitchen not yet notified)", tone: "accent", track: "PAYMENT_PENDING", kitchen: "PENDING", dur: 2200 },
   { move: { from: "order", to: "gateway" }, log: "customer chooses a payment method — the branch's configured rail", tone: "info", track: "PAYMENT_PENDING", dur: 1500 },
   { at: "gateway", gateway: "stripe", log: "STRIPE: createPaymentIntent(amount in AED) → card / Apple Pay / Google Pay → confirm once status = succeeded", tone: "accent", track: "PAYMENT_PENDING", coin: true, dur: 2100 },
   { at: "gateway", gateway: "afs", log: "AFS (Arab Financial Services): createCheckout → COPYandPAY widget with the merchant's AES-256-GCM-encrypted token → verify result code 000.*", tone: "accent", track: "PAYMENT_PENDING", coin: true, dur: 2200 },
@@ -50,16 +50,16 @@ const SCRIPT: Step[] = [
   { at: "settle", log: "SELECT … FOR UPDATE locks the order row — concurrent split-payers can't race the paid balance", tone: "accent", track: "PAYMENT_PENDING", dur: 2000 },
   { at: "settle", log: "idempotency key (stripe:pi / afs:id) makes the webhook + the confirm call safe to both fire — no double charge", tone: "accent", track: "PAYMENT_PENDING", dur: 2100 },
   { at: "settle", log: "order.paid updated → fully paid → status COMPLETED · reward (cashback) entry written for the payer", tone: "ok", track: "PAYMENT_PENDING", dur: 1900 },
-  { move: { from: "settle", to: "merchant", lane: "confirm" }, log: "confirmOrderAfterPayment: PAYMENT_PENDING → PLACED, emit real-time socket event + FCM push to the branch", tone: "ok", track: "PLACED", kitchen: "PLACED", dur: 2100 },
-  { at: "merchant", log: "the merchant dashboard lights up instantly — the order appears with items, table and total, live over websocket", tone: "info", track: "PLACED", kitchen: "PLACED", dur: 1900 },
-  { move: { from: "merchant", to: "kitchen", lane: "track" }, log: "kitchen works the order: ACCEPTED → PREPARING → READY", tone: "accent", track: "PREPARING", kitchen: "PREPARING", dur: 2000 },
-  { at: "kitchen", log: "each transition emits to the customer's tracking screen in real time — they watch it move without refreshing", tone: "info", track: "READY", kitchen: "READY", dur: 1900 },
-  { at: "kitchen", log: "served → SERVED. Table auto-releases to AVAILABLE once no unpaid orders remain on it.", tone: "ok", track: "SERVED", kitchen: "SERVED", dur: 2300 },
+  { move: { from: "settle", to: "merchant", lane: "confirm" }, log: "confirmOrderAfterPayment: PAYMENT_PENDING → PLACED, emit real-time socket event + FCM push to the branch", tone: "ok", track: "PLACED", kitchen: "COMPLETED", dur: 2100 },
+  { at: "merchant", log: "the merchant dashboard lights up instantly — the order appears with items, table and total, live over websocket", tone: "info", track: "PLACED", kitchen: "COMPLETED", dur: 1900 },
+  { move: { from: "merchant", to: "kitchen", lane: "track" }, log: "note the money rail is already COMPLETED — it went there the moment the bill cleared. Prepaid means the kitchen progression rides entirely on the customer-facing status.", tone: "accent", track: "ACCEPTED", kitchen: "COMPLETED", dur: 2400 },
+  { at: "kitchen", log: "kitchen works the order: ACCEPTED → PREPARING → READY, and each transition emits to the customer's tracking screen in real time — they watch it move without refreshing", tone: "info", track: "READY", kitchen: "COMPLETED", dur: 2200 },
+  { at: "kitchen", log: "served → SERVED. Table auto-releases to AVAILABLE once no unpaid orders remain on it.", tone: "ok", track: "SERVED", kitchen: "COMPLETED", dur: 2300 },
 ];
 
 const DURATIONS = SCRIPT.map((s) => s.dur);
 const TRACK = ["PAYMENT_PENDING", "PLACED", "ACCEPTED", "PREPARING", "READY", "SERVED"];
-const KITCHEN = ["PLACED", "ACCEPTED", "PREPARING", "READY", "SERVED"];
+const KITCHEN = ["PENDING", "CONFIRMED", "PREPARING", "READY", "COMPLETED"];
 
 function statusAt(i: number, key: "track" | "kitchen") {
   for (let k = i; k >= 0; k--) {
@@ -76,7 +76,7 @@ export default function OrderFlowDiagram() {
 
   const activeNode = step.at ?? step.move?.to ?? null;
   const track = reduced ? "SERVED" : statusAt(i, "track");
-  const kitchen = reduced ? "SERVED" : statusAt(i, "kitchen");
+  const kitchen = reduced ? "COMPLETED" : statusAt(i, "kitchen");
 
   const target = step.move
     ? { x: [N[step.move.from].x, N[step.move.to].x], y: [N[step.move.from].y, N[step.move.to].y] }
@@ -97,8 +97,8 @@ export default function OrderFlowDiagram() {
         logTone={step.tone}
         footer={
           <>
-            <StatusRail label="customer tracking (customerOrderStatus)" statuses={TRACK} current={track} />
-            <StatusRail label="kitchen (OrderStatus)" statuses={KITCHEN} current={kitchen} />
+            <StatusRail label="the food — what the customer sees (CustomerOrderStatus)" statuses={TRACK} current={track} />
+            <StatusRail label="the money (OrderStatus) — COMPLETED the moment the bill clears" statuses={KITCHEN} current={kitchen} />
           </>
         }
       >
@@ -126,7 +126,7 @@ export default function OrderFlowDiagram() {
           })}
 
           {(Object.keys(N) as NodeId[]).map((id) => (
-            <SPNode key={id} node={N[id]} active={activeNode === id && !reduced} good={id === "kitchen" && kitchen === "SERVED" && !reduced} />
+            <SPNode key={id} node={N[id]} active={activeNode === id && !reduced} good={id === "kitchen" && track === "SERVED" && !reduced} />
           ))}
 
           {!reduced && target && <MoneyPacket target={target} dur={step.dur} tone={step.tone === "ok" ? "ok" : "accent"} scaleAt={!!step.at} />}
