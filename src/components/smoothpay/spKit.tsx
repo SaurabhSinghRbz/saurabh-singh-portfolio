@@ -33,8 +33,18 @@ export const toneVar: Record<Tone, string> = {
   muted: "var(--t-muted)",
 };
 
-export type NodeKind = "actor" | "system" | "gateway" | "state";
+export type NodeKind = "actor" | "system" | "gateway" | "state" | "guard" | "app" | "store";
 export type SPNodeDef = { x: number; y: number; w: number; h: number; title: string; sub: string; kind?: NodeKind };
+
+const KIND_TAG: Record<NodeKind, string> = {
+  actor: "◈ ACTOR",
+  system: "▧ SMOOTHPAY",
+  gateway: "▤ PAYMENT RAIL",
+  state: "● STATE",
+  guard: "⛨ GUARD",
+  app: "▦ APP",
+  store: "▩ DATA",
+};
 
 export function useStepper(durations: number[], rootRef: React.RefObject<HTMLDivElement | null>) {
   const reduced = useReducedMotion();
@@ -53,9 +63,10 @@ export function SPNode({ node, active, good, danger }: { node: SPNodeDef; active
   const { x, y, w, h } = node;
   const stroke = danger ? "var(--t-bad)" : good ? "var(--t-good)" : active ? "var(--t-accent)" : "var(--t-line-2)";
   const sw = active || good || danger ? 2 : 1;
-  const fill = kind === "gateway" ? "var(--t-surface-2)" : "var(--t-surface)";
-  const dashed = kind === "gateway";
-  const tag = kind === "actor" ? "◈ ACTOR" : kind === "gateway" ? "▤ PAYMENT RAIL" : kind === "state" ? "● STATE" : "▧ SMOOTHPAY";
+  const fill = kind === "gateway" || kind === "store" ? "var(--t-surface-2)" : "var(--t-surface)";
+  const dashed = kind === "gateway" || kind === "store";
+  const tag = KIND_TAG[kind];
+  const rx = kind === "actor" ? h / 2 : kind === "guard" ? 4 : 10;
 
   return (
     <g>
@@ -67,7 +78,7 @@ export function SPNode({ node, active, good, danger }: { node: SPNodeDef; active
         y={y - h / 2}
         width={w}
         height={h}
-        rx={kind === "actor" ? h / 2 : 10}
+        rx={rx}
         fill={fill}
         stroke={stroke}
         strokeWidth={sw}
@@ -129,6 +140,33 @@ export function StatusRail({ label, statuses, current, badStatuses = [] }: { lab
             </span>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+/** A labelled footer cell — pairs with StatusRail inside SPShell's footer grid. */
+export function FooterNote({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <p className="mb-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-muted">{label}</p>
+      <p className="font-mono text-[11px] leading-snug text-ink/80">{children}</p>
+    </div>
+  );
+}
+
+/** A running money ledger — bill maths the customer actually sees at checkout. */
+export function Ledger({ rows }: { rows: { k: string; v: string; tone?: Tone }[] }) {
+  return (
+    <div>
+      <p className="mb-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-muted">bill</p>
+      <div className="space-y-0.5">
+        {rows.map((r) => (
+          <div key={r.k} className="flex items-baseline justify-between gap-3 font-mono text-[11px]">
+            <span className="text-muted">{r.k}</span>
+            <span className={r.tone ? toneText[r.tone] : "text-ink/85"}>{r.v}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
