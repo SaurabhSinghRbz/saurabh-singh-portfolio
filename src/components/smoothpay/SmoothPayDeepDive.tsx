@@ -1,19 +1,36 @@
 import Reveal from "@/components/motion/Reveal";
+import SmoothPayArchitectureDiagram from "@/components/smoothpay/SmoothPayArchitectureDiagram";
+import MerchantOrderFlowDiagram from "@/components/smoothpay/MerchantOrderFlowDiagram";
 import OrderFlowDiagram from "@/components/smoothpay/OrderFlowDiagram";
+import CheckoutFlowDiagram from "@/components/smoothpay/CheckoutFlowDiagram";
 import PaymentLinkDiagram from "@/components/smoothpay/PaymentLinkDiagram";
+import RbacDiagram from "@/components/smoothpay/RbacDiagram";
 
 /* ------------------------------------------------------------------ *
- * SmoothPayDeepDive — SmoothPay only. Owned end to end (NestJS +
- * Prisma API, React customer app + merchant dashboard). Every claim is
- * read from the source: payments.service (createCustomerPayment,
- * Stripe/AFS/Telr), afs.service, payment-links.service, currency-rates
- * .buildSnapshot, customer-ordering.service, rewards.service.
+ * SmoothPayDeepDive — SmoothPay only. Owned end to end across four
+ * repos (NestJS + Prisma API, merchant/admin web portal, customer PWA,
+ * marketing site). Every claim is read from the source: orders.service
+ * (createDirect, updateStatus, hasBlockingOrdersForTable),
+ * customer-ordering.service (placeOrder, updateCustomerOrderStatus,
+ * confirmOrderAfterPayment), payments.service (createCustomerPayment,
+ * calculateAppliedRedemption, the AFS cut-off guard), afs.service,
+ * payment-links.service, currency-rates.buildSnapshot, feedback.service,
+ * rbac.service, seed-permissions and the five global guards in
+ * app.module.
  * ------------------------------------------------------------------ */
 
 const FEATURES: { title: string; body: string }[] = [
   {
-    title: "Scan-to-order POS",
-    body: "A customer scans a table QR, browses the branch menu, and builds a server-side cart. Order & Pay holds the order at PAYMENT_PENDING until money lands; Pay-Later places it straight to the kitchen and settles the bill at the end.",
+    title: "Two ways to order, one order model",
+    body: "A waiter places an order from the POS floor view; a customer places one by scanning the table QR. Both land in the same Order row with a source flag — so the kitchen, the bill and the table state never care which door the order came through.",
+  },
+  {
+    title: "Two status enums, kept in lockstep",
+    body: "OrderStatus tracks the money (PENDING → CONFIRMED → … → COMPLETED). CustomerOrderStatus tracks the food (PLACED → ACCEPTED → PREPARING → READY → SERVED). One merchant tap writes the customer status and projects the kitchen status from it — a forward-only transition map means a status can be skipped ahead but never walked back.",
+  },
+  {
+    title: "Order & Pay vs Pay-Later",
+    body: "Order & Pay holds the order at PAYMENT_PENDING until money lands — the kitchen is never told about an order nobody paid for. Pay-Later places it straight to the kitchen and settles the bill at the end.",
   },
   {
     title: "Three payment rails, one flow",
@@ -21,11 +38,15 @@ const FEATURES: { title: string; body: string }[] = [
   },
   {
     title: "Settlement that can't double-charge",
-    body: "Every payment locks the order row with SELECT … FOR UPDATE and carries a per-gateway idempotency key (stripe:pi, afs:id). The webhook and the client confirm call can both fire safely — the second one no-ops.",
+    body: "Every payment locks the order row with SELECT … FOR UPDATE and carries a per-gateway idempotency key (stripe:pi, afs:id). The gateway webhook and the browser's confirm call can both fire safely — the second one no-ops.",
   },
   {
-    title: "Split & custom bills",
-    body: "The first payment locks the bill into FULL, SPLIT or CUSTOM. Split tracks people-paid counters; a rounding tolerance means the last payer always clears the balance to the cent, never stranding an order as 'not fully paid'.",
+    title: "The AFS cut-off trap",
+    body: "AFS can answer 800.800.800 — 'temporarily unavailable' — on a card it actually authorised. The ISO-8583 AcquirerResponse 90 ('cut-off in process') is the tell. SmoothPay reads it and treats the payment as successful, because the naïve reading would charge the customer twice.",
+  },
+  {
+    title: "Split, partial & full bills",
+    body: "The first payment locks the bill into FULL, SPLIT or CUSTOM. Split tracks a people-paid counter; a 5-cent rounding tolerance means the last payer always clears the balance, so a bill is never stranded a fraction short of paid.",
   },
   {
     title: "Multi-currency payment links",
@@ -36,28 +57,32 @@ const FEATURES: { title: string; body: string }[] = [
     body: "The currency a customer sees is resolved from a cascade (link override → branch → the customer's country → AED) and is purely cosmetic. Every balance, charge and refund stays in AED, so the merchant's books never drift with FX.",
   },
   {
-    title: "Rewards: earn & redeem",
-    body: "Logged-in customers earn cashback on the merchandise subtotal (config-driven percentage, min-spend, per-transaction cap, product-level boosts) and redeem it later — with rules for min-to-redeem, max-discount and split-payment fairness.",
-  },
-  {
-    title: "Cashback as a payment method",
-    body: "Rewards aren't just a discount — a customer can pay an entire bill with accrued cashback (paymentMethod = CASHBACK), which skips the per-order caps because the cashback IS the money.",
+    title: "Rewards: earn, redeem, and pay with",
+    body: "Logged-in customers earn cashback on the merchandise subtotal only — never on tax, service charge or tip — governed by percentage, min-spend, per-transaction cap and product-level boosts. They can redeem it as a discount, or pay an entire bill with it (paymentMethod = CASHBACK).",
   },
   {
     title: "Guest reward claim tokens",
-    body: "A guest who pays without an account still earns cashback: a hashed, short-lived claim token is issued so they can attach the reward to an account within the claim window — no reward is silently lost.",
+    body: "A guest who pays without an account still earns cashback: a hashed, short-lived claim token is issued so they can attach the reward to an account within the claim window. Logging in is optional — but it's the thing that decides whether the cashback is yours.",
+  },
+  {
+    title: "Feedback that routes itself",
+    body: "After paying, the customer rates the meal. 4★ or 5★ and the branch has a googlePlaceId → they're handed straight to its Google review page. Rate lower and the complaint stays in-app, where the merchant can actually do something about it.",
   },
   {
     title: "Real-time everywhere",
-    body: "The moment a payment settles, a websocket event and an FCM push hit the merchant dashboard; every kitchen transition (PLACED → ACCEPTED → PREPARING → READY → SERVED) streams back to the customer's tracking screen live.",
+    body: "A socket.io gateway with per-merchant and per-order rooms, plus FCM push. A waiter's tap and the customer's tracking screen are the same event — the merchant portal and the customer app never talk to each other, they just listen to the same room.",
   },
   {
-    title: "Encrypted per-merchant credentials",
-    body: "Each merchant's AFS access token is stored AES-256-GCM encrypted and decrypted only at charge time. Payment session tokens tie a QR scan to one order, so no one can pay for a bill they shouldn't see.",
+    title: "Tables that release themselves",
+    body: "A table frees only on reject/cancel, or when an order is both served and fully paid — and only if no other unpaid order is still open on it. Served is not paid, and the floor view knows the difference.",
+  },
+  {
+    title: "RBAC, enforced by default",
+    body: "Five guards run globally on every request: JwtAuth → Roles → Permission → BranchAccess → Throttler. 101 seeded permissions across ADMIN and MERCHANT scopes, Owner/Manager/Staff roles per merchant, plus custom roles. A new endpoint is protected because it exists, not because someone remembered.",
   },
   {
     title: "Multi-tenant by construction",
-    body: "Merchants, branches, tables, members and roles are isolated end to end — RBAC guards, branch-access guards, and Google OAuth login, all on a NestJS + Prisma + PostgreSQL core I own end to end.",
+    body: "Merchants, branches, tables, menus, members and roles are isolated end to end. PermissionGuard answers 'can this role do X?'; BranchAccessGuard answers '…to THIS branch?' — the second question is the one that keeps tenants from reading each other.",
   },
 ];
 
@@ -69,6 +94,11 @@ function P({ children }: { children: React.ReactNode }) {
 }
 function Code({ children }: { children: React.ReactNode }) {
   return <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[13px] text-accent">{children}</code>;
+}
+function Section({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="mt-16 mb-4 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">{children}</h2>
+  );
 }
 
 export default function SmoothPayDeepDive() {
@@ -89,66 +119,133 @@ export default function SmoothPayDeepDive() {
         ))}
       </div>
 
-      {/* ---------- POS / order flow ---------- */}
-      <h2 className="mt-16 mb-4 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-        Order &amp; pay — the POS journey, live
-      </h2>
+      {/* ---------- architecture ---------- */}
+      <Section>Four repos, one domain — live</Section>
       <P>
-        SmoothPay&apos;s point-of-sale is a QR on the table. Below is the full journey,
-        replayed: a customer scans, orders, pays, and then both the customer and the
-        merchant watch the same order move in real time. It&apos;s the flow I&apos;m
-        proudest of, because the hard parts are invisible when they work.
+        SmoothPay is four codebases: a marketing site, a React app that is <em>both</em> the merchant portal and the
+        platform-admin console, a customer PWA that opens from a QR code, and a NestJS API that owns the entire domain.
+        The thing worth understanding first is how little glue there is between them — one Prisma schema, one guard chain,
+        one settlement path, and a real-time layer that makes the two front ends feel like one product.
+      </P>
+      <Reveal>
+        <SmoothPayArchitectureDiagram />
+      </Reveal>
+
+      {/* ---------- merchant POS ---------- */}
+      <Section>The merchant floor — a waiter takes an order, live</Section>
+      <P>
+        Most of the day, orders don&apos;t start with the customer. A waiter opens the floor view, taps a table, builds an
+        order from the live menu, and fires it at the kitchen. Below is that journey — including the reject branch, and the
+        rule that decides when a table is actually free again.
+      </P>
+      <Reveal>
+        <MerchantOrderFlowDiagram />
+      </Reveal>
+
+      <H3>One tap, two audiences</H3>
+      <P>
+        The design decision I like most in SmoothPay is that an order carries{" "}
+        <strong className="text-ink">two status enums</strong>, not one. <Code>OrderStatus</Code> is the merchant&apos;s
+        view and it really tracks <em>the money</em>: <Code>PENDING → CONFIRMED → PREPARING → READY → COMPLETED</Code>.{" "}
+        <Code>CustomerOrderStatus</Code> is the diner&apos;s view and it tracks <em>the food</em>:{" "}
+        <Code>PLACED → ACCEPTED → PREPARING → READY → SERVED</Code>. When a merchant accepts an order, one write moves the
+        customer-facing status and <em>projects</em> the kitchen status from it. A single transition map governs what&apos;s
+        legal — it&apos;s forward-only, so a merchant can skip ahead (straight from placed to served on a quick coffee) but
+        can never walk a status backwards, and a fully-paid order can never be rejected or cancelled.
+      </P>
+      <P>
+        The payoff shows up in the prepaid case. If a customer pays up front, the bill clears immediately — so{" "}
+        <Code>OrderStatus</Code> is <Code>COMPLETED</Code> before the chef has touched the ticket, and the entire kitchen
+        progression rides on <Code>CustomerOrderStatus</Code>. Two enums sound like duplication until you notice that
+        &ldquo;is the money done&rdquo; and &ldquo;is the food done&rdquo; are genuinely different questions with genuinely
+        different answers.
+      </P>
+
+      <H3>When is a table actually free?</H3>
+      <P>
+        A served order is not a paid order. A table releases to <Code>AVAILABLE</Code> only when the order is rejected or
+        cancelled, or when it is <strong className="text-ink">both served and fully paid</strong> — and even then, only if{" "}
+        <Code>hasBlockingOrdersForTable</Code> confirms no other unpaid order is still open on it. That check is what makes
+        it safe for a table of six to keep ordering rounds all evening and settle once at the end.
+      </P>
+
+      {/* ---------- customer scan-to-order ---------- */}
+      <Section>The other door — scan, order, pay, live</Section>
+      <P>
+        The same order can start from the customer&apos;s phone instead. They scan the table QR, browse the branch menu, and
+        either <em>Order &amp; Pay</em> — held at <Code>PAYMENT_PENDING</Code> so the kitchen never sees an unpaid order — or{" "}
+        <em>Pay-Later</em>, which goes straight to the kitchen and settles at the end.
       </P>
       <Reveal>
         <OrderFlowDiagram />
       </Reveal>
 
-      <H3>Placing the order</H3>
+      {/* ---------- checkout ---------- */}
+      <Section>Checkout — the part that has to be perfect</Section>
       <P>
-        A scan opens the branch menu and a server-side cart. <Code>placeOrder</Code>{" "}
-        computes tax and service charge from the branch&apos;s own configuration and
-        creates the <Code>Order</Code>. In <em>Order &amp; Pay</em> mode the order is held
-        at <Code>PAYMENT_PENDING</Code> and the kitchen isn&apos;t told yet — the merchant
-        should only see orders that are actually paid for. In <em>Pay-Later</em> mode the
-        order goes straight to <Code>PLACED</Code> and the bill is settled at the end.
+        Everything above is a preamble to one method. Whichever rail the customer uses — Stripe, Telr or AFS — and whichever
+        door the order came through, every payment funnels through <Code>createCustomerPayment</Code> inside a single database
+        transaction. Below is a worked bill: <strong className="text-ink">AED 252.50, split four ways</strong>, with a tip,
+        a cashback redemption, and a gateway that lies about failing.
+      </P>
+      <Reveal>
+        <CheckoutFlowDiagram />
+      </Reveal>
+
+      <H3>Locking, idempotency, and the last five cents</H3>
+      <P>
+        Settlement opens by locking the order row with <Code>SELECT … FOR UPDATE</Code>, so four people splitting a bill on
+        four phones can&apos;t all read the same balance and overpay. Each payment carries a per-gateway{" "}
+        <strong className="text-ink">idempotency key</strong>, so the gateway webhook and the browser&apos;s confirm call —
+        which routinely both arrive for the same charge — collapse into one transaction. The first payment{" "}
+        <strong className="text-ink">locks the bill</strong> into <Code>FULL</Code>, <Code>SPLIT</Code> or <Code>CUSTOM</Code>;
+        after that nobody can switch type mid-bill and desync the maths.
+      </P>
+      <P>
+        Then there&apos;s the arithmetic nobody thinks about until it bites. Split AED 252.50 four ways and each share rounds
+        to 63.13 — but four of those is 252.52, two cents more than the bill. A{" "}
+        <Code>ROUNDING_TOLERANCE</Code> of five cents clamps the final payer to exactly the balance remaining, and settles the
+        order as fully paid within that same tolerance. Without it, a rounding artefact of two cents leaves a paid table stuck
+        forever as &ldquo;not quite paid&rdquo; — and an occupied table nobody can seat.
       </P>
 
-      <H3>Settling the money — the part that has to be perfect</H3>
+      <H3>The gateway that lies about failing</H3>
       <P>
-        Whichever rail the customer uses — <Code>Stripe</Code>, <Code>Telr</Code> or{" "}
-        <Code>AFS</Code> — every payment funnels through one method,{" "}
-        <Code>createCustomerPayment</Code>, inside a database transaction. It opens by
-        locking the order row with <Code>SELECT … FOR UPDATE</Code> so two people splitting
-        a bill can&apos;t both read the same balance and overpay. Each payment carries a
-        per-gateway <strong className="text-ink">idempotency key</strong>, so the gateway
-        webhook and the browser&apos;s confirm call — which can both arrive for the same
-        charge — collapse into a single transaction. It locks the bill into FULL / SPLIT /
-        CUSTOM on first payment, writes the reward, updates the paid balance, and marks the
-        order <Code>COMPLETED</Code> when the bill clears (within a cent of rounding
-        tolerance). AFS gets special care: an ISO-8583 &ldquo;cut-off in progress&rdquo;
-        response means the card <em>was</em> charged, so the code treats it as success
-        rather than prompting a retry that would double-charge.
+        My favourite bug in this system is one that never happened. AFS can return <Code>800.800.800</Code> — temporary
+        unavailability — for a card it has <em>already authorised</em>. Read that response literally and you either tell the
+        customer their payment failed, or you retry and charge them twice. The tell is the ISO-8583{" "}
+        <Code>AcquirerResponse: 90</Code>, &ldquo;cut-off in process&rdquo;: the acquirer took the money and is mid-batch.
+        SmoothPay checks for exactly that, treats the payment as successful, and preserves the result across a session retry
+        rather than re-charging. Payment code earns its keep in the responses that aren&apos;t in the happy-path docs.
       </P>
 
-      <H3>Real-time, both ways</H3>
+      <H3>Rewards, and what logging in actually buys you</H3>
       <P>
-        The instant a bill settles, <Code>confirmOrderAfterPayment</Code> flips the order to{" "}
-        <Code>PLACED</Code> and fires a websocket event plus an FCM push to the branch — the
-        dashboard lights up with the order without a refresh. From there the kitchen moves
-        it <Code>ACCEPTED → PREPARING → READY → SERVED</Code>, and every step streams back to
-        the customer&apos;s tracking screen. When the bill is fully paid and nothing unpaid
-        remains on the table, the table auto-releases to <Code>AVAILABLE</Code>.
+        Loyalty is woven into the same settlement transaction, not bolted on after it. Cashback is earned on the{" "}
+        <strong className="text-ink">merchandise subtotal only</strong> — never on tax, service charge or tip — with
+        product-level boosts on top. Redemption is fenced in by min-to-redeem, a max-discount cap, redeem-once-per-order, and
+        a rule I&apos;m fond of: on a split bill <strong className="text-ink">only the first payer may redeem</strong>, so one
+        discount can&apos;t be claimed four times. Earned rewards are positive ledger entries with an expiry; redemptions are
+        negative ones — a balance is just a sum. And a guest who pays with no account still earns: a hashed, short-lived{" "}
+        <Code>claim token</Code> lets them attach the cashback to an account before it expires, so the reward isn&apos;t
+        quietly lost in the gap between paying and signing up.
+      </P>
+
+      <H3>Receipt, rating, and the review gate</H3>
+      <P>
+        Once the bill clears, the customer emails themselves a receipt or downloads a generated PDF, and rates the meal. If
+        they give 4★ or 5★ <em>and</em> the branch has a <Code>googlePlaceId</Code>, they&apos;re handed straight to that
+        branch&apos;s Google review page — the merchant&apos;s public rating gets the customers who actually enjoyed
+        themselves. Anything lower stays in-app and lands in the merchant&apos;s feedback dashboard instead, tagged and
+        searchable. It&apos;s a small piece of routing logic that quietly does a lot of commercial work.
       </P>
 
       {/* ---------- payment link ---------- */}
-      <h2 className="mt-16 mb-4 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-        Payment links — collect from any country, live
-      </h2>
+      <Section>Payment links — collect from any country, live</Section>
       <P>
-        Not every payment happens at a table. A merchant can mint a link, send it to a
-        customer anywhere in the world, let them pay in a currency they recognise — and
-        still settle cleanly in AED. This is the feature that turned SmoothPay from a
-        dine-in tool into a general payments product.
+        Not every payment happens at a table. A merchant can mint a link, send it to a customer anywhere in the world, let
+        them pay in a currency they recognise — and still settle cleanly in AED. This is the feature that turned SmoothPay
+        from a dine-in tool into a general payments product.
       </P>
       <Reveal>
         <PaymentLinkDiagram />
@@ -156,55 +253,62 @@ export default function SmoothPayDeepDive() {
 
       <H3>Minting and resolving a link</H3>
       <P>
-        Creating a link generates a <strong className="text-ink">256-bit token</strong> and
-        a human-readable sequential invoice ref (<Code>SLUG-0000007</Code>), with an amount
-        in AED, an expiry, and optional tips/loyalty toggles. When the customer opens the
-        URL, <Code>resolvePublic</Code> checks expiry against a 5-minute buffer and{" "}
-        <strong className="text-ink">lazily creates the order</strong> on first visit — a
-        unique constraint on the link&apos;s order id means two people opening the same link
-        at once can never create two orders.
+        Creating a link generates a <strong className="text-ink">256-bit token</strong> and a human-readable sequential
+        invoice ref (<Code>SLUG-0000007</Code>), with an amount in AED, an expiry, and optional tips/loyalty toggles. When the
+        customer opens the URL, <Code>resolvePublic</Code> checks expiry against a 5-minute buffer and{" "}
+        <strong className="text-ink">lazily creates the order</strong> on first visit — a unique constraint on the link&apos;s
+        order id means two people opening the same link at once can never create two orders. Because a link is a bill and not
+        a meal, settling it auto-completes the order to <Code>SERVED</Code> with no kitchen step at all.
       </P>
 
       <H3>Multi-currency without breaking the books</H3>
       <P>
         Here&apos;s the invariant I care about most:{" "}
-        <strong className="text-ink">the display currency is cosmetic; the settlement
-        currency is always AED.</strong> <Code>buildSnapshot</Code> resolves what the
-        customer sees from a cascade — an explicit link override, else the branch currency,
-        else the customer&apos;s own country, else AED — and freezes that exchange rate onto
-        the record. A customer in London sees £; the gateway is still charged in AED; the
-        merchant&apos;s balances, refunds and reports never drift with the FX market. When
-        the charge confirms, the link flips <Code>ACTIVE → PAID</Code> with the frozen
-        snapshot, and the order auto-completes to <Code>SERVED</Code> — no kitchen step,
-        because a link is a bill, not a meal. Unpaid links expire through both a lazy
-        check-on-visit and a 10-minute safety-net cron, and a merchant can cancel an active
-        one.
+        <strong className="text-ink">the display currency is cosmetic; the settlement currency is always AED.</strong>{" "}
+        <Code>buildSnapshot</Code> resolves what the customer sees from a cascade — an explicit link override, else the branch
+        currency, else the customer&apos;s own country, else AED — and freezes that exchange rate onto the record. A customer
+        in London sees £; the gateway is still charged in AED; the merchant&apos;s balances, refunds and reports never drift
+        with the FX market. Unpaid links expire through both a lazy check-on-visit and a 10-minute safety-net cron, and a
+        merchant can cancel an active one.
       </P>
 
-      <H3>Rewards — earn, redeem, and pay with</H3>
+      {/* ---------- RBAC ---------- */}
+      <Section>RBAC — five guards, every request, live</Section>
       <P>
-        Loyalty is woven into the same settlement transaction. A logged-in customer earns
-        cashback on the merchandise subtotal (never on tax or service charge), governed by a
-        branch-or-merchant config — percentage, minimum spend, per-transaction cap, and even
-        product-level boosts. Earned rewards are stored as positive ledger entries with an
-        expiry; redemptions as negative entries — so a balance is just a sum. A customer can
-        redeem rewards as a discount, or pay an entire bill with them (<Code>CASHBACK</Code>{" "}
-        as a payment method). And a guest who pays without an account still earns: a hashed,
-        short-lived <Code>claim token</Code> lets them attach the reward to an account before
-        it expires, so nothing is lost between paying and signing up.
+        SmoothPay is multi-tenant: many merchants, each with many branches, each with staff who should see some of them and
+        not others. That&apos;s enforced by five guards registered globally in <Code>app.module</Code>, which means a new
+        endpoint is protected because it exists — not because someone remembered to protect it. Below, the same request is run
+        twice: once by a Staff user reaching for a branch that isn&apos;t hers, once by her Manager.
+      </P>
+      <Reveal>
+        <RbacDiagram />
+      </Reveal>
+
+      <H3>&ldquo;Can do&rdquo; and &ldquo;can do here&rdquo; are different questions</H3>
+      <P>
+        The permission model is 101 seeded permissions across <Code>ADMIN</Code> and <Code>MERCHANT</Code> scopes, grouped by
+        resource — branches, orders, qr_codes, payment_links, menus, loyalty, rbac. Every merchant is seeded with{" "}
+        <Code>Owner</Code>, <Code>Manager</Code> and <Code>Staff</Code> roles, and can mint custom roles from the same
+        permission set. <Code>PermissionGuard</Code> checks the codes a route declares via <Code>@RequirePermission</Code>{" "}
+        against the caller&apos;s role, with a super-admin short-circuit.
+      </P>
+      <P>
+        But holding <Code>orders.view</Code> doesn&apos;t tell you <em>whose</em> orders. That&apos;s the job of{" "}
+        <Code>BranchAccessGuard</Code>, which pulls a <Code>branchId</Code> out of the route params, body or query and checks
+        it against the caller&apos;s <Code>allowedBranchIds</Code> — unless their role carries{" "}
+        <Code>allBranchAccess</Code>, which waves an owner or manager through. Collapsing those two checks into one is exactly
+        how multi-tenant systems end up serving one tenant&apos;s data to another, and keeping them separate is the least
+        glamorous, most important thing in the codebase.
       </P>
 
       {/* ---------- closing ---------- */}
-      <h2 className="mt-16 mb-4 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-        Owned end to end
-      </h2>
+      <Section>Owned end to end</Section>
       <P>
-        Everything above — the NestJS + Prisma + PostgreSQL API, three payment integrations,
-        the multi-currency engine, the loyalty ledger, the real-time layer, the React
-        customer app and the merchant dashboard — I own from data modeling to the
-        end-to-end flow. It&apos;s the clearest proof I have that I own the full stack from a
-        Stripe webhook to the CSS, and that I hold payment code to the standard it demands:
-        locked, idempotent, and correct to the cent.
+        Everything above — the NestJS + Prisma + PostgreSQL API, the dual-status order machine, three payment integrations,
+        the multi-currency engine, the loyalty ledger, the guard chain, the real-time layer, the merchant portal, the admin
+        console and the customer PWA — I own from data modeling to the CSS. It&apos;s the clearest proof I have that I can
+        take a product from an empty schema to a restaurant floor, and that I hold payment code to the standard it demands:
+        locked, idempotent, and honest about the five cents.
       </P>
     </section>
   );

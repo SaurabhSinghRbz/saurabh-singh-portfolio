@@ -180,7 +180,7 @@ export default async function CaseStudyPage({ params }: Params) {
         {cs.slug === "b2b-queue-consumer" && <QueueDeepDive />}
         {cs.slug === "delivery" && <DeliveryDeepDive />}
         {cs.slug === "woohoo-card" && <WoohooCardDeepDive />}
-        {cs.slug === "smoothpay" && <SmoothPayDeepDive />}
+        {cs.slug === "smooth" && <SmoothPayDeepDive />}
 
         {cs.decisions.length > 0 && (
           <>
