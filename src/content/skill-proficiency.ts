@@ -5,7 +5,7 @@
  * Derived from Saurabh's actual experience timeline:
  * - Pine Labs: Nov 2022 → present (2.5+ years)
  * - SmoothPay: Recent project
- * - Masai School: 2021–2022 (training)
+ * - Masai School: Sep 2021 – Nov 2022 (full-time training)
  *
  * Figures are conservative and honest.
  * ─────────────────────────────────────────────────────────

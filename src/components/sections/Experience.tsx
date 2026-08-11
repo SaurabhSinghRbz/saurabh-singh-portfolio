@@ -17,6 +17,7 @@ const ROLE_STACKS: Record<string, string[]> = {
   "Senior Software Engineer": ["Go", "MySQL", "Redis", "OpenTelemetry", "Docker"],
   "Software Engineer": ["Node.js", "MongoDB", "Redis", "ActiveMQ", "Vue", "PostgreSQL"],
   "Full-Stack Engineer — client project": ["NestJS", "React", "Stripe", "Socket.IO", "PostgreSQL"],
+  "Full-Stack Developer (Trainee)": ["JavaScript", "React", "Redux", "Node.js", "Express", "MongoDB", "DSA"],
 };
 
 function TimelinePackets() {

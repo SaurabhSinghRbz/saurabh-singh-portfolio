@@ -105,6 +105,15 @@ export const site = {
         "Payments with Stripe — Apple Pay, Google Pay, cards — plus multicurrency payment links payable from any country, Firebase push, and a Google-reviews feedback loop for merchant trust.",
       ],
     },
+    {
+      role: "Full-Stack Developer (Trainee)",
+      org: "Masai School · Bengaluru",
+      period: "Sep 2021 — Nov 2022",
+      points: [
+        "Full-time career switch into software: 2,200+ hours across 14 months — 1,200 hours building, 1,000 hours data structures & algorithms, on a MERN curriculum with daily code reviews and pair programming.",
+        "Shipped 7 team and solo web applications end to end (React, Redux, Node.js, Express, MongoDB) — several still live; kept below as academic projects. Earned the Comeback Kid and Rising Star awards.",
+      ],
+    },
   ],
 
   skills: [
@@ -283,12 +292,6 @@ export const site = {
       title: "B.C.A., Information Technology",
       org: "Amrita Vishwa Vidyapeetham",
       note: "In progress, alongside full-time work.",
-    },
-    {
-      year: "2021 — 2022",
-      title: "Full-Stack Web Development",
-      org: "Masai School, Bengaluru",
-      note: "2,200+ hours: 1,200 coding, 1,000 DSA. Comeback Kid & Rising Star awards.",
     },
     {
       year: "2019 — 2022",

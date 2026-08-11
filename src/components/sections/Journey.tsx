@@ -11,7 +11,7 @@ export default function Journey() {
           title="Slope beats intercept"
           lede="Where I started matters less than the rate I've compounded since. The credentials are here — the slope is the rest of this site."
         />
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2">
           {site.education.map((e, i) => (
             <Reveal key={e.title} delay={i * 0.04}>
               <div className="h-full rounded-lg border border-line bg-surface p-6">
