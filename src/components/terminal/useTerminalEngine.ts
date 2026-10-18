@@ -199,7 +199,7 @@ export function useTerminalEngine(): [TerminalState, TerminalActions] {
     return [
       { text: "", tone: "muted" },
       { text: `  Theme switched to: ${theme.label}`, tone: "success" },
-      { text: `  ${theme.name === "production" ? "Default Pine & Coral restored." : "Looking good."}`, tone: "muted" },
+      { text: `  ${theme.name === "production" ? "Default site palette restored." : "Looking good."}`, tone: "muted" },
       { text: "", tone: "muted" },
     ];
   }, []);

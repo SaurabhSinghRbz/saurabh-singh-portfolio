@@ -1,4 +1,5 @@
 import { site } from "@/content/site";
+import { alpha, brandDark as D, brandExtras as X } from "@/theme/palettes";
 
 /**
  * Hand-built, bulletproof HTML email templates for the contact form.
@@ -13,17 +14,17 @@ import { site } from "@/content/site";
  * Each builder returns { subject, html, text } so the route stays dumb.
  */
 
-// ── Brand tokens (mirrors globals.css, hard-coded because email has no vars) ──
+// ── Brand tokens — from src/theme/palettes.ts (emails cannot read CSS vars) ──
 const C = {
-  page: "#0a0f0d",
-  card: "#111917",
-  cardSoft: "#16211e",
-  border: "#20302b",
-  ink: "#e8efea",
-  muted: "#8fa39a",
-  faint: "#5f7168",
-  accent: "#ff8a66",
-  accentInk: "#21130d",
+  page: X.emailPage,
+  card: D.surface,
+  cardSoft: D.surface2,
+  border: X.emailBorder,
+  ink: D.ink,
+  muted: D.muted,
+  faint: X.emailFaint,
+  accent: D.accent,
+  accentInk: D.accentContrast,
 } as const;
 
 const FONT =
@@ -106,9 +107,9 @@ ${preheader(opts.preview)}
 </html>`;
 }
 
-/** Coral "pill" chip used to show expertise at a glance. */
+/** Emerald "pill" chip used to show expertise at a glance. */
 function chip(label: string) {
-  return `<span style="display:inline-block;font-family:${MONO};font-size:11px;line-height:1;color:${C.accent};background-color:rgba(255,138,102,0.08);border:1px solid rgba(255,138,102,0.28);border-radius:999px;padding:7px 11px;margin:0 6px 8px 0;white-space:nowrap;">${escapeHtml(
+  return `<span style="display:inline-block;font-family:${MONO};font-size:11px;line-height:1;color:${C.accent};background-color:${alpha(C.accent, 0.08)};border:1px solid ${alpha(C.accent, 0.28)};border-radius:999px;padding:7px 11px;margin:0 6px 8px 0;white-space:nowrap;">${escapeHtml(
     label,
   )}</span>`;
 }

@@ -168,12 +168,15 @@ function cardBase(accent: string) {
     g.closePath();
   };
 
-  // Card body — deep pine gradient (reads as a physical card on both themes)
+  // Card body — always-dark gradient from the palette (--t-card-1..3, see
+  // src/theme/palettes.ts), so it reads as a physical card on both themes.
   rounded();
+  const css = getComputedStyle(document.documentElement);
+  const stop = (n: number, fallback: string) => css.getPropertyValue(`--t-card-${n}`).trim() || fallback;
   const body = g.createLinearGradient(0, 0, CARD_W, CARD_H);
-  body.addColorStop(0, "#13201c");
-  body.addColorStop(0.6, "#0c1512");
-  body.addColorStop(1, "#111e19");
+  body.addColorStop(0, stop(1, "#13201c"));
+  body.addColorStop(0.6, stop(2, "#0c1512"));
+  body.addColorStop(1, stop(3, "#111e19"));
   g.fillStyle = body;
   g.fill();
 
@@ -284,7 +287,7 @@ function makeFrontTexture(accent: string) {
   g.font = "600 68px 'Courier New', monospace";
   g.fillStyle = "rgba(0,0,0,0.55)";
   g.fillText(number, 86, 393);
-  g.fillStyle = "#e8efea";
+  g.fillStyle = "#ecf3ef";
   g.fillText(number, 84, 390);
 
   // Expiry
@@ -295,7 +298,7 @@ function makeFrontTexture(accent: string) {
   g.font = "600 40px 'Courier New', monospace";
   g.fillStyle = "rgba(0,0,0,0.55)";
   g.fillText("12/28", 162, 481);
-  g.fillStyle = "#e8efea";
+  g.fillStyle = "#ecf3ef";
   g.fillText("12/28", 160, 479);
 
   // Cardholder

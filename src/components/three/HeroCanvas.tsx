@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useElementInView, webglBudget, whenIdle } from "@/lib/perf";
+import { palette } from "@/theme/palettes";
 
 const FlowField = dynamic(() => import("./FlowField"), { ssr: false });
 
@@ -21,12 +22,12 @@ export default function HeroCanvas() {
 
     const readAccent = () =>
       setColor(
-        getComputedStyle(document.documentElement).getPropertyValue("--t-accent").trim() || "#ff8a66",
+        getComputedStyle(document.documentElement).getPropertyValue("--t-accent").trim() || palette.dark.accent,
       );
 
     const cancelIdle = whenIdle(readAccent);
     const observer = new MutationObserver(readAccent);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "data-palette"] });
     return () => {
       cancelIdle();
       observer.disconnect();

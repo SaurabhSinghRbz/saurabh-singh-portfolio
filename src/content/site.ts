@@ -23,7 +23,7 @@ export const site = {
 
   hero: {
     headline: "I build the systems that move money.",
-    /** Rendered word-by-word; the `accent` part gets the coral italic treatment. */
+    /** Rendered word-by-word; the `accent` part gets the emerald italic treatment. */
     headlineParts: [
       { text: "I build the systems that", accent: false },
       { text: "move money.", accent: true },

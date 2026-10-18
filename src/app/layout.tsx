@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Manrope, JetBrains_Mono } from "next/font/google";
 import { site } from "@/content/site";
+import { ACTIVE_PALETTE, paletteCss, palettes, type PaletteName } from "@/theme/palettes";
+import DevPaletteSwitcher from "@/components/dev/DevPaletteSwitcher";
 import ScrollProgress from "@/components/motion/ScrollProgress";
 import CursorGlow from "@/components/motion/CursorGlow";
 import ParticleNetworkCanvas from "@/components/three/ParticleNetworkCanvas";
@@ -125,15 +127,24 @@ const websiteJsonLd = {
 /** Runs before paint: applies saved theme (or OS preference) to avoid a flash. */
 const themeInit = `(function(){try{var t=localStorage.getItem("theme");if(!t)t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme="dark";}})();`;
 
+const isDev = process.env.NODE_ENV === "development";
+// Dev only: every palette is emitted so the switcher can preview them live; production ships just the active one.
+const themeCss = paletteCss(isDev ? (Object.keys(palettes) as PaletteName[]) : [ACTIVE_PALETTE]);
+// Dev only: restore the palette last picked in the switcher, before paint.
+const paletteInit = `(function(){try{var p=localStorage.getItem("palette-preview");if(p&&${JSON.stringify(Object.keys(palettes))}.indexOf(p)>-1)document.documentElement.dataset.palette=p;}catch(e){}})();`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
+      data-palette={ACTIVE_PALETTE}
       suppressHydrationWarning
       className={`${fraunces.variable} ${manrope.variable} ${jetbrains.variable}`}
     >
       <head>
+        <style id="theme-tokens" dangerouslySetInnerHTML={{ __html: themeCss }} />
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+        {isDev && <script dangerouslySetInnerHTML={{ __html: paletteInit }} />}
       </head>
       <body>
         <script
@@ -148,6 +159,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CursorGlow />
         <ParticleNetworkCanvas />
         {children}
+        {isDev && <DevPaletteSwitcher />}
         <Analytics />
         <SpeedInsights />
       </body>
