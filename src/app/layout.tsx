@@ -124,8 +124,8 @@ const websiteJsonLd = {
   author: { "@id": `${site.domain}/#person` },
 };
 
-/** Runs before paint: applies saved theme (or OS preference) to avoid a flash. */
-const themeInit = `(function(){try{var t=localStorage.getItem("theme");if(!t)t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme="dark";}})();`;
+/** Runs before paint: applies the saved theme, else light (the site default), to avoid a flash. */
+const themeInit = `(function(){try{var t=localStorage.getItem("theme");document.documentElement.dataset.theme=t==="dark"?"dark":"light";}catch(e){document.documentElement.dataset.theme="light";}})();`;
 
 const isDev = process.env.NODE_ENV === "development";
 // Dev only: every palette is emitted so the switcher can preview them live; production ships just the active one.
