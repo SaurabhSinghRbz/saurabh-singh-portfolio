@@ -110,9 +110,9 @@ export default function Contact() {
   return (
     <section id="contact" className="relative">
       {/* Glassmorphism container */}
-      <div className="mx-auto max-w-5xl px-6 py-28">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28">
         <Reveal>
-          <div className="glass-panel rounded-2xl p-8 md:p-12">
+          <div className="glass-panel rounded-2xl p-5 sm:p-8 md:p-12">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-4">
               Contact
             </p>

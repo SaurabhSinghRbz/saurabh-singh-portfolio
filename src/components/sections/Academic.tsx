@@ -5,7 +5,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 
 export default function Academic() {
   return (
-    <section id="academic" className="mx-auto max-w-5xl px-6 py-24">
+    <section id="academic" className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
       <SectionHeading
         eyebrow="Academic projects"
         title="Where it started"

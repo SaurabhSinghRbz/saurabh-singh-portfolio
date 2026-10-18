@@ -25,7 +25,7 @@ export default function FAQ() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <div className="mx-auto max-w-3xl px-6 py-24">
+      <div className="mx-auto max-w-3xl px-5 py-20 sm:px-6 sm:py-24">
         <Reveal>
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-4">
             FAQ

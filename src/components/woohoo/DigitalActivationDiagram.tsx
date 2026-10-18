@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { DiagramShell, StageNode, QueueGlyph, RetryLoop, StatusChip, StatusFlow, useFlowStepper, type FlowNode, type Tone } from "./flowKit";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * DigitalActivationDiagram — DIGITAL_ACTIVATION, act 1.
@@ -120,6 +121,7 @@ export default function DigitalActivationDiagram() {
           </>
         }
       >
+        <DiagramScroll>
         <svg viewBox="0 0 1000 400" className="block w-full" role="img" aria-label="Two-tier animated pipeline. Top tier: monitor queues publish-activation-monitor, activation-monitor and add-card-to-wallet-monitor drive the order status PENDING, INITIATED, PROCESSING, UPDATE_WALLET_INITIATED, UPDATE_WALLET_INPROGRESS, ACTIVATED and hand off to each other. Bottom tier: each monitor pushes cards to a worker queue that does the per-card work against MySQL, the provider, and the wallet, retrying via 500 until every card is done.">
           {/* backbone (top) */}
           <line x1={N.create.x} y1={MY} x2={N.m3.x} y2={MY} stroke="var(--t-line)" strokeWidth={1.5} />
@@ -168,6 +170,7 @@ export default function DigitalActivationDiagram() {
             </motion.g>
           )}
         </svg>
+        </DiagramScroll>
       </DiagramShell>
     </div>
   );

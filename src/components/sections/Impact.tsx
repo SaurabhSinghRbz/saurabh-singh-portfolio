@@ -7,7 +7,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 
 export default function Impact() {
   return (
-    <section className="mx-auto max-w-5xl px-6 py-24">
+    <section className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
       <SectionHeading
         eyebrow="Engineering impact"
         title="Numbers first, adjectives never"

@@ -5,7 +5,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 export default function Journey() {
   return (
     <section id="education" className="border-t border-line bg-surface/40">
-      <div className="mx-auto max-w-5xl px-6 py-24">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
         <SectionHeading
           eyebrow="Education"
           title="Slope beats intercept"

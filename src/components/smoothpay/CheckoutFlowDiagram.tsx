@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { SPShell, SPNode, MoneyPacket, StatusRail, Ledger, FooterNote, useStepper, type SPNodeDef, type Tone } from "./spKit";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * CheckoutFlowDiagram — the money path, verified against the source:
@@ -255,6 +256,7 @@ export default function CheckoutFlowDiagram() {
           </>
         }
       >
+        <DiagramScroll>
         <svg
           viewBox="0 0 1000 326"
           className="block w-full"
@@ -346,6 +348,7 @@ export default function CheckoutFlowDiagram() {
             />
           )}
         </svg>
+        </DiagramScroll>
       </SPShell>
     </div>
   );

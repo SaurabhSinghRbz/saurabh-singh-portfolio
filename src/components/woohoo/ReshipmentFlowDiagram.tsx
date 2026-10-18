@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { DiagramShell, StageNode, QueueGlyph, RetryLoop, StatusChip, StatusFlow, useFlowStepper, type FlowNode, type Tone } from "./flowKit";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * ReshipmentFlowDiagram — DIGITAL_ACTIVATION, act 3: reshipment.
@@ -94,6 +95,7 @@ export default function ReshipmentFlowDiagram() {
         logTone={step.tone}
         footer={<StatusFlow statuses={STATUSES} current={status} />}
       >
+        <DiagramScroll>
         <svg viewBox="0 0 1000 400" className="block w-full" role="img" aria-label="Two-tier reshipment: the reset-pin-monitor pushes every card to the reset-pin worker queue which resets PINs only when the recipient changed or the PIN expired, then hands off to the notification-monitor which reruns the shipment engine as RESHIP_INITIATED and SHIPMENT_INPROGRESS until the order is SHIPPED again.">
           {/* backbone */}
           <line x1={N.reship.x} y1={MY} x2={N.shipped.x} y2={MY} stroke="var(--t-line)" strokeWidth={1.5} />
@@ -132,6 +134,7 @@ export default function ReshipmentFlowDiagram() {
             </motion.g>
           )}
         </svg>
+        </DiagramScroll>
       </DiagramShell>
     </div>
   );

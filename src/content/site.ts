@@ -73,7 +73,7 @@ export const site = {
 
   about: [
     "I'm a senior software engineer at Pine Labs in Bengaluru. For the last four years I've worked on the infrastructure behind gift cards and payments: a queue platform that processes millions of messages a day at 500+ TPS, the notification service that delivers every email, SMS and WhatsApp message, and the Go service that owns the full gift-card lifecycle — activation, shipping, wallet, PIN reset, block, cancel, reissue.",
-    "Outside Pine Labs I built SmoothPay — a multi-tenant QR-ordering and payments platform for the UAE — owning it end to end: data modeling, the NestJS API, merchant dashboard, customer app, Stripe with Apple Pay and Google Pay, multicurrency payment links. Three apps, all live.",
+    "Outside Pine Labs I built SmoothPay — a multi-tenant QR-ordering and payments platform for the UAE — owning it end to end: data modeling, the NestJS API, merchant dashboard, customer app, Stripe with Apple Pay and Google Pay, multicurrency payment links, and a membership & subscription engine with its own daily renewal job. Three apps, all live.",
     "What ties the work together is a habit I don't compromise on: treat nothing in the stack as magic, and read one layer deeper than the task strictly requires — the broker's pricing model, a query plan, a webhook retry. It's the difference between code that works and code that won't page me at 3 a.m.",
   ],
 
@@ -99,10 +99,11 @@ export const site = {
     {
       role: "Full-Stack Engineer — client project",
       org: "SmoothPay · UAE",
-      period: "Recent · live",
+      period: "Feb 2026 — present · live",
       points: [
         "Owned the entire platform end to end — from data modeling to the checkout flow: NestJS + Prisma multi-tenant API, Socket.IO live order tracking, RBAC for admin & merchant, React customer QR-ordering app and merchant dashboard.",
         "Payments with Stripe — Apple Pay, Google Pay, cards — plus multicurrency payment links payable from any country, Firebase push, and a Google-reviews feedback loop for merchant trust.",
+        "Built merchant-to-customer memberships: paid, free-trial (AED 1 hold, reversed same day) and card-free joins, upgrade / downgrade / pause, and a daily renewal engine on a Dubai-calendar anchor with retry ladder and database-enforced single charge per invoice.",
       ],
     },
     {

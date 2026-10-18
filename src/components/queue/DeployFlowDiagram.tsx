@@ -2,6 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * DeployFlowDiagram — the real release path of the queue platform:
@@ -127,6 +128,7 @@ export default function DeployFlowDiagram() {
           )}
         </div>
 
+        <DiagramScroll>
         <svg viewBox="0 0 920 300" className="block w-full" role="img" aria-label="Animated deployment diagram: git push builds an ARM64 image in CodeBuild, pushes to ECR, CodeDeploy starts a green ECS task set beside blue, and traffic shifts to green with zero downtime.">
           {/* pipeline line */}
           <line x1={N.git.x} y1={62} x2={N.deploy.x} y2={62} stroke="var(--t-line)" strokeWidth={1.5} />
@@ -173,6 +175,7 @@ export default function DeployFlowDiagram() {
             </motion.g>
           )}
         </svg>
+        </DiagramScroll>
 
         {/* live log line */}
         <div className="border-t border-line px-4 py-3">

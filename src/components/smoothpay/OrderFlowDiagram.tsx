@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { SPShell, SPNode, MoneyPacket, StatusRail, useStepper, type SPNodeDef, type Tone } from "./spKit";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * OrderFlowDiagram — the "Order & Pay" journey, verified against the
@@ -102,6 +103,7 @@ export default function OrderFlowDiagram() {
           </>
         }
       >
+        <DiagramScroll>
         <svg viewBox="0 0 1000 320" className="block w-full" role="img" aria-label="Order-and-pay flow: a customer scans a table QR, builds a cart, places an order held at PAYMENT_PENDING, pays through Stripe or AFS which is settled with a row lock and idempotency key, then the order is confirmed to PLACED with a real-time push to the merchant dashboard and moves through the kitchen to SERVED.">
           {/* top transaction line */}
           <line x1={N.customer.x} y1={TOP} x2={N.settle.x} y2={TOP} stroke="var(--t-line)" strokeWidth={1.5} />
@@ -131,6 +133,7 @@ export default function OrderFlowDiagram() {
 
           {!reduced && target && <MoneyPacket target={target} dur={step.dur} tone={step.tone === "ok" ? "ok" : "accent"} scaleAt={!!step.at} />}
         </svg>
+        </DiagramScroll>
       </SPShell>
     </div>
   );

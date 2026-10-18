@@ -20,7 +20,7 @@ const CARD_STATS: { value: string; label: string }[] = [
 export default function About() {
   return (
     <section id="about" className="border-t border-line">
-      <div className="mx-auto max-w-6xl px-6 py-24">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
         <SectionHeading
           eyebrow="About"
           title="Four years inside the machinery of money"

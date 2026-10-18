@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { SPShell, SPNode, MoneyPacket, StatusRail, FooterNote, useStepper, type SPNodeDef, type Tone } from "./spKit";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * MerchantOrderFlowDiagram — the waiter-driven POS journey, verified
@@ -217,6 +218,7 @@ export default function MerchantOrderFlowDiagram() {
           </>
         }
       >
+        <DiagramScroll>
         <svg
           viewBox="0 0 1000 320"
           className="block w-full"
@@ -299,6 +301,7 @@ export default function MerchantOrderFlowDiagram() {
             <MoneyPacket target={target} dur={step.dur} tone={step.tone === "ok" ? "ok" : step.tone === "err" ? "err" : "accent"} scaleAt={!!step.at} />
           )}
         </svg>
+        </DiagramScroll>
       </SPShell>
 
       {!reduced && (

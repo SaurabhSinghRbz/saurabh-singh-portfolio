@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { DiagramShell, StageNode, QueueGlyph, RetryLoop, StatusChip, StatusFlow, useFlowStepper, type FlowNode, type Tone } from "./flowKit";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * ShipmentFlowDiagram — DIGITAL_ACTIVATION, act 2: shipment.
@@ -100,6 +101,7 @@ export default function ShipmentFlowDiagram() {
         logTone={step.tone}
         footer={<StatusFlow statuses={STATUSES} current={status} />}
       >
+        <DiagramScroll>
         <svg viewBox="0 0 1000 350" className="block w-full" role="img" aria-label="Two-tier shipment flow: the notification-monitor sets SHIPMENT_INITIATED and SHIPMENT_INPROGRESS and retries until every card is notified, while the notification worker queue routes each card by delivery mode to the email, SMS or WhatsApp pool queue (or the combined pool for multi-mode) consumed by the delivery service, ending at SHIPPED.">
           {/* backbone */}
           <line x1={N.ship.x} y1={MY} x2={N.notifmon.x} y2={MY} stroke="var(--t-line)" strokeWidth={1.5} />
@@ -142,6 +144,7 @@ export default function ShipmentFlowDiagram() {
             </motion.g>
           )}
         </svg>
+        </DiagramScroll>
       </DiagramShell>
     </div>
   );

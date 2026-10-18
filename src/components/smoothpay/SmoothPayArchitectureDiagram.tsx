@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { SPShell, SPNode, MoneyPacket, FooterNote, useStepper, type SPNodeDef, type Tone } from "./spKit";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * SmoothPayArchitectureDiagram — how the four SmoothPay repos actually
@@ -164,6 +165,7 @@ export default function SmoothPayArchitectureDiagram() {
           </>
         }
       >
+        <DiagramScroll>
         <svg
           viewBox="0 0 1000 336"
           className="block w-full"
@@ -218,6 +220,7 @@ export default function SmoothPayArchitectureDiagram() {
 
           {!reduced && target && <MoneyPacket target={target} dur={step.dur} tone={step.tone === "ok" ? "ok" : "accent"} scaleAt={!!step.at} />}
         </svg>
+        </DiagramScroll>
       </SPShell>
     </div>
   );

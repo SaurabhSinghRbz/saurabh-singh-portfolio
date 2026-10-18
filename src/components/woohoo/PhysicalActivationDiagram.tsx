@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { DiagramShell, StageNode, QueueGlyph, RetryLoop, StatusChip, StatusFlow, useFlowStepper, type FlowNode, type Tone } from "./flowKit";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * PhysicalActivationDiagram — PHYSICAL_ACTIVATION, both fulfilment
@@ -121,6 +122,7 @@ export default function PhysicalActivationDiagram() {
         logTone={step.tone}
         footer={<StatusFlow statuses={statuses} current={status} badStatuses={["VALIDATION_FAILED"]} />}
       >
+        <DiagramScroll>
         <svg viewBox="0 0 1000 372" className="block w-full" role="img" aria-label="Two-tier physical activation: cards are uploaded and the validation-monitor pushes them to the validation worker queue, checking each against the uploaded stock, setting VALIDATION_INITIATED, VALIDATION_INPROGRESS and CREATED. Deferred orders ship inert plastic via BlueDart, get DELIVERED, and activate only when the customer triggers it; immediate orders activate right after validation and ship already-live cards.">
           {/* backbone */}
           <line x1={BASE.create.x} y1={MY} x2={SX3} y2={MY} stroke="var(--t-line)" strokeWidth={1.5} />
@@ -160,6 +162,7 @@ export default function PhysicalActivationDiagram() {
             </motion.g>
           )}
         </svg>
+        </DiagramScroll>
       </DiagramShell>
     </div>
   );

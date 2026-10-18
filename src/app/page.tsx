@@ -6,14 +6,12 @@ import About from "@/components/sections/About";
 import CaseStudies from "@/components/sections/CaseStudies";
 import Experience from "@/components/sections/Experience";
 import Skills from "@/components/sections/Skills";
-import HowIWork from "@/components/sections/HowIWork";
 import Academic from "@/components/sections/Academic";
 import Journey from "@/components/sections/Journey";
 import FAQ from "@/components/sections/FAQ";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 import Console from "@/components/sections/Console";
-import FloatingDock from "@/components/FloatingDock";
 
 export default function Home() {
   return (
@@ -23,18 +21,16 @@ export default function Home() {
         <Hero />
         <ProofStrip />
         <Impact />
-        <About />
-        <Console />
         <CaseStudies />
+        <About />
         <Experience />
         <Skills />
-        <HowIWork />
+        <Console />
         <Academic />
         <Journey />
         <FAQ />
         <Contact />
       </main>
-      <FloatingDock />
       <Footer />
     </>
   );
