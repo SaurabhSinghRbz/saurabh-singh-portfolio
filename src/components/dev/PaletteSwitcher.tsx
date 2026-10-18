@@ -15,12 +15,12 @@ const NAMES = Object.keys(palettes) as PaletteName[];
 export default function PaletteSwitcher() {
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState<PaletteName>(ACTIVE_PALETTE);
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
     const p = document.documentElement.dataset.palette as PaletteName | undefined;
     if (p && p in palettes) setCurrent(p);
-    setTheme(document.documentElement.dataset.theme ?? "dark");
+    setTheme(document.documentElement.dataset.theme ?? "light");
   }, []);
 
   const pick = (name: PaletteName) => {

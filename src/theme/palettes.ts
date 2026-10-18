@@ -655,8 +655,8 @@ function block(t: Tokens, scheme: "light" | "dark", p: Palette): string {
 }
 
 /**
- * The CSS that defines every theme token. Dark is the default (no data-theme
- * yet, or data-theme="dark"); data-theme="light" switches. Each palette is
+ * The CSS that defines every theme token. Light is the default (no data-theme
+ * yet, or data-theme="light"); data-theme="dark" switches. Each palette is
  * scoped by html[data-palette] so the dev switcher can flip between them.
  */
 export function paletteCss(names: PaletteName[] = [ACTIVE_PALETTE]): string {
@@ -664,7 +664,7 @@ export function paletteCss(names: PaletteName[] = [ACTIVE_PALETTE]): string {
     .map((n) => {
       const p: Palette = palettes[n];
       const sel = `html[data-palette="${n}"]`;
-      return `${sel},${sel}[data-theme="dark"]{${block(p.dark, "dark", p)}}${sel}[data-theme="light"]{${block(p.light, "light", p)}}`;
+      return `${sel},${sel}[data-theme="light"]{${block(p.light, "light", p)}}${sel}[data-theme="dark"]{${block(p.dark, "dark", p)}}`;
     })
     .join("");
 }
