@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useElementInView, webglBudget } from "@/lib/perf";
+import { palette } from "@/theme/palettes";
 
 const ParticleNetwork = dynamic(() => import("./ParticleNetwork"), {
   ssr: false,
@@ -27,14 +28,14 @@ export default function ParticleNetworkCanvas() {
     const read = () => {
       const css = getComputedStyle(document.documentElement);
       setColors({
-        accent: css.getPropertyValue("--t-accent").trim() || "#ff8a66",
-        line: css.getPropertyValue("--t-muted").trim() || "#8fa39a",
+        accent: css.getPropertyValue("--t-accent").trim() || palette.dark.accent,
+        line: css.getPropertyValue("--t-muted").trim() || palette.dark.muted,
       });
     };
 
     read();
     const observer = new MutationObserver(read);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "data-palette"] });
     return () => observer.disconnect();
   }, []);
 
@@ -46,7 +47,7 @@ export default function ParticleNetworkCanvas() {
   if (!colors || !armed) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 opacity-60 animate-[dialogFade_600ms_ease-out]" aria-hidden>
+    <div className="particle-layer pointer-events-none fixed inset-0 z-0 animate-[dialogFade_600ms_ease-out]" aria-hidden>
       <ParticleNetwork key={colors.accent} color={colors.accent} lineColor={colors.line} paused={heroInView} />
     </div>
   );

@@ -76,7 +76,7 @@ function SkillTile({ skill, index }: { skill: SkillProficiency; index: number })
                 color: brand,
                 animationDelay: `${(index % 6) * 0.35}s`,
                 background:
-                  "radial-gradient(circle at 30% 22%, color-mix(in srgb, var(--b) 26%, #0d1512), #0a0e0c)",
+                  "radial-gradient(circle at 30% 22%, color-mix(in srgb, var(--b) 26%, var(--t-medallion-from)), var(--t-medallion-to))",
                 boxShadow:
                   "inset 0 0 0 1px color-mix(in srgb, var(--b) 34%, transparent), 0 8px 20px -10px color-mix(in srgb, var(--b) 70%, transparent)",
               }}

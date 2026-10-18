@@ -1,44 +1,7 @@
 @import "tailwindcss";
 
-/* ------------------------------------------------------------------ *
- *  Theme: "Pine & Coral"
- *  Deep pine-green grounds (a nod to Pine Labs, and to money) with a
- *  warm coral signal color. Both themes defined side by side; every
- *  utility below resolves through these variables at runtime.
- * ------------------------------------------------------------------ */
-
-:root,
-[data-theme="dark"] {
-  --t-bg: #0c1210;
-  --t-surface: #111917;
-  --t-surface-2: #16211e;
-  --t-ink: #e8efea;
-  --t-muted: #8fa39a;
-  --t-line: rgba(143, 163, 154, 0.16);
-  --t-line-2: rgba(143, 163, 154, 0.32);
-  --t-accent: #ff8a66;
-  --t-accent-hi: #ffa285;
-  --t-accent-contrast: #21130d;
-  --t-good: #7fc99b;
-  --t-bad: #e08b8b;
-  color-scheme: dark;
-}
-
-[data-theme="light"] {
-  --t-bg: #f6f4ee;
-  --t-surface: #ffffff;
-  --t-surface-2: #edeae1;
-  --t-ink: #1c2a23;
-  --t-muted: #57685e;
-  --t-line: rgba(28, 42, 35, 0.13);
-  --t-line-2: rgba(28, 42, 35, 0.26);
-  --t-accent: #bc4a2b;
-  --t-accent-hi: #9e3c20;
-  --t-accent-contrast: #ffffff;
-  --t-good: #2e7d4f;
-  --t-bad: #b04b4b;
-  color-scheme: light;
-}
+/* Colour tokens (--t-*) are generated from src/theme/palettes.ts — the single
+ * place colours live — and injected by app/layout.tsx. Edit colours there. */
 
 @theme inline {
   --color-bg: var(--t-bg);
@@ -312,7 +275,7 @@ button:disabled {
 .term-chip:hover {
   transform: translateY(-1px);
   border-color: var(--term-accent, var(--t-accent)) !important;
-  box-shadow: 0 4px 20px -6px var(--term-glow, rgba(255, 138, 102, 0.2));
+  box-shadow: 0 4px 20px -6px var(--term-glow, color-mix(in srgb, var(--t-accent) 20%, transparent));
 }
 
 .term-chip:active {
@@ -348,7 +311,7 @@ button:disabled {
 /* ---------- Scrollbar ---------- */
 .term-scrollback {
   scrollbar-width: thin;
-  scrollbar-color: var(--term-line, rgba(143, 163, 154, 0.3)) transparent;
+  scrollbar-color: var(--term-line, var(--t-line-2)) transparent;
 }
 
 .term-scrollback::-webkit-scrollbar {
@@ -360,12 +323,12 @@ button:disabled {
 }
 
 .term-scrollback::-webkit-scrollbar-thumb {
-  background: var(--term-line, rgba(143, 163, 154, 0.3));
+  background: var(--term-line, var(--t-line-2));
   border-radius: 3px;
 }
 
 .term-scrollback::-webkit-scrollbar-thumb:hover {
-  background: var(--term-muted, rgba(143, 163, 154, 0.5));
+  background: var(--term-muted, var(--t-muted));
 }
 
 /* ---------- Fade in animation ---------- */
@@ -458,7 +421,7 @@ button:disabled {
 
 .hover-lift:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 12px 40px -12px var(--t-shadow);
 }
 
 @keyframes borderGlow {
@@ -735,4 +698,9 @@ section[id],
     animation: none;
     display: none;
   }
+}
+
+/* Particle layer opacity comes from the palette (--t-particle-opacity: 0.6 dark; per-palette in light). */
+.particle-layer {
+  opacity: var(--t-particle-opacity, 0.6);
 }

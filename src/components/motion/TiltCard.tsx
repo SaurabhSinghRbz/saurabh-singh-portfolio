@@ -54,7 +54,7 @@ export default function TiltCard({
     useTransform(py, [0, 1], [-8, 8]),
     { stiffness: 200, damping: 30 },
   );
-  const shadow = useMotionTemplate`${shadowX}px ${shadowY}px 40px -12px rgba(0, 0, 0, 0.3)`;
+  const shadow = useMotionTemplate`${shadowX}px ${shadowY}px 40px -12px var(--t-shadow)`;
 
   useEffect(() => {
     setEnabled(
@@ -89,13 +89,12 @@ export default function TiltCard({
           transformStyle: "preserve-3d",
           boxShadow: shadow,
         }}
-        className="relative h-full will-change-transform transition-shadow duration-300"
+        className="group/tilt relative h-full will-change-transform transition-shadow duration-300"
       >
         {children}
         {/* Glare overlay */}
         <motion.div
-          className="pointer-events-none absolute inset-0 rounded-xl"
-          style={{ background: glare }}
+          className="pointer-events-none absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 group-hover/tilt:opacity-100"          style={{ background: glare }}
           aria-hidden
         />
         {/* Reflective sweep on hover */}

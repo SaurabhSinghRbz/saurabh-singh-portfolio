@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { brandDark as D } from "@/theme/palettes";
 
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
@@ -14,8 +15,8 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#0C1210",
-          color: "#FF8A66",
+          background: D.bg,
+          color: D.accent,
           fontSize: 22,
           fontWeight: 800,
           fontFamily: "sans-serif",

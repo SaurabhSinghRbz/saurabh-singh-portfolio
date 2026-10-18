@@ -9,7 +9,7 @@ import SignalTransmission from "@/components/motion/SignalTransmission";
 import ContactResultDialog from "@/components/ui/ContactResultDialog";
 
 // Single accent focus border, no native outline (kills the doubled outline),
-// and a coral border whenever aria-invalid is set by our own validation.
+// and a red border whenever aria-invalid is set by our own validation.
 const FIELD_CLASS =
   "w-full rounded-md border border-line bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-muted/70 outline-none transition-colors duration-150 focus:border-accent focus:outline-none aria-[invalid=true]:border-bad";
 

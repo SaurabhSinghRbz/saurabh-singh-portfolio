@@ -144,9 +144,9 @@ export default function HeroTerminal() {
         borderColor: "var(--term-line, var(--t-line))",
         background: "var(--term-bg, var(--t-surface))",
         boxShadow: `
-          0 0 0 1px var(--term-line, rgba(143, 163, 154, 0.08)),
+          0 0 0 1px var(--term-line, rgba(147, 163, 155, 0.08)),
           0 25px 80px -20px rgba(0, 0, 0, 0.6),
-          0 0 120px -40px var(--term-glow, rgba(255, 138, 102, 0.08))
+          0 0 120px -40px var(--term-glow, color-mix(in srgb, var(--t-accent) 8%, transparent))
         `,
       }}
       onClick={handleClick}
@@ -164,7 +164,7 @@ export default function HeroTerminal() {
       <div
         className="pointer-events-none absolute inset-0 z-10 rounded-2xl"
         style={{
-          boxShadow: `inset 0 0 80px -20px var(--term-glow, rgba(255, 138, 102, 0.06))`,
+          boxShadow: `inset 0 0 80px -20px var(--term-glow, color-mix(in srgb, var(--t-accent) 6%, transparent))`,
         }}
         aria-hidden
       />

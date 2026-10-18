@@ -1142,7 +1142,7 @@ export function getNeofetchOutput(): OutputLine[] {
     { text: "       //  _  \\\\      Kernel: React 19 + Next.js 15", tone: "info" },
     { text: "      | \\     )|_     Shell:  /bin/portfolio", tone: "info" },
     { text: "     /`\\_`>  <_/ \\    DE:     Framer Motion", tone: "info" },
-    { text: "     \\__/'---'\\__/    Theme:  Pine & Coral", tone: "info" },
+    { text: "     \\__/'---'\\__/    Theme:  site palette", tone: "info" },
     { text: "                      Uptime: 4+ years", tone: "info" },
     { text: "                      Stack:  Go · Node · TS · PG", tone: "info" },
     { text: "                      TPS:    500+", tone: "success" },
@@ -1534,17 +1534,18 @@ export type TerminalTheme = {
 export const TERMINAL_THEMES: TerminalTheme[] = [
   {
     name: "production",
-    label: "Production (Pine & Coral)",
+    label: "Production (site palette)",
     vars: {
-      "--term-bg": "#0c1210",
-      "--term-surface": "#111917",
-      "--term-ink": "#e8efea",
-      "--term-muted": "#8fa39a",
-      "--term-accent": "#ff8a66",
-      "--term-good": "#7fc99b",
-      "--term-bad": "#e08b8b",
-      "--term-line": "rgba(143, 163, 154, 0.16)",
-      "--term-glow": "rgba(255, 138, 102, 0.12)",
+      // The site palette's dark tokens (src/theme/palettes.ts) — a dark console in both site modes.
+      "--term-bg": "var(--t-term-bg)",
+      "--term-surface": "var(--t-term-surface)",
+      "--term-ink": "var(--t-term-ink)",
+      "--term-muted": "var(--t-term-muted)",
+      "--term-accent": "var(--t-term-accent)",
+      "--term-good": "var(--t-term-good)",
+      "--term-bad": "var(--t-term-bad)",
+      "--term-line": "var(--t-term-line)",
+      "--term-glow": "var(--t-term-glow)",
     },
   },
   {
