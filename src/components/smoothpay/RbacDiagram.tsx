@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { SPShell, SPNode, MoneyPacket, FooterNote, useStepper, type SPNodeDef, type Tone } from "./spKit";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * RbacDiagram — the authorisation chain, verified against the source:
@@ -183,6 +184,7 @@ export default function RbacDiagram() {
           </>
         }
       >
+        <DiagramScroll>
         <svg
           viewBox="0 0 1000 330"
           className="block w-full"
@@ -263,6 +265,7 @@ export default function RbacDiagram() {
             <MoneyPacket target={target} dur={step.dur} tone={step.tone === "err" ? "err" : step.tone === "ok" ? "ok" : "accent"} scaleAt={!!step.at} />
           )}
         </svg>
+        </DiagramScroll>
       </SPShell>
     </div>
   );

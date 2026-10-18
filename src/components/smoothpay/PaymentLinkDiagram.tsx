@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { SPShell, SPNode, MoneyPacket, FxBadge, StatusRail, useStepper, type SPNodeDef, type Tone } from "./spKit";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * PaymentLinkDiagram — the multi-currency payment-link flow, verified
@@ -99,6 +100,7 @@ export default function PaymentLinkDiagram() {
           </>
         }
       >
+        <DiagramScroll>
         <svg viewBox="0 0 1000 320" className="block w-full" role="img" aria-label="Payment-link flow: a merchant creates a link with an amount in AED and an optional display currency, sends it to a customer in any country who opens it, an order is lazily created, the customer sees their own currency but is charged in AED, pays via Stripe or AFS, and the link flips to PAID.">
           {/* top line: merchant → link → customer */}
           <line x1={N.merchant.x} y1={TOP} x2={N.customer.x} y2={TOP} stroke="var(--t-line)" strokeWidth={1.5} />
@@ -138,6 +140,7 @@ export default function PaymentLinkDiagram() {
 
           {!reduced && target && <MoneyPacket target={target} dur={step.dur} tone={step.tone === "ok" ? "ok" : "accent"} scaleAt={!!step.at} />}
         </svg>
+        </DiagramScroll>
       </SPShell>
     </div>
   );

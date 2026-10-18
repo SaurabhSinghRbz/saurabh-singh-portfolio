@@ -30,7 +30,10 @@ export default function InputLine({ value, suggestion, onChange, onKeyDown, visi
   // reading a different section (boot starts as soon as the terminal is
   // merely 5% on-screen, see HeroTerminal's IntersectionObserver).
   useEffect(() => {
-    if (visible && inputRef.current) {
+    // Touch devices: focusing would pop the on-screen keyboard uninvited. The
+    // visitor taps the terminal when they want to type.
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (visible && finePointer && inputRef.current) {
       setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 100);
     }
   }, [visible]);

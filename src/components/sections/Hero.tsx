@@ -15,7 +15,7 @@ function HeadlineWords() {
   let index = 0;
 
   return (
-    <h1 className="font-display text-5xl md:text-7xl leading-[1.06] text-ink max-w-[16ch] text-balance">
+    <h1 className="font-display text-[2.6rem] sm:text-6xl md:text-7xl leading-[1.06] text-ink max-w-[16ch] text-balance">
       {site.hero.headlineParts.map((part) =>
         part.text.split(" ").map((word) => {
           const delay = 0.25 + index++ * 0.07;
@@ -70,7 +70,7 @@ export default function Hero() {
 
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
-        className="relative mx-auto w-full max-w-5xl px-6 pt-24 pb-40 md:pb-16"
+        className="relative mx-auto w-full max-w-6xl px-5 pt-28 pb-20 sm:px-6 md:pb-16"
       >
         <div>
           <motion.p
@@ -116,7 +116,7 @@ export default function Hero() {
         {/* Scroll hint */}
         <motion.div
           {...fade(1.4)}
-          className="pointer-events-none absolute -bottom-10 left-6 hidden md:flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-muted"
+          className="pointer-events-none absolute -bottom-6 left-6 hidden md:flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-muted"
           aria-hidden
         >
           <span className="relative h-8 w-px overflow-hidden bg-line-2">

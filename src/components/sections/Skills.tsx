@@ -126,7 +126,7 @@ export default function Skills() {
 
   return (
     <section id="skills" className="border-t border-line bg-surface/40">
-      <div className="mx-auto max-w-6xl px-6 py-24">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
         <SectionHeading
           eyebrow="Skills"
           title="Earned in production, not listed from a tutorial"

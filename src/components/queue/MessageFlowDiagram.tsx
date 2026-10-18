@@ -2,6 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * MessageFlowDiagram — a scripted, looping animation of the real
@@ -187,6 +188,7 @@ export default function MessageFlowDiagram() {
           )}
         </div>
 
+        <DiagramScroll>
         <svg viewBox="0 0 920 360" className="block w-full" role="img" aria-label="Animated diagram: a message travels producer → push API → broker → consumer → webhook; 2xx deletes it, 5xx releases it back to the broker with a delay, exhausted retries delete it and alert Slack.">
           {/* main forward line */}
           <line x1={NODES.producer.x} y1={195} x2={NODES.webhook.x} y2={195} stroke="var(--t-line)" strokeWidth={1.5} />
@@ -267,6 +269,7 @@ export default function MessageFlowDiagram() {
             </motion.g>
           )}
         </svg>
+        </DiagramScroll>
 
         {/* live log line */}
         <div className="border-t border-line px-4 py-3">

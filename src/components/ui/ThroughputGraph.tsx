@@ -69,7 +69,7 @@ export default function ThroughputGraph() {
           <span className="relative inline-flex h-2 w-2 rounded-full bg-good" />
         </span>
         <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
-          Live Throughput
+          Throughput · illustrative
         </span>
       </div>
 

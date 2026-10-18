@@ -2,6 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * NotificationFlowDiagram — the real send lifecycle of the delivery
@@ -144,6 +145,7 @@ export default function NotificationFlowDiagram() {
           {!reduced && <p className="font-mono text-[10px] text-muted">step {i + 1}/{SCRIPT.length}</p>}
         </div>
 
+        <DiagramScroll>
         <svg viewBox="0 0 920 360" className="block w-full" role="img" aria-label="Animated diagram: a request flows client → delivery API → template render → provider → recipient across email, SMS and WhatsApp channels; providers post delivery receipts back to /track which walks each message from queued to delivered, and failed sends fail over to the next vendor.">
           {/* channel selector */}
           {CHANNELS.map((c, idx) => {
@@ -204,6 +206,7 @@ export default function NotificationFlowDiagram() {
             </motion.g>
           )}
         </svg>
+        </DiagramScroll>
 
         <div className="border-t border-line px-4 py-3">
           {reduced ? (

@@ -2,6 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * DeliveryDeployDiagram — the real release + runtime topology:
@@ -116,6 +117,7 @@ export default function DeliveryDeployDiagram() {
           {!reduced && <p className="font-mono text-[10px] text-muted">step {i + 1}/{SCRIPT.length}</p>}
         </div>
 
+        <DiagramScroll>
         <svg viewBox="0 0 920 300" className="block w-full" role="img" aria-label="Animated deployment diagram: git push builds an ARM64 image in CodeBuild, pushes to ECR, CodeDeploy starts a green ECS task (delivery app plus Hasura sidecar) beside blue, and traffic shifts to green with zero downtime while a separate cron task polls couriers.">
           <line x1={N.git.x} y1={60} x2={N.deploy.x} y2={60} stroke="var(--t-line)" strokeWidth={1.5} />
           <path d={`M ${N.deploy.x} ${60 + 29} C ${N.deploy.x + 60} 158, ${N.deploy.x + 30} ${N.green.y}, ${N.green.x - N.green.w / 2} ${N.green.y}`} fill="none" stroke="var(--t-line)" strokeWidth={1.5} strokeDasharray="5 5" />
@@ -139,6 +141,7 @@ export default function DeliveryDeployDiagram() {
             </motion.g>
           )}
         </svg>
+        </DiagramScroll>
 
         <div className="border-t border-line px-4 py-3">
           {reduced ? (

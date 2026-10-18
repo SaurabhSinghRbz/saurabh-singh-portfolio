@@ -12,11 +12,11 @@ import Reveal from "@/components/motion/Reveal";
 export default function Console() {
   return (
     <section id="console" className="border-t border-line">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
         <SectionHeading
           eyebrow="Command Center"
           title="Explore the terminal"
-          lede="A live session into my engineering world. 50+ commands, 6 themes, real system data. Type 'help' to begin."
+          lede="A live session into my engineering world. 50+ commands, 6 themes, my real projects and stack. Type 'help' to begin. The side widgets are illustrative, not live telemetry."
         />
 
         {/* Terminal + sidebar layout — stacks on mobile, sidebar on desktop */}

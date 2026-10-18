@@ -5,6 +5,7 @@ import OrderFlowDiagram from "@/components/smoothpay/OrderFlowDiagram";
 import CheckoutFlowDiagram from "@/components/smoothpay/CheckoutFlowDiagram";
 import PaymentLinkDiagram from "@/components/smoothpay/PaymentLinkDiagram";
 import RbacDiagram from "@/components/smoothpay/RbacDiagram";
+import MembershipLifecycleDiagram from "@/components/smoothpay/MembershipLifecycleDiagram";
 
 /* ------------------------------------------------------------------ *
  * SmoothPayDeepDive — SmoothPay only. Owned end to end across four
@@ -59,6 +60,14 @@ const FEATURES: { title: string; body: string }[] = [
   {
     title: "Rewards: earn, redeem, and pay with",
     body: "Logged-in customers earn cashback on the merchandise subtotal only — never on tax, service charge or tip — governed by percentage, min-spend, per-transaction cap and product-level boosts. They can redeem it as a discount, or pay an entire bill with it (paymentMethod = CASHBACK).",
+  },
+  {
+    title: "Memberships on the restaurant's own rail",
+    body: "Merchants sell monthly or annual plans with a standing discount, free trials and fixed terms. The restaurant is merchant of record — money moves on its own AFS credentials, in a domain kept separate from SmoothPay's own SaaS billing.",
+  },
+  {
+    title: "A renewal engine that can't double-charge",
+    body: "Once a day, four passes in a fixed order: resume → expire → apply plan change → collect. A partial unique index allows one open charge per invoice, and one invoice per period — a second runner loses on the database.",
   },
   {
     title: "Guest reward claim tokens",
@@ -273,6 +282,63 @@ export default function SmoothPayDeepDive() {
       </P>
 
       {/* ---------- RBAC ---------- */}
+      {/* ---------- memberships ---------- */}
+      <Section>Memberships — a subscription engine on the restaurant&apos;s card rail, live</Section>
+      <P>
+        The newest piece of SmoothPay turns a one-off diner into a member. A restaurant designs plans in its portal —
+        monthly or annual, a standing discount, an optional free trial or fixed term, a sell window — prints a QR, and
+        diners join from their phone. The restaurant is the merchant of record: the money moves on its own AFS credentials,
+        in a domain kept deliberately separate from the SaaS billing SmoothPay runs for its merchants.
+      </P>
+      <Reveal>
+        <MembershipLifecycleDiagram />
+      </Reveal>
+
+      <H3>Three ways in, one card on file</H3>
+      <P>
+        A <strong className="text-ink">paid join</strong> charges the first period plus the plan&apos;s own VAT — and if the
+        diner buys it alongside a dine-in bill, it settles inside that same payment rather than as a second charge. A{" "}
+        <strong className="text-ink">free trial</strong> has nothing due, but the card still has to be saved for the first
+        charge when the trial ends: the join is an <Code>AED 1</Code> hold with <Code>createRegistration</Code>, reversed the
+        same day, with a 20-minute sweep that releases any hold an inline reversal or an abandoned 3DS left behind. An{" "}
+        <strong className="text-ink">AED 0 plan</strong> joins card-free. In every case the consent wording is frozen on the
+        attempt row, and the server re-queries AFS on return — the redirect is never trusted.
+      </P>
+
+      <H3>Billing on a calendar that doesn&apos;t drift</H3>
+      <P>
+        Renewal dates are anchored to the day of month on the <strong className="text-ink">Dubai calendar</strong> (UTC+4,
+        no daylight saving). A member who joins on the 31st renews on 28 February and 31 March — the anchor picks the day,
+        not last month&apos;s date, so a period never quietly shrinks. Upgrades (a higher monthly price) are paid now on the
+        saved card and switched today; downgrades are booked as a pending plan and applied at the next renewal, billed at
+        the new price from its first cycle. A member can pause for one, two or three months, once a year, and gets every
+        unused paid day back on resume.
+      </P>
+
+      <H3>The benefit, and what it never touches</H3>
+      <P>
+        The discount is priced in one pure function with its own worked-example tests. It lands on{" "}
+        <strong className="text-ink">items only, and only on the member&apos;s own share</strong> of a split bill — 10% of their
+        AED 50, not of the table&apos;s AED 200 — while the three friends who didn&apos;t subscribe are priced exactly as before.
+        It never touches the tip, the service charge or the plan fee, and VAT shrinks in proportion to the discounted items.
+        What a member gets <em>today</em> is a derived <Code>phase</Code> — trial, active, renewing, ending, payment due,
+        paused — computed from the row and the clock and never stored, so it can&apos;t drift from the dates the engine works
+        from. A cancel mid-period keeps the benefit to the last paid day; a due renewal keeps it through a 24-hour grace
+        window while the daily engine charges.
+      </P>
+
+      <H3>A daily engine that nobody watches</H3>
+      <P>
+        Renewals are unattended charges, so the guards are the ones that work when nobody is looking. One runner across every
+        API instance (a Redis <Code>SET NX</Code> lock). Four passes in an order that makes each next query correct:{" "}
+        <Code>resume → expire → plan change → collect</Code> — expire runs before collect, which is what makes
+        &ldquo;cancelled and not charged&rdquo; true rather than intended. A partial unique index permits one open charge per
+        invoice, and invoices are unique per period, so a second run loses on the database instead of in application code.
+        An undecided gateway answer stays pending and blocks retries, because a stuck invoice is recoverable and a double
+        charge is not. Declines walk a ladder of retries after 1, 3, 7, 7 and 7 days; a card the scheme calls unusable skips
+        straight to &ldquo;update your card&rdquo; email and SMS.
+      </P>
+
       <Section>RBAC — five guards, every request, live</Section>
       <P>
         SmoothPay is multi-tenant: many merchants, each with many branches, each with staff who should see some of them and
@@ -305,7 +371,7 @@ export default function SmoothPayDeepDive() {
       <Section>Owned end to end</Section>
       <P>
         Everything above — the NestJS + Prisma + PostgreSQL API, the dual-status order machine, three payment integrations,
-        the multi-currency engine, the loyalty ledger, the guard chain, the real-time layer, the merchant portal, the admin
+        the multi-currency engine, the loyalty ledger, the membership renewal engine, the guard chain, the real-time layer, the merchant portal, the admin
         console and the customer PWA — I own from data modeling to the CSS. It&apos;s the clearest proof I have that I can
         take a product from an empty schema to a restaurant floor, and that I hold payment code to the standard it demands:
         locked, idempotent, and honest about the five cents.

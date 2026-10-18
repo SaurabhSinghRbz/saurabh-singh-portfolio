@@ -18,6 +18,12 @@ export type CaseStudy = {
   outcome: string[];
   differently?: string;
   footnote?: string;
+  /** Short label for menus and the project index ("Queue platform"). */
+  shortTitle: string;
+  /** Real, production-observed figures shown on the project card. Never simulated. */
+  highlights: { value: string; label: string }[];
+  /** Compact left-to-right system flow drawn on the project card. */
+  flow: { label: string; sub: string }[];
 };
 
 const nda =
@@ -91,6 +97,19 @@ export const caseStudies: CaseStudy[] = [
     differently:
       "I'd introduce OpenTelemetry tracing from day one instead of retrofitting it, and I'd formalize the dead-letter replay runbook before the first production incident rather than after it.",
     footnote: nda,
+    shortTitle: "B2B queue platform",
+    highlights: [
+      { value: "500+", label: "TPS sustained" },
+      { value: "Millions", label: "messages / day" },
+      { value: "18 mo", label: "solo ownership" },
+    ],
+    flow: [
+      { label: "Producers", sub: "client services" },
+      { label: "Broker", sub: "ActiveMQ" },
+      { label: "Workers", sub: "retry + backoff" },
+      { label: "Tracking", sub: "MongoDB" },
+      { label: "Ops console", sub: "Vue · RBAC" },
+    ],
   },
   {
     slug: "delivery",
@@ -142,6 +161,18 @@ export const caseStudies: CaseStudy[] = [
       "Full request tracking: any message's journey answerable in one lookup",
     ],
     footnote: nda,
+    shortTitle: "Delivery microservice",
+    highlights: [
+      { value: "4", label: "channels" },
+      { value: "OTP", label: "hottest login path" },
+      { value: "1 lookup", label: "per message journey" },
+    ],
+    flow: [
+      { label: "Send API", sub: "channel-agnostic" },
+      { label: "Templates", sub: "Handlebars" },
+      { label: "Providers", sub: "email · SMS · WA" },
+      { label: "Tracking", sub: "PostgreSQL" },
+    ],
   },
   {
     slug: "woohoo-card",
@@ -203,16 +234,29 @@ export const caseStudies: CaseStudy[] = [
     differently:
       "I'd push for provider-driver contract tests earlier — each content partner's undocumented quirks were discovered in production before the test harness caught up.",
     footnote: nda,
+    shortTitle: "Gift-card core (Go)",
+    highlights: [
+      { value: "7", label: "card operations" },
+      { value: "2 yrs", label: "in production" },
+      { value: "R/W", label: "split MySQL" },
+    ],
+    flow: [
+      { label: "Order API", sub: "Go · chi" },
+      { label: "Monitors", sub: "state machine" },
+      { label: "Workers", sub: "per-card jobs" },
+      { label: "Providers", sub: "activation" },
+      { label: "MySQL", sub: "R/W split" },
+    ],
   },
   {
     slug: "smooth",
     eyebrow: "Client project · UAE",
     title: "Smooth – Payments, POS & Loyalty in One Platform",
     oneLiner:
-      "A multi-tenant payments and ordering platform for UAE restaurants: scan, order, track live, pay with Apple Pay / Google Pay — plus multicurrency payment links payable from anywhere. Owned end to end, from data model to checkout flow.",
+      "A multi-tenant payments, ordering and membership platform for UAE restaurants: scan, order, track live, pay with Apple Pay / Google Pay, join a subscription plan — plus multicurrency payment links payable from anywhere. Owned end to end, from data model to checkout flow.",
     metaDescription:
-      "Smooth: multi-tenant QR ordering, POS & Loyalty and payments platform for UAE restaurants, owned end-to-end — Stripe, AFS, Apple Pay, Google Pay.",
-    duration: "3 Months · live in production",
+      "Smooth: multi-tenant QR ordering, POS, loyalty, memberships and payments for UAE restaurants, owned end to end — Stripe, AFS, Apple Pay, Google Pay.",
+    duration: "Feb 2026 — present · live in production",
     role: "Owned end-to-end — product, data model, API, two frontends, payments, deploy",
     liveLinks: [
       { label: "smoothpay.ai", href: "https://www.smoothpay.ai/" },
@@ -225,7 +269,8 @@ export const caseStudies: CaseStudy[] = [
       "PostgreSQL",
       "Socket.IO",
       "Redis",
-      "Stripe · Apple Pay · Google Pay",
+      "Stripe · AFS · Telr",
+      "Apple Pay · Google Pay",
       "React + Vite",
       "Zustand",
       "Firebase push",
@@ -262,7 +307,21 @@ export const caseStudies: CaseStudy[] = [
       "Three applications live: marketing site, merchant dashboard, customer ordering app",
       "Full payment stack: Apple Pay, Google Pay, cards, multicurrency payment links",
       "Multi-tenant RBAC serving admins, merchants and staff on one API",
+      "Merchant-to-customer memberships: free trials, monthly and annual plans, pause, upgrade and downgrade, renewed on a daily engine that never double-charges",
       "Google-reviews feedback loop driving merchant trust and visibility",
+    ],
+    shortTitle: "SmoothPay platform",
+    highlights: [
+      { value: "3", label: "payment rails" },
+      { value: "4", label: "apps, one API" },
+      { value: "101", label: "RBAC permissions" },
+    ],
+    flow: [
+      { label: "QR scan", sub: "customer PWA" },
+      { label: "Order", sub: "NestJS · Prisma" },
+      { label: "Settle", sub: "idempotent" },
+      { label: "Membership", sub: "renewal engine" },
+      { label: "Merchant", sub: "live board" },
     ],
   },
 ];

@@ -2,6 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * EncryptionProxyDiagram — the architectural signature of the
@@ -114,6 +115,7 @@ export default function EncryptionProxyDiagram() {
           </div>
         </div>
 
+        <DiagramScroll>
         <svg viewBox="0 0 920 250" className="block w-full" role="img" aria-label="Animated diagram: an Express proxy sits in front of Hasura. On writes it encrypts PII columns before they reach Hasura and Postgres, so the database stores only ciphertext; on reads it decrypts for authorized callers; a client sending an admin-secret header is rejected.">
           <line x1={NODES.client.x} y1={150} x2={NODES.pg.x} y2={150} stroke="var(--t-line)" strokeWidth={1.5} />
 
@@ -151,6 +153,7 @@ export default function EncryptionProxyDiagram() {
             </motion.g>
           )}
         </svg>
+        </DiagramScroll>
 
         <div className="border-t border-line px-4 py-3">
           {reduced ? (

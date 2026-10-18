@@ -2,6 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import DiagramScroll from "@/components/ui/DiagramScroll";
 
 /* ------------------------------------------------------------------ *
  * OtpFlowDiagram — the OTP lifecycle, the hottest user-facing path on
@@ -125,6 +126,7 @@ export default function OtpFlowDiagram() {
           </div>
         </div>
 
+        <DiagramScroll>
         <svg viewBox="0 0 920 250" className="block w-full" role="img" aria-label="Animated OTP diagram: client requests an OTP, the API checks the attempt ceiling, generates and encrypts a code into Redis with a TTL, delivers it over email and SMS in parallel; verification compares the code, records invalid attempts, clears the cache on success, and locks out after too many wrong tries.">
           <line x1={NODES.client.x} y1={150} x2={NODES.user.x} y2={150} stroke="var(--t-line)" strokeWidth={1.5} />
 
@@ -182,6 +184,7 @@ export default function OtpFlowDiagram() {
             </motion.g>
           )}
         </svg>
+        </DiagramScroll>
 
         <div className="border-t border-line px-4 py-3">
           {reduced ? (

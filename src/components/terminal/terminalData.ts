@@ -400,7 +400,7 @@ export function getProjectsOutput(): OutputLine[] {
     lines.push(
       { text: `  ▸ ${c.title}`, tone: "accent" },
       { text: `    ${c.oneLiner}`, tone: "info" },
-      { text: `    → project ${c.slug === "b2b-queue-consumer" ? "queue-platform" : c.slug === "woohoo-card" ? "gift-card-engine" : c.slug}`, tone: "muted" },
+      { text: `    → project ${c.slug === "b2b-queue-consumer" ? "queue-platform" : c.slug === "woohoo-card" ? "gift-card-engine" : c.slug === "smooth" ? "smoothpay" : c.slug}`, tone: "muted" },
       { text: "", tone: "muted" },
     );
   });
@@ -413,7 +413,8 @@ export function getProjectsOutput(): OutputLine[] {
  * ================================================================== */
 
 const PROJECT_SLUG_MAP: Record<string, string> = {
-  smoothpay: "smoothpay",
+  smoothpay: "smooth",
+  smooth: "smooth",
   "queue-platform": "b2b-queue-consumer",
   "gift-card-engine": "woohoo-card",
   delivery: "delivery",
