@@ -1,6 +1,5 @@
+import { MessageFlowDiagram, DeployFlowDiagram } from "@/components/queue/lazy";
 import Reveal from "@/components/motion/Reveal";
-import MessageFlowDiagram from "@/components/queue/MessageFlowDiagram";
-import DeployFlowDiagram from "@/components/queue/DeployFlowDiagram";
 
 /* ------------------------------------------------------------------ *
  * QueueDeepDive — b2b-queue-consumer only. Every claim below comes

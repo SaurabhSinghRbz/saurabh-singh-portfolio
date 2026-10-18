@@ -1,8 +1,5 @@
+import { NotificationFlowDiagram, OtpFlowDiagram, EncryptionProxyDiagram, DeliveryDeployDiagram } from "@/components/delivery/lazy";
 import Reveal from "@/components/motion/Reveal";
-import NotificationFlowDiagram from "@/components/delivery/NotificationFlowDiagram";
-import OtpFlowDiagram from "@/components/delivery/OtpFlowDiagram";
-import EncryptionProxyDiagram from "@/components/delivery/EncryptionProxyDiagram";
-import DeliveryDeployDiagram from "@/components/delivery/DeliveryDeployDiagram";
 
 /* ------------------------------------------------------------------ *
  * DeliveryDeepDive — delivery microservice only. Every claim comes

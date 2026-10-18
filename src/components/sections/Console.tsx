@@ -1,5 +1,5 @@
 import SectionHeading from "@/components/ui/SectionHeading";
-import HeroTerminal from "@/components/terminal/HeroTerminal";
+import LazyTerminal from "@/components/terminal/LazyTerminal";
 import SystemStatus from "@/components/ui/SystemStatus";
 import ThroughputGraph from "@/components/ui/ThroughputGraph";
 import Reveal from "@/components/motion/Reveal";
@@ -23,7 +23,7 @@ export default function Console() {
         <div className="flex w-full flex-col items-stretch gap-5 xl:flex-row xl:items-stretch">
           {/* Terminal — takes up most space */}
           <div className="min-w-0 flex-1">
-            <HeroTerminal />
+            <LazyTerminal />
           </div>
 
           {/* System widgets — side by side on mobile, stacked sidebar on desktop */}

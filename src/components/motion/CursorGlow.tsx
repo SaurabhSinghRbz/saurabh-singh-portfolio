@@ -2,9 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 
+const SIZE = 1120;
+
 /**
  * Soft accent spotlight that follows the cursor across the page.
- * Desktop pointer only; skipped for touch and reduced motion.
+ * A fixed-size gradient moved with a GPU transform — the compositor slides it,
+ * nothing is repainted per pointer move. Desktop pointer only; skipped for
+ * touch and reduced motion.
  */
 export default function CursorGlow() {
   const [enabled, setEnabled] = useState(false);
@@ -21,18 +25,37 @@ export default function CursorGlow() {
     const onMove = (e: PointerEvent) => {
       cancelAnimationFrame(raf.current);
       raf.current = requestAnimationFrame(() => {
-        if (ref.current) {
-          ref.current.style.background = `radial-gradient(560px circle at ${e.clientX}px ${e.clientY}px, color-mix(in srgb, var(--t-accent) 5%, transparent), transparent 70%)`;
-        }
+        const el = ref.current;
+        if (!el) return;
+        el.style.opacity = "1";
+        el.style.transform = `translate3d(${e.clientX - SIZE / 2}px, ${e.clientY - SIZE / 2}px, 0)`;
       });
     };
+    const onLeave = () => {
+      if (ref.current) ref.current.style.opacity = "0";
+    };
     window.addEventListener("pointermove", onMove, { passive: true });
+    document.documentElement.addEventListener("pointerleave", onLeave);
     return () => {
       window.removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
       cancelAnimationFrame(raf.current);
     };
   }, []);
 
   if (!enabled) return null;
-  return <div ref={ref} className="pointer-events-none fixed inset-0 z-40" aria-hidden />;
+  return (
+    <div className="pointer-events-none fixed inset-0 z-40 overflow-hidden" aria-hidden>
+      <div
+        ref={ref}
+        className="absolute left-0 top-0 rounded-full opacity-0 transition-opacity duration-300 will-change-transform"
+        style={{
+          width: SIZE,
+          height: SIZE,
+          background:
+            "radial-gradient(closest-side, color-mix(in srgb, var(--t-accent) 5%, transparent), transparent 70%)",
+        }}
+      />
+    </div>
+  );
 }

@@ -8,19 +8,26 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useInViewRef } from "@/lib/perf";
 import { HEADER_STATUS_ITEMS } from "./terminalData";
 
 export default function TerminalHeader() {
-  // Animated uptime counter
+  // Uptime since mount. Derived from the start time, so the 1s tick can stop
+  // while the terminal is off screen without the clock drifting.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInViewRef(rootRef);
+  const startRef = useRef(0);
   const [uptimeSeconds, setUptimeSeconds] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setUptimeSeconds((s) => s + 1);
-    }, 1000);
+    if (!startRef.current) startRef.current = Date.now();
+    if (!inView) return;
+    const tick = () => setUptimeSeconds(Math.floor((Date.now() - startRef.current) / 1000));
+    tick();
+    const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [inView]);
 
   const formatUptime = (s: number) => {
     const h = Math.floor(s / 3600);
@@ -30,7 +37,7 @@ export default function TerminalHeader() {
   };
 
   return (
-    <div className="term-header flex flex-col border-b sm:flex-row sm:items-center sm:justify-between"
+    <div ref={rootRef} className="term-header flex flex-col border-b sm:flex-row sm:items-center sm:justify-between"
       style={{ borderColor: "var(--term-line, var(--t-line))" }}
     >
       {/* Top row: traffic lights + session */}

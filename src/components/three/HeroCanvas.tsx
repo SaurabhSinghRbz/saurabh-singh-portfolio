@@ -2,37 +2,42 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { useElementInView, webglBudget, whenIdle } from "@/lib/perf";
 
 const FlowField = dynamic(() => import("./FlowField"), { ssr: false });
 
 /**
- * Loads the WebGL flow field only after mount, and only when the visitor
- * does not prefer reduced motion. Particle color follows the active theme
- * (re-read whenever data-theme changes). Hero text never waits on this.
+ * Loads the WebGL hero scene only on devices within the WebGL budget, and only
+ * once the main thread is idle — hero text never waits on three.js. The render
+ * loop stops while the hero is scrolled out of view. Particle colour follows
+ * the active theme (re-read whenever data-theme changes).
  */
 export default function HeroCanvas() {
   const [color, setColor] = useState<string | null>(null);
+  const heroInView = useElementInView("top");
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (webglBudget() === "none") return;
 
     const readAccent = () =>
       setColor(
-        getComputedStyle(document.documentElement).getPropertyValue("--t-accent").trim() ||
-          "#ff8a66",
+        getComputedStyle(document.documentElement).getPropertyValue("--t-accent").trim() || "#ff8a66",
       );
 
-    readAccent();
+    const cancelIdle = whenIdle(readAccent);
     const observer = new MutationObserver(readAccent);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => observer.disconnect();
+    return () => {
+      cancelIdle();
+      observer.disconnect();
+    };
   }, []);
 
   if (!color) return null;
 
   return (
-    <div className="absolute inset-0" aria-hidden>
-      <FlowField key={color} color={color} />
+    <div className="absolute inset-0 animate-[dialogFade_600ms_ease-out]" aria-hidden>
+      <FlowField key={color} color={color} paused={!heroInView} />
     </div>
   );
 }

@@ -1,11 +1,5 @@
+import { SmoothPayArchitectureDiagram, MerchantOrderFlowDiagram, OrderFlowDiagram, CheckoutFlowDiagram, PaymentLinkDiagram, RbacDiagram, MembershipLifecycleDiagram } from "@/components/smoothpay/lazy";
 import Reveal from "@/components/motion/Reveal";
-import SmoothPayArchitectureDiagram from "@/components/smoothpay/SmoothPayArchitectureDiagram";
-import MerchantOrderFlowDiagram from "@/components/smoothpay/MerchantOrderFlowDiagram";
-import OrderFlowDiagram from "@/components/smoothpay/OrderFlowDiagram";
-import CheckoutFlowDiagram from "@/components/smoothpay/CheckoutFlowDiagram";
-import PaymentLinkDiagram from "@/components/smoothpay/PaymentLinkDiagram";
-import RbacDiagram from "@/components/smoothpay/RbacDiagram";
-import MembershipLifecycleDiagram from "@/components/smoothpay/MembershipLifecycleDiagram";
 
 /* ------------------------------------------------------------------ *
  * SmoothPayDeepDive — SmoothPay only. Owned end to end across four
