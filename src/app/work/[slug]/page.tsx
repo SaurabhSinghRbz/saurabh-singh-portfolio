@@ -61,7 +61,7 @@ function caseStudyJsonLd(cs: CaseStudy) {
         headline: cs.title,
         description: cs.oneLiner,
         url,
-        image: `${site.domain}/opengraph-image`,
+        image: `${url}/opengraph-image`,
         inLanguage: "en",
         author: { "@id": `${site.domain}/#person` },
         publisher: { "@id": `${site.domain}/#person` },

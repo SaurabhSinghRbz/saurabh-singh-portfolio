@@ -1,10 +1,5 @@
+import { DigitalActivationDiagram, ShipmentFlowDiagram, ReshipmentFlowDiagram, PhysicalActivationDiagram, CancelFlowDiagram, WoohooDeployDiagram } from "@/components/woohoo/lazy";
 import Reveal from "@/components/motion/Reveal";
-import DigitalActivationDiagram from "@/components/woohoo/DigitalActivationDiagram";
-import ShipmentFlowDiagram from "@/components/woohoo/ShipmentFlowDiagram";
-import ReshipmentFlowDiagram from "@/components/woohoo/ReshipmentFlowDiagram";
-import PhysicalActivationDiagram from "@/components/woohoo/PhysicalActivationDiagram";
-import CancelFlowDiagram from "@/components/woohoo/CancelFlowDiagram";
-import WoohooDeployDiagram from "@/components/woohoo/WoohooDeployDiagram";
 
 /* ------------------------------------------------------------------ *
  * WoohooCardDeepDive — woohoo-card (Go) only. Every status, queue

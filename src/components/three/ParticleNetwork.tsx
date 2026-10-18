@@ -258,9 +258,11 @@ function Network({
 export default function ParticleNetwork({
   color,
   lineColor,
+  paused = false,
 }: {
   color: string;
   lineColor: string;
+  paused?: boolean;
 }) {
   const isMobile =
     typeof window !== "undefined" && window.innerWidth < 768;
@@ -268,6 +270,7 @@ export default function ParticleNetwork({
   return (
     <Canvas
       dpr={[1, 1.5]}
+      frameloop={paused ? "never" : "always"}
       camera={{ position: [0, 0, 8], fov: 50 }}
       gl={{
         antialias: false,

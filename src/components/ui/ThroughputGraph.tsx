@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useInViewRef } from "@/lib/perf";
 
 /* ------------------------------------------------------------------ *
  * ThroughputGraph — a live-updating area chart of request throughput,
@@ -38,11 +39,12 @@ function toPath(data: number[]) {
 
 export default function ThroughputGraph() {
   const [data, setData] = useState<number[]>(seed);
-  const reducedRef = useRef(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInViewRef(rootRef);
 
+  // Ticks only while on screen; frozen under reduced motion.
   useEffect(() => {
-    reducedRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedRef.current) return;
+    if (!inView || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const id = setInterval(() => {
       setData((prev) => {
@@ -53,7 +55,7 @@ export default function ThroughputGraph() {
       });
     }, 780);
     return () => clearInterval(id);
-  }, []);
+  }, [inView]);
 
   const { line, area, last } = toPath(data);
   const current = toReqs(data[data.length - 1]);
@@ -61,7 +63,7 @@ export default function ThroughputGraph() {
   const avg = toReqs(data.reduce((a, b) => a + b, 0) / data.length);
 
   return (
-    <div className="glass-panel rounded-xl p-4" style={{ maxWidth: 240 }}>
+    <div ref={rootRef} className="glass-panel rounded-xl p-4" style={{ maxWidth: 240 }}>
       {/* Header */}
       <div className="mb-3 flex items-center gap-2">
         <span className="relative flex h-2 w-2" aria-hidden>

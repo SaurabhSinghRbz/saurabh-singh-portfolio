@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { useInViewRef } from "@/lib/perf";
 
 /**
  * SystemStatus — a live system dashboard widget that simulates
@@ -39,13 +40,17 @@ const BASE_METRICS: Metric[] = [
 export default function SystemStatus() {
   const [metrics, setMetrics] = useState(BASE_METRICS);
   const [visible, setVisible] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInViewRef(rootRef);
+
+  // Fade in the first time it scrolls into view; tick only while on screen.
+  useEffect(() => {
+    if (inView) setVisible(true);
+  }, [inView]);
 
   useEffect(() => {
-    // Small delay so it doesn't compete with hero entrance
-    const show = setTimeout(() => setVisible(true), 2000);
-
-    intervalRef.current = setInterval(() => {
+    if (!inView) return;
+    const id = setInterval(() => {
       setMetrics((prev) =>
         prev.map((m) => ({
           ...m,
@@ -56,15 +61,12 @@ export default function SystemStatus() {
         })),
       );
     }, 3500);
-
-    return () => {
-      clearTimeout(show);
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, []);
+    return () => clearInterval(id);
+  }, [inView]);
 
   return (
     <div
+      ref={rootRef}
       className={`glass-panel rounded-xl p-4 transition-all duration-700 ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
       }`}

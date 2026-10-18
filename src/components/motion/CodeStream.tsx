@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useElementInView } from "@/lib/perf";
 
 /**
  * CodeStream — floating code snippets that drift upward behind the hero.
@@ -139,6 +140,8 @@ const CODE_COLUMNS = [
 export default function CodeStream() {
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  // Pause the columns while the hero is scrolled away.
+  const heroInView = useElementInView("top");
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -169,6 +172,7 @@ export default function CodeStream() {
             opacity: col.opacity,
             animationDuration: `${col.speed}s`,
             animationDelay: `${col.delay}s`,
+            animationPlayState: heroInView ? "running" : "paused",
           }}
         >
           {/* Duplicate for seamless loop */}

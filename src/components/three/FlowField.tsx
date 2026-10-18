@@ -488,7 +488,7 @@ function GiftCard({
 
 /* ------------------------------------------------------------------ */
 
-export default function FlowField({ color }: { color: string }) {
+export default function FlowField({ color, paused = false }: { color: string; paused?: boolean }) {
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   // Below 1024px the hero text is full-width, so use the lower-center card
   // placement instead of the right-hand desktop position.
@@ -497,6 +497,7 @@ export default function FlowField({ color }: { color: string }) {
   return (
     <Canvas
       dpr={[1, 1.75]}
+      frameloop={paused ? "never" : "always"}
       camera={{ position: [0, 0, 10], fov: 50 }}
       gl={{ antialias: false, powerPreference: "low-power", alpha: true }}
       style={{ pointerEvents: "none" }}
