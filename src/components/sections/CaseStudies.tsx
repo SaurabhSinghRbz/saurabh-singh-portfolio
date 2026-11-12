@@ -11,7 +11,7 @@ export default function CaseStudies() {
         <SectionHeading
           eyebrow="Case studies · production systems"
           title="Systems, told as decisions"
-          lede="Four systems from four years of production work — queue platform, notification backbone, gift-card core, and a payments platform owned end to end. Open any card for the full story: problem → constraints → architecture → trade-offs → outcome, with animated flow diagrams."
+          lede="Four systems from five-plus years of production work — queue platform, notification backbone, gift-card core, and a payments platform owned end to end. Open any card for the full story: problem → constraints → architecture → trade-offs → outcome, with animated flow diagrams."
         />
 
         {/* Quick index — jump straight to a case study */}

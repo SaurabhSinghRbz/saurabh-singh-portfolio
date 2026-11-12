@@ -119,7 +119,7 @@ export default function Skills() {
 
   const stats = [
     { value: `${skillProficiency.length}`, label: "technologies" },
-    { value: "4+", label: "years shipping" },
+    { value: "5+", label: "years shipping" },
     { value: `${domains}`, label: "engineering domains" },
     { value: "100%", label: "run in production" },
   ];

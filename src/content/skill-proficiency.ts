@@ -3,7 +3,7 @@
  * ─────────────────────────────────────────────────────────
  * Structured proficiency data for each technology.
  * Derived from Saurabh's actual experience timeline:
- * - Pine Labs: Nov 2022 → present (2.5+ years)
+ * - Pine Labs: Nov 2022 → present (4 years)
  * - SmoothPay: Recent project
  * - Masai School: Sep 2021 – Nov 2022 (full-time training)
  *
@@ -26,7 +26,7 @@ export const skillProficiency: SkillProficiency[] = [
   {
     name: "Node.js",
     category: "Backend",
-    yearsExperience: 4,
+    yearsExperience: 5,
     projectsDelivered: 6,
     confidenceScore: 95,
     productionUsage: true,
@@ -35,7 +35,7 @@ export const skillProficiency: SkillProficiency[] = [
   {
     name: "Express",
     category: "Backend",
-    yearsExperience: 4,
+    yearsExperience: 5,
     projectsDelivered: 4,
     confidenceScore: 92,
     productionUsage: true,
@@ -64,7 +64,7 @@ export const skillProficiency: SkillProficiency[] = [
   {
     name: "TypeScript",
     category: "Frontend",
-    yearsExperience: 4,
+    yearsExperience: 5,
     projectsDelivered: 8,
     confidenceScore: 94,
     productionUsage: true,
@@ -73,7 +73,7 @@ export const skillProficiency: SkillProficiency[] = [
   {
     name: "JavaScript",
     category: "Frontend",
-    yearsExperience: 4.5,
+    yearsExperience: 5,
     projectsDelivered: 10,
     confidenceScore: 95,
     productionUsage: true,
@@ -84,7 +84,7 @@ export const skillProficiency: SkillProficiency[] = [
   {
     name: "React",
     category: "Frontend",
-    yearsExperience: 4,
+    yearsExperience: 5,
     projectsDelivered: 7,
     confidenceScore: 93,
     productionUsage: true,

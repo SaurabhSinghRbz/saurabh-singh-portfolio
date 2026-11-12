@@ -12,7 +12,7 @@ const FACTS: { label: string; value: string }[] = [
 ];
 
 const CARD_STATS: { value: string; label: string }[] = [
-  { value: "4 yrs", label: "in production" },
+  { value: "5+ yrs", label: "in production" },
   { value: "4", label: "systems owned" },
   { value: "4", label: "solo projects" },
 ];
@@ -23,7 +23,7 @@ export default function About() {
       <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
         <SectionHeading
           eyebrow="About"
-          title="Four years inside the machinery of money"
+          title="Five years inside the machinery of money"
           lede="Senior engineer for payments and distributed systems. I design and operate the infrastructure that moves money — the queues, activations and gift-card platforms that simply cannot fail — and I own it from the design doc to the 3 a.m. page."
         />
 

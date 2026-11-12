@@ -32,7 +32,7 @@ The portfolio highlights:
 
 ## About Me
 
-I'm **Saurabh Singh**, a Full Stack Engineer with 4+ years of experience building and scaling production applications.
+I'm **Saurabh Singh**, a Full Stack Engineer with 5+ years of experience building and scaling production applications.
 
 My work spans:
 

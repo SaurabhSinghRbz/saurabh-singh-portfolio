@@ -72,7 +72,7 @@ export const site = {
   ],
 
   about: [
-    "I'm a senior software engineer at Pine Labs in Bengaluru. For the last four years I've worked on the infrastructure behind gift cards and payments: a queue platform that processes millions of messages a day at 500+ TPS, the notification service that delivers every email, SMS and WhatsApp message, and the Go service that owns the full gift-card lifecycle — activation, shipping, wallet, PIN reset, block, cancel, reissue.",
+    "I'm a senior software engineer at Pine Labs in Bengaluru. For more than five years I've built software — the last four at Pine Labs, on the infrastructure behind gift cards and payments: a queue platform that processes millions of messages a day at 500+ TPS, the notification service that delivers every email, SMS and WhatsApp message, and the Go service that owns the full gift-card lifecycle — activation, shipping, wallet, PIN reset, block, cancel, reissue.",
     "Outside Pine Labs I built SmoothPay — a multi-tenant QR-ordering and payments platform for the UAE — owning it end to end: data modeling, the NestJS API, merchant dashboard, customer app, Stripe with Apple Pay and Google Pay, multicurrency payment links, and a membership & subscription engine with its own daily renewal job. Three apps, all live.",
     "What ties the work together is a habit I don't compromise on: treat nothing in the stack as magic, and read one layer deeper than the task strictly requires — the broker's pricing model, a query plan, a webhook retry. It's the difference between code that works and code that won't page me at 3 a.m.",
   ],
@@ -316,7 +316,7 @@ export const site = {
   faqs: [
     {
       q: "Who is Saurabh Singh?",
-      a: "Saurabh Singh is a Senior Software Engineer at Pine Labs (Qwikcilver · Woohoo) in Bengaluru, India, with 4+ years building payments and distributed-systems infrastructure. He owns the gift-card lifecycle service behind the Woohoo / Qwikcilver platform — which issues roughly 9 of every 10 gift cards in India across 300+ brands including Amazon, Flipkart, SBI, HDFC and Axis — and built SmoothPay, a full UAE payments platform owned end to end, from data modeling to the order flow.",
+      a: "Saurabh Singh is a Senior Software Engineer at Pine Labs (Qwikcilver · Woohoo) in Bengaluru, India, with 5+ years building payments and distributed-systems infrastructure. He owns the gift-card lifecycle service behind the Woohoo / Qwikcilver platform — which issues roughly 9 of every 10 gift cards in India across 300+ brands including Amazon, Flipkart, SBI, HDFC and Axis — and built SmoothPay, a full UAE payments platform owned end to end, from data modeling to the order flow.",
     },
     {
       q: "What does Saurabh Singh do at Pine Labs?",
@@ -328,7 +328,7 @@ export const site = {
     },
     {
       q: "How many years of experience does Saurabh Singh have?",
-      a: "Over 4 years of professional software engineering experience, all in payments and distributed systems at Pine Labs since 2022, promoted to Senior Software Engineer in 2024.",
+      a: "5+ years of software engineering experience — four of them in payments and distributed systems at Pine Labs (since Nov 2022, promoted to Senior Software Engineer in 2024), preceded by full-time full-stack engineering training at Masai School from 2021.",
     },
     {
       q: "What projects has Saurabh Singh built?",
